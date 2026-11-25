@@ -127,23 +127,18 @@ export function drawElementTo2d(
 /**
  * Tells the browser where a drawable child appears on the canvas so hit
  * testing and accessibility follow the rendered position. `transform` maps the
- * element's local CSS pixels to canvas CSS pixels.
+ * element's local CSS pixels to canvas CSS pixels. Chromium 159 reads the
+ * canvas transform in CSS pixels of the canvas box (verified at DPR 1 and 2),
+ * so the device pixel ratio is not applied.
  */
-export function updateDrawableGeometry(canvas: HTMLCanvasElement, element: Element, transform: Matrix2D, dpr: number) {
+export function updateDrawableGeometry(canvas: HTMLCanvasElement, element: Element, transform: Matrix2D, _dpr?: number) {
   const c = canvas as CanvasWithElementGeometry
   if (!c.updateElementGeometry) {
     return
   }
   try {
     c.updateElementGeometry(element, {
-      canvasTransform: {
-        a: transform.a * dpr,
-        b: transform.b * dpr,
-        c: transform.c * dpr,
-        d: transform.d * dpr,
-        e: transform.e * dpr,
-        f: transform.f * dpr,
-      },
+      canvasTransform: { a: transform.a, b: transform.b, c: transform.c, d: transform.d, e: transform.e, f: transform.f },
     })
   } catch {
     // The element may not have been laid out yet; the next sync retries.

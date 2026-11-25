@@ -8,10 +8,13 @@
     "test": "pnpm --filter './packages/*' --if-present test",
     "typecheck": "pnpm --filter './packages/*' --if-present typecheck",
     "changeset": "changeset",
-    "release:version": "changeset version"
+    "release:version": "changeset version",
+    "e2e": "playwright test -c e2e/playwright.config.ts",
+    "site": "pnpm --filter @glassform/site build"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
-    "@playwright/test": "1.65.1"
+    "@playwright/test": "1.65.1",
+    "pngjs": "7.0.0"
   }
 }
