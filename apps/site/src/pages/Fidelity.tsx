@@ -74,18 +74,19 @@ export default function Fidelity() {
       )}
 
       <h2>Native filter values</h2>
-      <p>Read at runtime from macOS 27.2.1 (<code>NSGlassEffectView</code>, regular glass) with liquid-dom’s probe tool. These seed the presets:</p>
+      <p>Read from the <code>glassBackground</code> filter behind SwiftUI&rsquo;s <code>.glassEffect()</code> on macOS 27.2.1. These seed the presets before tuning:</p>
       <div className="table-wrap">
         <table>
+          <thead><tr><th>Preset</th><th>Blur</th><th>Face white / black</th><th>Saturation</th><th>Max luma</th></tr></thead>
           <tbody>
-            <tr><td>Inner refraction amount / height</td><td>−60 / 20</td></tr>
-            <tr><td>Blur radius</td><td>5</td></tr>
-            <tr><td>Face colour matrix: white / black / saturation</td><td>1.125 / 0.08 / 1.3</td></tr>
-            <tr><td>Key-fill highlight: angle / spread / amount / height</td><td>π/2 / 2π/3 / 0.5 / 0.5</td></tr>
-            <tr><td>Chromatic aberration</td><td>not set (none)</td></tr>
+            <tr><td>Regular, light</td><td>5</td><td>0.96 / 0.40</td><td>1.2</td><td>1</td></tr>
+            <tr><td>Regular, dark</td><td>5</td><td>1.125 / 0.08</td><td>1.3</td><td>0.575</td></tr>
+            <tr><td>Clear, light</td><td>6.39</td><td>0.95 / 0.20</td><td>1.0</td><td>1</td></tr>
+            <tr><td>Clear, dark</td><td>6.39</td><td>0.80 / 0.05</td><td>1.0</td><td>1</td></tr>
           </tbody>
         </table>
       </div>
+      <p className="muted">Refraction height is a quarter of the shape&rsquo;s short side, capped at 20 pt (11 for a 44 pt button, 17 for a 68 pt capsule). There is no chromatic aberration.</p>
       <details>
         <summary>Method and limits</summary>
         <p>Scores cover 41 scenes: capsule, button, card and circle shapes; regular and clear; light and dark; seven backgrounds; three tints; one merge.

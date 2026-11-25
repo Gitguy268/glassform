@@ -16,15 +16,20 @@ test('Three.js WebGLRenderer: glass composites over the 3D scene', async ({ page
 test('CSS tier applies the material and refracts only where the engine renders it', async ({ page }, info) => {
   await page.goto('/e2e/pages/css.html')
   await page.waitForFunction(() => (window as unknown as { __frames?: number }).__frames)
-  const state = await page.evaluate(() => {
+  const state = await page.evaluate(async () => {
+    const { resolveMaterial } = await import('@glassform/core')
+    const material = resolveMaterial({ variant: 'regular', appearance: 'light' })
     const layer = document.querySelector('#pill [data-glassform-layer="backdrop"]')!
     const style = getComputedStyle(layer)
     return {
       filter: style.backdropFilter || (style as unknown as { webkitBackdropFilter: string }).webkitBackdropFilter,
+      blur: material.blur,
+      saturation: material.saturation,
       refracting: (document.querySelector('#pill') as unknown as { refracting: boolean }).refracting,
     }
   })
-  expect(state.filter).toContain('blur(5px)')
-  expect(state.filter).toContain('saturate(1.3)')
+  // The CSS tier uses the same (tuned) material presets as the GPU renderer.
+  expect(state.filter).toContain(`blur(${Number(state.blur.toFixed(2))}px)`)
+  expect(state.filter).toContain(`saturate(${Number(state.saturation.toFixed(3))})`)
   expect(state.refracting).toBe(info.project.name.startsWith('chromium'))
 })

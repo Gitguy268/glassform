@@ -101,14 +101,26 @@ The [docs page](https://gitguy268.github.io/glassform/#/docs) covers every prop,
 - `score.mjs`, which renders the same scenes with every backend in Chromium, Firefox and WebKit and scores them inside the glass area with SSIM and CIEDE2000;
 - `tune.mjs`, which fits the material presets to the captures.
 
-The starting presets come from the private `glassBackground` filter that `NSGlassEffectView` uses on macOS 27.2.1: blur radius 5, face saturation 1.3, white level 1.125, black level 0.08, a key light at π/2 with a 2π/3 spread, and no chromatic aberration.
+The presets start from the private `glassBackground` filter values SwiftUI uses on macOS 27.2.1 for each variant and appearance (blur, face levels, saturation, a luminance cap for dark glass, refraction that scales with the shape, no chromatic aberration). The tuner then fitted the values the filter does not expose directly.
+
+| Engine | Backend | Mean SSIM | Mean ΔE2000 | Glass pixels under ΔE 2 |
+| --- | --- | --- | --- | --- |
+| Chromium | WebGPU | 0.941 | 2.10 | 70.5 % |
+| Chromium | WebGL2 | 0.941 | 2.10 | 70.5 % |
+| Firefox | WebGL2 | 0.941 | 2.10 | 70.5 % |
+| Safari (WebKit) | WebGPU | 0.941 | 2.10 | 70.5 % |
+
+Measured on 2026-11-25 over all 41 scenes, inside the glass plus a 24 px halo. Before tuning, the same scenes scored SSIM 0.741 and ΔE 6.67. So it is close, not identical: plain glass scores 0.90 to 0.97 per scene, and the weakest cases are dark cards over high-contrast stripes and tinted glass.
 
 <details>
-<summary>Current status</summary>
+<summary>Where it still differs</summary>
 
-The native captures need macOS Screen Recording permission for the reference app. Until a capture run is published here, the presets are the hand-set starting values above and have not been fitted. The [Fidelity page](https://gitguy268.github.io/glassform/#/fidelity) shows the latest report when there is one.
+- Native blur behaves like a much wider kernel than Core Animation's "radius 5" suggests. The fitted blur matches it on average, but the falloff shape is not identical.
+- macOS tints empty glass only faintly. glassform's tint is fitted to that (strength 0.08 at full alpha), but native tint is a backdrop-aware colour matrix, not a mix, so hues shift differently.
+- Native glass also adapts to window focus and content in ways a static capture does not show.
+- Scores come from macOS captures. iOS and future OS versions may look different.
 
-The WebGL2 and WebGPU backends match each other: on the same scene in Chromium they score SSIM 0.99999999 (mean ΔE2000 0.00003), and a browser test checks this on every run with a WebGPU adapter.
+The WebGL2 and WebGPU backends match each other: on the same scene in Chromium they score SSIM 0.99999999, and a browser test checks this on every run with a WebGPU adapter.
 
 </details>
 
@@ -120,13 +132,13 @@ The WebGL2 and WebGPU backends match each other: on the same scene in Chromium t
 | Backend selection, forced WebGL2, refraction, content modes, clicks on glass content | Chromium, Chromium with WebGPU, Firefox, WebKit (Playwright 1.65) | pass |
 | Three.js WebGLRenderer path, CSS tier | same four | pass |
 | WebGL2 vs WebGPU parity | Chromium with WebGPU | pass |
+| Fidelity against native SwiftUI glass, 41 scenes | all four, vs macOS 27.2.1 captures | SSIM 0.941, ΔE 2.10 |
 | Site pages load without console errors | Chromium with WebGPU, Firefox, WebKit | pass |
 
 ## Not tested
 
 | What | Why |
 | --- | --- |
-| Native fidelity scores | waiting for Screen Recording permission on the reference app |
 | Real Safari and Firefox `backdrop-filter` rendering | Playwright's WebKit and Firefox screenshots leave it out; the CSS tier is checked by computed style there |
 | iOS and Android browsers | no devices in the test setup |
 | Windows and Linux GPUs | tests ran on an Apple M4 Mac |

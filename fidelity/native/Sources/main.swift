@@ -287,6 +287,9 @@ func capture(scenesURL: URL, backgroundsDir: URL, outDir: URL) async throws {
     bg.size = NSSize(width: scene.size[0], height: scene.size[1])
     let rect = NSRect(x: 120, y: 160, width: scene.size[0], height: scene.size[1])
     let win = CaptureWindow(contentRect: rect, styleMask: [.borderless], backing: .buffered, defer: false)
+    // Windows made in code are released on close by default; Swift releases
+    // them again, which crashed the app after a couple of scenes.
+    win.isReleasedWhenClosed = false
     win.hasShadow = false
     win.isOpaque = true
     win.level = .floating

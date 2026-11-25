@@ -53,7 +53,10 @@ Plan: `~/.claude/plans/create-the-best-liquid-recursive-engelbart-of-a9615da3-79
 - Baseline before tuning (chromium-webgpu): mean SSIM 0.741, ΔE 6.67. Native blur is much wider than CA radius 5 suggests; presets start at blur 14/16, no shadow.
 - tune.mjs was started in the background (log: session scratchpad tune.log); it writes packages/core/src/presets.generated.ts and fidelity/tuning.json when done. If it did not finish, rerun `node fidelity/tune.mjs --minutes 11`.
 
-## Next
+## Tuned 2026-11-25
+All engines: SSIM 0.941, ΔE 2.10, 70.5 % under ΔE 2 (before: 0.741 / 6.67). TINT_STRENGTH fitted to 0.08. Swift crash fixed in source (rebuild needs the permission again).
+
+## Next (done unless noted)
 1. Check presets.generated.ts, rebuild core, `node fidelity/score.mjs`, `node fidelity/publish-report.mjs`; put the real scores in README (How close to native / Tested tables) and drop the "pending" text.
 2. Run `pnpm e2e`, rebuild site, recapture media (scripts/capture-media.mjs).
 3. Publish: gh repo create Gitguy268/glassform --public (topics, description, homepage), push (gh credential helper), enable Pages (workflow), Vercel deploy (--archive=tgz), rolling release via ~/rolling-release (kind web, pages ["Pages","pages.yml"]), portfolio card (check.mjs count +1).

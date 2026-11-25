@@ -1,4 +1,1393 @@
 {
-  "status": "pending",
-  "note": "No native captures published yet. Run fidelity/native/capture.sh, fidelity/tune.mjs and fidelity/publish-report.mjs."
+  "date": "2026-11-25",
+  "macOS": "27.2.1",
+  "engines": {
+    "chromium-webgpu": {
+      "backend": "webgpu",
+      "mean": {
+        "ssim": 0.9409388286540825,
+        "meanDeltaE": 2.104890598602593,
+        "under2": 0.7049066104147317
+      }
+    },
+    "chromium-webgl2": {
+      "backend": "webgl2",
+      "mean": {
+        "ssim": 0.9409390196091574,
+        "meanDeltaE": 2.1048892152800622,
+        "under2": 0.7049066104147317
+      }
+    },
+    "firefox": {
+      "backend": "webgl2",
+      "mean": {
+        "ssim": 0.9409390189521749,
+        "meanDeltaE": 2.1048891777285,
+        "under2": 0.7049066104147317
+      }
+    },
+    "webkit": {
+      "backend": "webgpu",
+      "mean": {
+        "ssim": 0.9409388281097726,
+        "meanDeltaE": 2.1048904372108193,
+        "under2": 0.7049066104147317
+      }
+    }
+  },
+  "scenes": [
+    {
+      "id": "capsule-regular-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9489170521648773,
+          "meanDeltaE": 1.550440535405551,
+          "p95DeltaE": 3.532710560733514,
+          "under2": 0.7145402708481825,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9489170521648773,
+          "meanDeltaE": 1.550440535405551,
+          "p95DeltaE": 3.532710560733514,
+          "under2": 0.7145402708481825,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9489170521648773,
+          "meanDeltaE": 1.550440535405551,
+          "p95DeltaE": 3.532710560733514,
+          "under2": 0.7145402708481825,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9489170521648773,
+          "meanDeltaE": 1.550440535405551,
+          "p95DeltaE": 3.532710560733514,
+          "under2": 0.7145402708481825,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9346312807140621,
+          "meanDeltaE": 0.9729577625007784,
+          "p95DeltaE": 2.4737911933392573,
+          "under2": 0.9208504098360656,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9346306336292762,
+          "meanDeltaE": 0.97295385872921,
+          "p95DeltaE": 2.4737911933392573,
+          "under2": 0.9208504098360656,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9346306336292762,
+          "meanDeltaE": 0.97295385872921,
+          "p95DeltaE": 2.4737911933392573,
+          "under2": 0.9208504098360656,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9346312807140621,
+          "meanDeltaE": 0.9729577625007784,
+          "p95DeltaE": 2.4737911933392573,
+          "under2": 0.9208504098360656,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "button-regular-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9500874568945424,
+          "meanDeltaE": 1.4590742000945685,
+          "p95DeltaE": 3.6547107717200844,
+          "under2": 0.7689644607843137,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9500874568945424,
+          "meanDeltaE": 1.4590742000945685,
+          "p95DeltaE": 3.6547107717200844,
+          "under2": 0.7689644607843137,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9500874568945424,
+          "meanDeltaE": 1.4590742000945685,
+          "p95DeltaE": 3.6547107717200844,
+          "under2": 0.7689644607843137,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9500874568945424,
+          "meanDeltaE": 1.4590742000945685,
+          "p95DeltaE": 3.6547107717200844,
+          "under2": 0.7689644607843137,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "button-regular-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.921054869742848,
+          "meanDeltaE": 0.9750497301089917,
+          "p95DeltaE": 2.619951784633137,
+          "under2": 0.8995710784313725,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9210576914449555,
+          "meanDeltaE": 0.9750419287138808,
+          "p95DeltaE": 2.619951784633137,
+          "under2": 0.8995710784313725,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9210576914449555,
+          "meanDeltaE": 0.9750419287138808,
+          "p95DeltaE": 2.619951784633137,
+          "under2": 0.8995710784313725,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.921054869742848,
+          "meanDeltaE": 0.9750497301089917,
+          "p95DeltaE": 2.619951784633137,
+          "under2": 0.8995710784313725,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "card-regular-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9553473763639616,
+          "meanDeltaE": 1.9138145382034528,
+          "p95DeltaE": 3.4141703980637312,
+          "under2": 0.7681814931350115,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9553484848749766,
+          "meanDeltaE": 1.9138136766615426,
+          "p95DeltaE": 3.4141703980637312,
+          "under2": 0.7681814931350115,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9553484848749766,
+          "meanDeltaE": 1.9138136766615426,
+          "p95DeltaE": 3.4141703980637312,
+          "under2": 0.7681814931350115,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9553473763639616,
+          "meanDeltaE": 1.9138145382034528,
+          "p95DeltaE": 3.4141703980637312,
+          "under2": 0.7681814931350115,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "card-regular-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9421973488051335,
+          "meanDeltaE": 1.5394557613329158,
+          "p95DeltaE": 3.342521889470475,
+          "under2": 0.8736502431350115,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9421979551346501,
+          "meanDeltaE": 1.5394419949082154,
+          "p95DeltaE": 3.342521889470475,
+          "under2": 0.8736502431350115,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9421979551346501,
+          "meanDeltaE": 1.5394419949082154,
+          "p95DeltaE": 3.342521889470475,
+          "under2": 0.8736502431350115,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9421973534247142,
+          "meanDeltaE": 1.5394506797896026,
+          "p95DeltaE": 3.342521889470475,
+          "under2": 0.8736502431350115,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "circle-regular-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9558271377803372,
+          "meanDeltaE": 1.1837098784656008,
+          "p95DeltaE": 4.246357439881126,
+          "under2": 0.797552944214876,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9558271377803372,
+          "meanDeltaE": 1.1837098784656008,
+          "p95DeltaE": 4.246357439881126,
+          "under2": 0.797552944214876,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9558271377803372,
+          "meanDeltaE": 1.1837098784656008,
+          "p95DeltaE": 4.246357439881126,
+          "under2": 0.797552944214876,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9558271377803372,
+          "meanDeltaE": 1.1837098784656008,
+          "p95DeltaE": 4.246357439881126,
+          "under2": 0.797552944214876,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "circle-regular-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9415759118023823,
+          "meanDeltaE": 0.6573584584121828,
+          "p95DeltaE": 1.6537538626873216,
+          "under2": 0.9594201962809917,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9415759118023823,
+          "meanDeltaE": 0.6573584584121828,
+          "p95DeltaE": 1.6537538626873216,
+          "under2": 0.9594201962809917,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9415759118023823,
+          "meanDeltaE": 0.6573584584121828,
+          "p95DeltaE": 1.6537538626873216,
+          "under2": 0.9594201962809917,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9415759118023823,
+          "meanDeltaE": 0.6573584584121828,
+          "p95DeltaE": 1.6537538626873216,
+          "under2": 0.9594201962809917,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "capsule-clear-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9554242834021788,
+          "meanDeltaE": 2.516958046664463,
+          "p95DeltaE": 7.908081351564849,
+          "under2": 0.5359497505345688,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9554242834021788,
+          "meanDeltaE": 2.516958046664463,
+          "p95DeltaE": 7.908081351564849,
+          "under2": 0.5359497505345688,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9554242834021788,
+          "meanDeltaE": 2.516958046664463,
+          "p95DeltaE": 7.908081351564849,
+          "under2": 0.5359497505345688,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9554242834021788,
+          "meanDeltaE": 2.516958046664463,
+          "p95DeltaE": 7.908081351564849,
+          "under2": 0.5359497505345688,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-clear-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9638048902499065,
+          "meanDeltaE": 1.06723684476503,
+          "p95DeltaE": 2.730732302287196,
+          "under2": 0.8760023164647185,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9638048902499065,
+          "meanDeltaE": 1.0672368572038464,
+          "p95DeltaE": 2.730732302287196,
+          "under2": 0.8760023164647185,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9638048902499065,
+          "meanDeltaE": 1.0672368572038464,
+          "p95DeltaE": 2.730732302287196,
+          "under2": 0.8760023164647185,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9638048902499065,
+          "meanDeltaE": 1.06723684476503,
+          "p95DeltaE": 2.730732302287196,
+          "under2": 0.8760023164647185,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "button-clear-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9646882400380438,
+          "meanDeltaE": 1.6781306208784168,
+          "p95DeltaE": 5.270180999134285,
+          "under2": 0.7060968137254902,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9646910049045897,
+          "meanDeltaE": 1.678110364131557,
+          "p95DeltaE": 5.270180999134285,
+          "under2": 0.7060968137254902,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9646910049045897,
+          "meanDeltaE": 1.678110364131557,
+          "p95DeltaE": 5.270180999134285,
+          "under2": 0.7060968137254902,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9646882400380438,
+          "meanDeltaE": 1.6781306208784168,
+          "p95DeltaE": 5.270180999134285,
+          "under2": 0.7060968137254902,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "button-clear-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9502842937811368,
+          "meanDeltaE": 0.965717841127916,
+          "p95DeltaE": 2.568886731125932,
+          "under2": 0.8770833333333333,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9502842937811368,
+          "meanDeltaE": 0.965717841127916,
+          "p95DeltaE": 2.568886731125932,
+          "under2": 0.8770833333333333,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9502842937811368,
+          "meanDeltaE": 0.965717841127916,
+          "p95DeltaE": 2.568886731125932,
+          "under2": 0.8770833333333333,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9502842937811368,
+          "meanDeltaE": 0.965717841127916,
+          "p95DeltaE": 2.568886731125932,
+          "under2": 0.8770833333333333,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "card-clear-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9127181160660501,
+          "meanDeltaE": 5.8132862986616,
+          "p95DeltaE": 13.660844291642974,
+          "under2": 0.24497640160183065,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9127179863339959,
+          "meanDeltaE": 5.813287827088386,
+          "p95DeltaE": 13.660844291642974,
+          "under2": 0.24497640160183065,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9127179863339959,
+          "meanDeltaE": 5.813287827088386,
+          "p95DeltaE": 13.660844291642974,
+          "under2": 0.24497640160183065,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9127181160660501,
+          "meanDeltaE": 5.8132862986616,
+          "p95DeltaE": 13.660844291642974,
+          "under2": 0.24497640160183065,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "card-clear-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9196597766681128,
+          "meanDeltaE": 3.9222401984845594,
+          "p95DeltaE": 11.215722933021027,
+          "under2": 0.3663472540045767,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9196592720531824,
+          "meanDeltaE": 3.922245051191428,
+          "p95DeltaE": 11.215722933021027,
+          "under2": 0.3663472540045767,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9196592720531824,
+          "meanDeltaE": 3.922245051191428,
+          "p95DeltaE": 11.215722933021027,
+          "under2": 0.3663472540045767,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9196597766681128,
+          "meanDeltaE": 3.9222401984845594,
+          "p95DeltaE": 11.215722933021027,
+          "under2": 0.3663472540045767,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "circle-clear-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9715394833927429,
+          "meanDeltaE": 1.7365377019011172,
+          "p95DeltaE": 7.472609356227299,
+          "under2": 0.7240121384297521,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9715394833927429,
+          "meanDeltaE": 1.7365377019011172,
+          "p95DeltaE": 7.472609356227299,
+          "under2": 0.7240121384297521,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9715394564564567,
+          "meanDeltaE": 1.7365361622870554,
+          "p95DeltaE": 7.472609356227299,
+          "under2": 0.7240121384297521,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9715394564564567,
+          "meanDeltaE": 1.7365361622870554,
+          "p95DeltaE": 7.472609356227299,
+          "under2": 0.7240121384297521,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "circle-clear-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9491638412403471,
+          "meanDeltaE": 0.8232049960184131,
+          "p95DeltaE": 2.4303793632602977,
+          "under2": 0.9102208161157025,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9491638412403471,
+          "meanDeltaE": 0.8232049960184131,
+          "p95DeltaE": 2.4303793632602977,
+          "under2": 0.9102208161157025,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9491638412403471,
+          "meanDeltaE": 0.8232049960184131,
+          "p95DeltaE": 2.4303793632602977,
+          "under2": 0.9102208161157025,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9491638412403471,
+          "meanDeltaE": 0.8232049960184131,
+          "p95DeltaE": 2.4303793632602977,
+          "under2": 0.9102208161157025,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9478658873246604,
+          "meanDeltaE": 2.5960224230148863,
+          "p95DeltaE": 8.73651985093414,
+          "under2": 0.5452267462580185,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9478658873246604,
+          "meanDeltaE": 2.5960224230148863,
+          "p95DeltaE": 8.73651985093414,
+          "under2": 0.5452267462580185,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9478658873246604,
+          "meanDeltaE": 2.5960224230148863,
+          "p95DeltaE": 8.73651985093414,
+          "under2": 0.5452267462580185,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9478658873246604,
+          "meanDeltaE": 2.5960224230148863,
+          "p95DeltaE": 8.73651985093414,
+          "under2": 0.5452267462580185,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9453993867887435,
+          "meanDeltaE": 1.2537324913460601,
+          "p95DeltaE": 3.2295171195570576,
+          "under2": 0.7464027975766215,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9453993867887435,
+          "meanDeltaE": 1.2537324913460601,
+          "p95DeltaE": 3.2295171195570576,
+          "under2": 0.7464027975766215,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9453993867887435,
+          "meanDeltaE": 1.2537324913460601,
+          "p95DeltaE": 3.2295171195570576,
+          "under2": 0.7464027975766215,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9453993867887435,
+          "meanDeltaE": 1.2537324913460601,
+          "p95DeltaE": 3.2295171195570576,
+          "under2": 0.7464027975766215,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "button-regular-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9536885510067077,
+          "meanDeltaE": 2.121454259447274,
+          "p95DeltaE": 8.422154515439624,
+          "under2": 0.6440257352941177,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9536885510067077,
+          "meanDeltaE": 2.121454259447274,
+          "p95DeltaE": 8.422154515439624,
+          "under2": 0.6440257352941177,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9536885510067077,
+          "meanDeltaE": 2.121454259447274,
+          "p95DeltaE": 8.422154515439624,
+          "under2": 0.6440257352941177,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9536885510067077,
+          "meanDeltaE": 2.121454259447274,
+          "p95DeltaE": 8.422154515439624,
+          "under2": 0.6440257352941177,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "button-regular-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9121035288246755,
+          "meanDeltaE": 1.164989700877729,
+          "p95DeltaE": 3.6563364372273286,
+          "under2": 0.7199142156862746,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9121035288246755,
+          "meanDeltaE": 1.164989700877729,
+          "p95DeltaE": 3.6563364372273286,
+          "under2": 0.7199142156862746,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9121035288246755,
+          "meanDeltaE": 1.164989700877729,
+          "p95DeltaE": 3.6563364372273286,
+          "under2": 0.7199142156862746,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9121035288246755,
+          "meanDeltaE": 1.164989700877729,
+          "p95DeltaE": 3.6563364372273286,
+          "under2": 0.7199142156862746,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "card-regular-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9080982538129764,
+          "meanDeltaE": 6.46730646832277,
+          "p95DeltaE": 13.47855562793353,
+          "under2": 0.26505738701373,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9080983496421626,
+          "meanDeltaE": 6.467305277755527,
+          "p95DeltaE": 13.47855562793353,
+          "under2": 0.26505738701373,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9080983496421626,
+          "meanDeltaE": 6.467305277755527,
+          "p95DeltaE": 13.47855562793353,
+          "under2": 0.26505738701373,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9080982538129764,
+          "meanDeltaE": 6.46730646832277,
+          "p95DeltaE": 13.47855562793353,
+          "under2": 0.26505738701373,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "card-regular-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9357912879894272,
+          "meanDeltaE": 4.0073967555905305,
+          "p95DeltaE": 11.783104318005638,
+          "under2": 0.4417593320938215,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9357912879894272,
+          "meanDeltaE": 4.0073965446558315,
+          "p95DeltaE": 11.783104318005638,
+          "under2": 0.4417593320938215,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9357912879894272,
+          "meanDeltaE": 4.0073965446558315,
+          "p95DeltaE": 11.783104318005638,
+          "under2": 0.4417593320938215,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.9357912879894272,
+          "meanDeltaE": 4.007396759685196,
+          "p95DeltaE": 11.783104318005638,
+          "under2": 0.4417593320938215,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "circle-regular-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9624459295764778,
+          "meanDeltaE": 1.6068768222566672,
+          "p95DeltaE": 6.275657114695161,
+          "under2": 0.691277117768595,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9624459295764778,
+          "meanDeltaE": 1.6068768222566672,
+          "p95DeltaE": 6.275657114695161,
+          "under2": 0.691277117768595,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9624459295764778,
+          "meanDeltaE": 1.6068768222566672,
+          "p95DeltaE": 6.275657114695161,
+          "under2": 0.691277117768595,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9624459295764778,
+          "meanDeltaE": 1.6068768222566672,
+          "p95DeltaE": 6.275657114695161,
+          "under2": 0.691277117768595,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "circle-regular-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9299603763420223,
+          "meanDeltaE": 0.8863949931728168,
+          "p95DeltaE": 3.0018742275485284,
+          "under2": 0.8298682851239669,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9299603763420223,
+          "meanDeltaE": 0.8863949931728168,
+          "p95DeltaE": 3.0018742275485284,
+          "under2": 0.8298682851239669,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9299603763420223,
+          "meanDeltaE": 0.8863949931728168,
+          "p95DeltaE": 3.0018742275485284,
+          "under2": 0.8298682851239669,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9299603763420223,
+          "meanDeltaE": 0.8863949931728168,
+          "p95DeltaE": 3.0018742275485284,
+          "under2": 0.8298682851239669,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "capsule-clear-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9489688146859585,
+          "meanDeltaE": 2.603163746737989,
+          "p95DeltaE": 8.09329981346954,
+          "under2": 0.5210820563079116,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9489688146859585,
+          "meanDeltaE": 2.603163746737989,
+          "p95DeltaE": 8.09329981346954,
+          "under2": 0.5210820563079116,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9489688146859585,
+          "meanDeltaE": 2.603163746737989,
+          "p95DeltaE": 8.09329981346954,
+          "under2": 0.5210820563079116,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9489688146859585,
+          "meanDeltaE": 2.603163746737989,
+          "p95DeltaE": 8.09329981346954,
+          "under2": 0.5210820563079116,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-clear-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9742179808392927,
+          "meanDeltaE": 0.9232788880794887,
+          "p95DeltaE": 2.6705621312139685,
+          "under2": 0.8954918032786885,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9742179808392927,
+          "meanDeltaE": 0.9232788880794887,
+          "p95DeltaE": 2.6705621312139685,
+          "under2": 0.8954918032786885,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9742179808392927,
+          "meanDeltaE": 0.9232788880794887,
+          "p95DeltaE": 2.6705621312139685,
+          "under2": 0.8954918032786885,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9742179808392927,
+          "meanDeltaE": 0.9232788880794887,
+          "p95DeltaE": 2.6705621312139685,
+          "under2": 0.8954918032786885,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "button-clear-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9637461151485665,
+          "meanDeltaE": 1.626964223713582,
+          "p95DeltaE": 4.8473206941617315,
+          "under2": 0.7020833333333333,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9637482350770735,
+          "meanDeltaE": 1.626940676340144,
+          "p95DeltaE": 4.8473206941617315,
+          "under2": 0.7020833333333333,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9637482350770735,
+          "meanDeltaE": 1.626940676340144,
+          "p95DeltaE": 4.8473206941617315,
+          "under2": 0.7020833333333333,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9637461151485665,
+          "meanDeltaE": 1.626964223713582,
+          "p95DeltaE": 4.8473206941617315,
+          "under2": 0.7020833333333333,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "button-clear-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9581946233913352,
+          "meanDeltaE": 0.6201091829018539,
+          "p95DeltaE": 1.764166062321713,
+          "under2": 0.9565870098039215,
+          "pixels": 32640
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9581952821246117,
+          "meanDeltaE": 0.6201155228994651,
+          "p95DeltaE": 1.764166062321713,
+          "under2": 0.9565870098039215,
+          "pixels": 32640
+        },
+        "firefox": {
+          "ssim": 0.9581952821246117,
+          "meanDeltaE": 0.6201155228994651,
+          "p95DeltaE": 1.764166062321713,
+          "under2": 0.9565870098039215,
+          "pixels": 32640
+        },
+        "webkit": {
+          "ssim": 0.9581946233913352,
+          "meanDeltaE": 0.6201091829018539,
+          "p95DeltaE": 1.764166062321713,
+          "under2": 0.9565870098039215,
+          "pixels": 32640
+        }
+      }
+    },
+    {
+      "id": "card-clear-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.8946816305504885,
+          "meanDeltaE": 6.272725194774433,
+          "p95DeltaE": 14.737359481707093,
+          "under2": 0.2313760368993135,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.8946812767052686,
+          "meanDeltaE": 6.272728002851305,
+          "p95DeltaE": 14.737359481707093,
+          "under2": 0.2313760368993135,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.8946812767052686,
+          "meanDeltaE": 6.272728002851305,
+          "p95DeltaE": 14.737359481707093,
+          "under2": 0.2313760368993135,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.8946816305504885,
+          "meanDeltaE": 6.272725194774433,
+          "p95DeltaE": 14.737359481707093,
+          "under2": 0.2313760368993135,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "card-clear-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.920084136923043,
+          "meanDeltaE": 4.0830916195840095,
+          "p95DeltaE": 13.07757434132102,
+          "under2": 0.4284807637299771,
+          "pixels": 223744
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9200836312553233,
+          "meanDeltaE": 4.083090843737588,
+          "p95DeltaE": 13.07757434132102,
+          "under2": 0.4284807637299771,
+          "pixels": 223744
+        },
+        "firefox": {
+          "ssim": 0.9200836312553233,
+          "meanDeltaE": 4.083090843737588,
+          "p95DeltaE": 13.07757434132102,
+          "under2": 0.4284807637299771,
+          "pixels": 223744
+        },
+        "webkit": {
+          "ssim": 0.920084136923043,
+          "meanDeltaE": 4.0830916195840095,
+          "p95DeltaE": 13.07757434132102,
+          "under2": 0.4284807637299771,
+          "pixels": 223744
+        }
+      }
+    },
+    {
+      "id": "circle-clear-dark-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9672521110034676,
+          "meanDeltaE": 1.87661377494045,
+          "p95DeltaE": 7.11097467171123,
+          "under2": 0.6972817665289256,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9672521110034676,
+          "meanDeltaE": 1.8766137703440469,
+          "p95DeltaE": 7.11097467171123,
+          "under2": 0.6972817665289256,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.9672521110034676,
+          "meanDeltaE": 1.8766137703440469,
+          "p95DeltaE": 7.11097467171123,
+          "under2": 0.6972817665289256,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.9672521110034676,
+          "meanDeltaE": 1.87661377494045,
+          "p95DeltaE": 7.11097467171123,
+          "under2": 0.6972817665289256,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "circle-clear-dark-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.946776178868986,
+          "meanDeltaE": 0.5894919871147305,
+          "p95DeltaE": 1.903720430516777,
+          "under2": 0.9560627582644629,
+          "pixels": 30976
+        },
+        "chromium-webgl2": {
+          "ssim": 0.946776178868986,
+          "meanDeltaE": 0.5894919871147305,
+          "p95DeltaE": 1.903720430516777,
+          "under2": 0.9560627582644629,
+          "pixels": 30976
+        },
+        "firefox": {
+          "ssim": 0.946776178868986,
+          "meanDeltaE": 0.5894919871147305,
+          "p95DeltaE": 1.903720430516777,
+          "under2": 0.9560627582644629,
+          "pixels": 30976
+        },
+        "webkit": {
+          "ssim": 0.946776178868986,
+          "meanDeltaE": 0.5894919871147305,
+          "p95DeltaE": 1.903720430516777,
+          "under2": 0.9560627582644629,
+          "pixels": 30976
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-white",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9396437725165454,
+          "meanDeltaE": 0.9885246985791702,
+          "p95DeltaE": 1.4439176411300356,
+          "under2": 0.9839072523164647,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9396437725165454,
+          "meanDeltaE": 0.9885246985791702,
+          "p95DeltaE": 1.4439176411300356,
+          "under2": 0.9839072523164647,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9396437725165454,
+          "meanDeltaE": 0.9885246985791702,
+          "p95DeltaE": 1.4439176411300356,
+          "under2": 0.9839072523164647,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9396437725165454,
+          "meanDeltaE": 0.9885246985791702,
+          "p95DeltaE": 1.4439176411300356,
+          "under2": 0.9839072523164647,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-black",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9549420301264264,
+          "meanDeltaE": 0.43158876783396327,
+          "p95DeltaE": 0,
+          "under2": 0.9770246792587313,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9549420301264264,
+          "meanDeltaE": 0.43158876783396327,
+          "p95DeltaE": 0,
+          "under2": 0.9770246792587313,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9549420301264264,
+          "meanDeltaE": 0.43158876783396327,
+          "p95DeltaE": 0,
+          "under2": 0.9770246792587313,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9549420301264264,
+          "meanDeltaE": 0.43158876783396327,
+          "p95DeltaE": 0,
+          "under2": 0.9770246792587313,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-text",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9628094157251277,
+          "meanDeltaE": 0.9728114767742374,
+          "p95DeltaE": 2.015912966353338,
+          "under2": 0.9489598182466144,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9628094157251277,
+          "meanDeltaE": 0.9728114767742374,
+          "p95DeltaE": 2.015912966353338,
+          "under2": 0.9489598182466144,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9628094157251277,
+          "meanDeltaE": 0.9728114767742374,
+          "p95DeltaE": 2.015912966353338,
+          "under2": 0.9489598182466144,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9628094157251277,
+          "meanDeltaE": 0.9728114767742374,
+          "p95DeltaE": 2.015912966353338,
+          "under2": 0.9489598182466144,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-checker",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9464414260300278,
+          "meanDeltaE": 0.6715007435254121,
+          "p95DeltaE": 1.1094514504628126,
+          "under2": 0.9837401995723449,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9464414260300278,
+          "meanDeltaE": 0.6715007435254121,
+          "p95DeltaE": 1.1094514504628126,
+          "under2": 0.9837401995723449,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9464414260300278,
+          "meanDeltaE": 0.6715007435254121,
+          "p95DeltaE": 1.1094514504628126,
+          "under2": 0.9837401995723449,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9464414260300278,
+          "meanDeltaE": 0.6715007435254121,
+          "p95DeltaE": 1.1094514504628126,
+          "under2": 0.9837401995723449,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-regular-light-gradient",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9246145372521778,
+          "meanDeltaE": 0.8125777749966421,
+          "p95DeltaE": 1.5277951823882305,
+          "under2": 0.9791852280826799,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9246145372521778,
+          "meanDeltaE": 0.8125777749966421,
+          "p95DeltaE": 1.5277951823882305,
+          "under2": 0.9791852280826799,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9246145372521778,
+          "meanDeltaE": 0.8125777749966421,
+          "p95DeltaE": 1.5277951823882305,
+          "under2": 0.9791852280826799,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9246145372521778,
+          "meanDeltaE": 0.8125777749966421,
+          "p95DeltaE": 1.5277951823882305,
+          "under2": 0.9791852280826799,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-tint-blue-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.894020414348304,
+          "meanDeltaE": 5.056840620286518,
+          "p95DeltaE": 9.202511240504478,
+          "under2": 0.36428635067712045,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.894020414348304,
+          "meanDeltaE": 5.056839607553362,
+          "p95DeltaE": 9.202511240504478,
+          "under2": 0.36428635067712045,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.894020414348304,
+          "meanDeltaE": 5.056839607553362,
+          "p95DeltaE": 9.202511240504478,
+          "under2": 0.36428635067712045,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.894020414348304,
+          "meanDeltaE": 5.056840620286518,
+          "p95DeltaE": 9.202511240504478,
+          "under2": 0.36428635067712045,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-tint-red-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.8942220567702676,
+          "meanDeltaE": 5.066414768828842,
+          "p95DeltaE": 9.370351287008392,
+          "under2": 0.36560049893086244,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.8942217256599388,
+          "meanDeltaE": 5.066413210270585,
+          "p95DeltaE": 9.370351287008392,
+          "under2": 0.36560049893086244,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.8942217256599388,
+          "meanDeltaE": 5.066413210270585,
+          "p95DeltaE": 9.370351287008392,
+          "under2": 0.36560049893086244,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.8942220567702676,
+          "meanDeltaE": 5.066414768828842,
+          "p95DeltaE": 9.370351287008392,
+          "under2": 0.36560049893086244,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "capsule-tint-green-soft-light-photo",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9104529019001398,
+          "meanDeltaE": 3.2954186551799936,
+          "p95DeltaE": 6.528724057906148,
+          "under2": 0.36650258374910905,
+          "pixels": 89792
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9104530272131023,
+          "meanDeltaE": 3.2954212877990376,
+          "p95DeltaE": 6.528724057906148,
+          "under2": 0.36650258374910905,
+          "pixels": 89792
+        },
+        "firefox": {
+          "ssim": 0.9104530272131023,
+          "meanDeltaE": 3.2954212877990376,
+          "p95DeltaE": 6.528724057906148,
+          "under2": 0.36650258374910905,
+          "pixels": 89792
+        },
+        "webkit": {
+          "ssim": 0.9104529019001398,
+          "meanDeltaE": 3.2954186551799936,
+          "p95DeltaE": 6.528724057906148,
+          "under2": 0.36650258374910905,
+          "pixels": 89792
+        }
+      }
+    },
+    {
+      "id": "merge-two-circles-light-stripes",
+      "scores": {
+        "chromium-webgpu": {
+          "ssim": 0.9451492679648639,
+          "meanDeltaE": 1.5300510918007189,
+          "p95DeltaE": 4.663892712963245,
+          "under2": 0.7165673503325942,
+          "pixels": 57728
+        },
+        "chromium-webgl2": {
+          "ssim": 0.9451492679648639,
+          "meanDeltaE": 1.5300510918007189,
+          "p95DeltaE": 4.663892712963245,
+          "under2": 0.7165673503325942,
+          "pixels": 57728
+        },
+        "firefox": {
+          "ssim": 0.9451492679648639,
+          "meanDeltaE": 1.5300510918007189,
+          "p95DeltaE": 4.663892712963245,
+          "under2": 0.7165673503325942,
+          "pixels": 57728
+        },
+        "webkit": {
+          "ssim": 0.9451492679648639,
+          "meanDeltaE": 1.5300510918007189,
+          "p95DeltaE": 4.663892712963245,
+          "under2": 0.7165673503325942,
+          "pixels": 57728
+        }
+      }
+    }
+  ]
 }

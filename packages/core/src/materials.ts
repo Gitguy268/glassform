@@ -204,8 +204,8 @@ export function parseColor(color: string | RgbaColor): RgbaColor {
   }
 }
 
-/** Strength a SwiftUI-style tint is applied with (alpha scales it). */
-const TINT_STRENGTH = 0.55
+/** Strength a SwiftUI-style tint is applied with (alpha scales it). Fitted to native captures: macOS tints empty glass only faintly. */
+const TINT_STRENGTH = 0.08
 
 /** Resolves a material description into Container parameters. */
 export function resolveMaterial(material: GlassMaterial = {}): MaterialParameters {
