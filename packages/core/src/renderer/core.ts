@@ -1,16 +1,13 @@
+import type { Matrix2D } from '../matrix'
 import {
-  getMinimumScale,
-  invertMatrix,
-  multiplyMatrices,
-  scaleOutputMatrix,
-  transformPoint,
-  type Matrix2D,
-} from '../matrix'
+  globalsValues,
+  htmlCompositeValues,
+  packContainerShapes,
+  resolveSpecularWidthPx,
+  shapeDataValues,
+  submersionCellValues,
+} from './shape-packing'
 import { BackdropMetricsTracker, type BackdropMetricsState } from './backdrop-metrics-state'
-import {
-  getCopiedCssSize,
-  getTextureUvScale,
-} from './dom-content-sync'
 import type { SceneHtmlEntry, WebGpuGlassContentSource } from './content-source'
 import { GPU_BUFFER_USAGE, GPU_TEXTURE_USAGE } from './gpu-constants'
 import {
@@ -38,9 +35,6 @@ import {
 import {
   BACKDROP_METRICS_BYTES_PER_ROW,
   BACKDROP_METRICS_SIZE,
-  createEmptyBounds,
-  expandBounds,
-  hasBounds,
   type BoundsRect,
 } from './metrics'
 import {
@@ -51,19 +45,8 @@ import {
   ShapeDataLayout,
   SubmersionCellDataLayout,
 } from './shader-layouts'
-import {
-  getSortedGlassLayers,
-  getSortedSceneLayers,
-} from './scene-order'
+import { getSortedSceneLayers } from './scene-order'
 import { Container, Html, Scene, type TraversedSceneLayer } from '../scene'
-import {
-  estimateShapeGridSubmersions,
-  polygonArea,
-  resolveNormalGating,
-  type ShapeSubmersionGrid,
-  type ShapeSubmersionEntry,
-  type TransformedShapeBounds,
-} from '../sdf'
 import {
   DISPLACEMENT_FIELD_SHADER,
   GLASS_SHADER,
@@ -73,15 +56,8 @@ import {
   SHADOW_MASK_SHADER,
   TEXTURE_BLIT_SHADER,
 } from '../shaders'
-import type {
-  SpecularWidth,
-  SurfaceProfile,
-} from '../types'
 
-/** Resolves public specular-width semantics into the shader's device-pixel space. */
-export function resolveSpecularWidthPx(specularWidth: SpecularWidth, dpr: number) {
-  return specularWidth === 'hairline' ? 1 : specularWidth * dpr
-}
+export { resolveSpecularWidthPx }
 
 /** Constructor options for the reusable WebGPU glass core. */
 export type WebGpuGlassCoreInit = {
@@ -106,22 +82,6 @@ type PackedShapesResult = {
   bounds: BoundsRect | null
 }
 
-type PackedShapeCpuData = ShapeSubmersionEntry & {
-  contentRange?: {
-    count: number
-    start: number
-  }
-  cornerRadius: number
-  cornerSmoothing: number
-  halfHeight: number
-  halfWidth: number
-  inverse: Matrix2D
-  minimumScale: number
-  submersionCellOffset: number
-  submersionGrid: ShapeSubmersionGrid
-  worldDevice: Matrix2D
-}
-
 type GlobalsBuffer = GpuStructBuffer<GpuStructDefinition<typeof GlobalsLayout>>
 type ShapeDataBuffer = GpuStructArrayBuffer<GpuStructDefinition<typeof ShapeDataLayout>>
 type SubmersionCellDataBuffer = GpuStructArrayBuffer<GpuStructDefinition<typeof SubmersionCellDataLayout>>
@@ -129,87 +89,6 @@ type BackdropMetricsBoundsBuffer = GpuStructBuffer<GpuStructDefinition<typeof Ba
 type HtmlCompositeParamsBuffer = GpuStructBuffer<GpuStructDefinition<typeof HtmlCompositeParamsLayout>>
 const DISPLACEMENT_FIELD_FORMAT = 'rgba16float' satisfies GPUTextureFormat
 const SHADOW_MASK_FORMAT = 'rgba8unorm' satisfies GPUTextureFormat
-const MIN_BLEND_SUPPORT_GRID_CELLS = 1
-const MAX_BLEND_SUPPORT_GRID_CELLS = 12
-const MIN_BLEND_SUPPORT_CELL_SIZE = 1
-
-/** Maps a public surface profile string to the shader enum value. */
-function getSurfaceProfileIndex(profile: SurfaceProfile) {
-  if (profile === 'convex') {
-    return 0
-  }
-  if (profile === 'concave') {
-    return 1
-  }
-  return 2
-}
-
-function createDisabledSubmersionGrid(): ShapeSubmersionGrid {
-  return {
-    cells: [],
-    columns: 1,
-    rows: 1,
-  }
-}
-
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max)
-}
-
-function shapeBoundsFromCorners(corners: TransformedShapeBounds['polygon']): TransformedShapeBounds {
-  const bounds = createEmptyBounds()
-  for (const corner of corners) {
-    expandBounds(bounds, corner.x, corner.y)
-  }
-  return {
-    aabb: bounds,
-    area: polygonArea(corners),
-    polygon: corners,
-  }
-}
-
-function gridAxisCellCount(length: number, cellSize: number) {
-  return Math.min(
-    Math.max(Math.ceil(length / Math.max(cellSize, MIN_BLEND_SUPPORT_CELL_SIZE)), MIN_BLEND_SUPPORT_GRID_CELLS),
-    MAX_BLEND_SUPPORT_GRID_CELLS,
-  )
-}
-
-function shapeSubmersionGridFromMatrix(
-  world: Matrix2D,
-  width: number,
-  height: number,
-  cellSize: number,
-): ShapeSubmersionGrid {
-  const columns = gridAxisCellCount(width, cellSize)
-  const rows = gridAxisCellCount(height, cellSize)
-  const cellWidth = width / columns
-  const cellHeight = height / rows
-  const cells: ShapeSubmersionGrid['cells'] = []
-  const cellBounds = (minX: number, minY: number, maxX: number, maxY: number) => shapeBoundsFromCorners([
-    transformPoint(world, minX, minY),
-    transformPoint(world, maxX, minY),
-    transformPoint(world, maxX, maxY),
-    transformPoint(world, minX, maxY),
-  ])
-
-  for (let row = 0; row < rows; row += 1) {
-    for (let column = 0; column < columns; column += 1) {
-      const minX = column * cellWidth
-      const minY = row * cellHeight
-      cells.push({
-        bounds: cellBounds(minX, minY, minX + cellWidth, minY + cellHeight),
-      })
-    }
-  }
-
-  return {
-    cells,
-    columns,
-    rows,
-  }
-}
-
 /** Texture-in/texture-out WebGPU compositor for a liquid-glass scene graph. */
 export class WebGpuGlassCore {
   private readonly backdropMetrics = new BackdropMetricsTracker(() => this.destroyed)
@@ -483,100 +362,15 @@ export class WebGpuGlassCore {
   }
 
   private uploadSubmersionCells(values: number[]) {
-    const packedCount = Math.ceil(values.length / 4)
+    const { packedCount, cells } = submersionCellValues(values)
     this.submersionCellsBuffer.ensureCapacity(packedCount)
-    for (let index = 0; index < Math.max(packedCount, 1); index += 1) {
-      const baseIndex = index * 4
-      this.submersionCellsBuffer.writeAt(index, {
-        values: {
-          x: values[baseIndex] ?? 0,
-          y: values[baseIndex + 1] ?? 0,
-          z: values[baseIndex + 2] ?? 0,
-          w: values[baseIndex + 3] ?? 0,
-        },
-      })
-    }
+    cells.forEach((cell, index) => this.submersionCellsBuffer.writeAt(index, cell))
     this.submersionCellsBuffer.upload(packedCount)
-  }
-
-  private resolveBlendSupportCellSize(container: Container) {
-    return Math.max(container.blendSupportGating.cellSize, MIN_BLEND_SUPPORT_CELL_SIZE)
   }
 
   /** Writes per-container global shader parameters. */
   private writeGlobals(container: Container, shapeCount: number) {
-    const dpr = this.currentDpr
-    const normalGating = resolveNormalGating(container.normalGating)
-    const hasBlendCandidates = shapeCount > 1
-
-    this.globalsBuffer.write({
-      canvas: {
-        width: this.width,
-        height: this.height,
-      },
-      container: {
-        opacity: container.opacity,
-      },
-      shape: {
-        smoothing: container.spacing * dpr,
-        bezelWidth: container.bezelWidth * dpr,
-        shapeCount,
-        surfaceProfile: getSurfaceProfileIndex(container.surfaceProfile),
-      },
-      sdf: {
-        normalGatingEnabled: normalGating.enabled && hasBlendCandidates ? 1 : 0,
-      },
-      sdfParams0: {
-        blendSupportGatingEnabled: container.blendSupportGating.enabled && hasBlendCandidates ? 1 : 0,
-        smoothUnionAcceleration: clamp(container.smoothUnion.acceleration, 0, 1),
-      },
-      glass: {
-        thickness: container.thickness * dpr,
-        displacementFactor: container.displacementFactor,
-        ior: container.ior,
-        dispersion: container.dispersion,
-      },
-      content: {
-        ior: container.contentIor,
-        depth: container.contentDepth * dpr,
-      },
-      lighting: {
-        x: Math.sin(container.lightDirection),
-        y: -Math.cos(container.lightDirection),
-      },
-      specular: {
-        strength: container.specularStrength,
-        width: resolveSpecularWidthPx(container.specularWidth, dpr),
-        sharpness: container.specularSharpness,
-        opacity: container.specularOpacity,
-      },
-      specularSecondary: {
-        oppositeStrength: container.oppositeSpecularStrength,
-        falloff: container.specularFalloff,
-        reflectionOffset: container.reflectionOffset * dpr,
-      },
-      tint: {
-        r: container.tint.r,
-        g: container.tint.g,
-        b: container.tint.b,
-        a: container.tint.a,
-      },
-      shadow: {
-        offsetX: container.shadowOffsetX * dpr,
-        offsetY: container.shadowOffsetY * dpr,
-        spread: container.shadowSpread * dpr,
-        blur: container.shadowBlur * dpr,
-      },
-      shadowColor: {
-        r: container.shadowColor.r,
-        g: container.shadowColor.g,
-        b: container.shadowColor.b,
-        a: container.shadowColor.a,
-      },
-      debug: {
-        displacement: container.debugDisplacement ? 1 : 0,
-      },
-    })
+    this.globalsBuffer.write(globalsValues(container, shapeCount, this.width, this.height, this.currentDpr))
   }
 
   /** Writes the device-pixel bounds sampled by the backdrop metrics pass. */
@@ -593,115 +387,22 @@ export class WebGpuGlassCore {
 
   /** Packs visible glass shapes into the storage buffer and accumulates bounds. */
   private packShapes(container: Container, containerTransform: Matrix2D): PackedShapesResult {
-    const dpr = this.currentDpr
-    const glassLayers = getSortedGlassLayers(container)
-    const bounds = createEmptyBounds()
-    const blendSupportCellSize = this.resolveBlendSupportCellSize(container)
-    let activeCount = 0
-
-    this.ensureShapesBuffer(glassLayers.length)
-    const shapesBuffer = this.shapesBuffer
-    const packedShapes: PackedShapeCpuData[] = []
-
-    for (const glassLayer of glassLayers) {
-      const glass = glassLayer.glass
-      if (glass.width <= 0 || glass.height <= 0) {
-        continue
-      }
-
-      const worldCss = multiplyMatrices(containerTransform, glassLayer.transform)
-      const worldDevice = scaleOutputMatrix(worldCss, dpr)
-      const inverse = invertMatrix(worldDevice)
-      if (!inverse) {
-        continue
-      }
-
-      const topLeft = transformPoint(worldDevice, 0, 0)
-      const topRight = transformPoint(worldDevice, glass.width, 0)
-      const bottomLeft = transformPoint(worldDevice, 0, glass.height)
-      const bottomRight = transformPoint(worldDevice, glass.width, glass.height)
-      const shapeBounds = shapeBoundsFromCorners([topLeft, topRight, bottomRight, bottomLeft])
-      expandBounds(bounds, shapeBounds.aabb.minX, shapeBounds.aabb.minY)
-      expandBounds(bounds, shapeBounds.aabb.maxX, shapeBounds.aabb.maxY)
-
-      const contentRange = this.contentSource?.getGlassContentRange?.(glass)
-      const halfWidth = glass.width * 0.5
-      const halfHeight = glass.height * 0.5
-      packedShapes.push({
-        bounds: shapeBounds,
-        contentRange: contentRange ?? undefined,
-        cornerRadius: glass.cornerRadius,
-        cornerSmoothing: glass.cornerSmoothing,
-        halfHeight,
-        halfWidth,
-        inverse,
-        minimumScale: getMinimumScale(worldDevice),
-        submersionCellOffset: 0,
-        submersionGrid: createDisabledSubmersionGrid(),
-        worldDevice,
-      })
-
-      activeCount += 1
-    }
-
-    const blendSupportGatingEnabled = container.blendSupportGating.enabled && activeCount > 1
-    if (blendSupportGatingEnabled) {
-      for (const shape of packedShapes) {
-        shape.submersionGrid = shapeSubmersionGridFromMatrix(
-          shape.worldDevice,
-          shape.halfWidth * 2,
-          shape.halfHeight * 2,
-          blendSupportCellSize,
-        )
-      }
-    }
-
-    const submersionCellValues: number[] = []
-    for (const shape of packedShapes) {
-      const gridValues = blendSupportGatingEnabled
-        ? estimateShapeGridSubmersions(packedShapes, shape).values
-        : Array.from({ length: shape.submersionGrid.cells.length }, () => 0)
-      shape.submersionCellOffset = submersionCellValues.length
-      submersionCellValues.push(...gridValues)
-    }
-    this.uploadSubmersionCells(submersionCellValues)
-
-    packedShapes.forEach((shape, index) => {
-      shapesBuffer?.writeAt(index, {
-        inverse0: {
-          a: shape.inverse.a,
-          c: shape.inverse.c,
-          e: shape.inverse.e,
-          minimumScale: shape.minimumScale,
-        },
-        inverse1: {
-          b: shape.inverse.b,
-          d: shape.inverse.d,
-          f: shape.inverse.f,
-          cornerRadius: shape.cornerRadius,
-        },
-        geometry: {
-          halfWidth: shape.halfWidth,
-          halfHeight: shape.halfHeight,
-          cornerSmoothing: shape.cornerSmoothing,
-        },
-        contentRange: {
-          start: shape.contentRange?.start ?? 0,
-          count: shape.contentRange?.count ?? 0,
-        },
-        submersionGrid: {
-          offset: shape.submersionCellOffset,
-          columns: shape.submersionGrid.columns,
-          rows: shape.submersionGrid.rows,
-        },
-      })
+    const packed = packContainerShapes(
+      container,
+      containerTransform,
+      this.currentDpr,
+      (glass) => this.contentSource?.getGlassContentRange?.(glass),
+    )
+    this.ensureShapesBuffer(packed.shapes.length)
+    this.uploadSubmersionCells(packed.submersionValues)
+    packed.shapes.forEach((shape, index) => {
+      this.shapesBuffer?.writeAt(index, shapeDataValues(shape))
     })
-
-    shapesBuffer?.upload(activeCount)
+    this.shapesBuffer?.upload(packed.shapes.length)
 
     return {
-      shapeCount: activeCount,
-      bounds: hasBounds(bounds) ? bounds : null,
+      shapeCount: packed.shapes.length,
+      bounds: packed.bounds,
     }
   }
 
@@ -896,31 +597,7 @@ export class WebGpuGlassCore {
     if (!entry.inverseTransform) {
       return
     }
-
-    const inverse = entry.inverseTransform
-    this.htmlCompositeParamsBuffer.write({
-      canvas: {
-        width: this.width,
-        height: this.height,
-        uScale: getTextureUvScale(entry.deviceWidth, entry.width, entry.textureWidth),
-        vScale: getTextureUvScale(entry.deviceHeight, entry.height, entry.textureHeight),
-      },
-      inverse0: {
-        a: inverse.a,
-        c: inverse.c,
-        e: inverse.e,
-        copiedWidth: getCopiedCssSize(entry.copiedDeviceWidth, entry.deviceWidth, entry.width),
-      },
-      inverse1: {
-        b: inverse.b,
-        d: inverse.d,
-        f: inverse.f,
-        copiedHeight: getCopiedCssSize(entry.copiedDeviceHeight, entry.deviceHeight, entry.height),
-      },
-      opacity: {
-        value: entry.html.opacity,
-      },
-    })
+    this.htmlCompositeParamsBuffer.write(htmlCompositeValues(entry, this.width, this.height))
   }
 
   /** Composites a scene-attached HTML layer over the current scene texture. */

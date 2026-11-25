@@ -14,6 +14,12 @@ import type {
 export { GlassPointerEvent } from './events'
 export { Glass, Html, Container, Group, StackingContext, Scene } from './scene'
 export { Renderer, WebGpuGlassCore, WebGpuDomContentSource, resolveSpecularWidthPx } from './renderer'
+export type { GlassBackend, GlassBackendPreference } from './renderer'
+export { WebGl2GlassCore } from './renderer/webgl2/core'
+export type { GlSceneHtmlEntry, WebGl2GlassContentSource, WebGl2GlassCoreRenderOptions } from './renderer/webgl2/core'
+export { WebGl2ContentSync } from './renderer/webgl2/content-sync'
+export { detectHtmlInCanvas } from './renderer/html-in-canvas'
+export type { HtmlContentMode } from './renderer/pixel-sources'
 export const sdfUtils = sdfUtilsValues
 export namespace sdfUtils {
   export type BoundsRect = SdfUtilsBoundsRect

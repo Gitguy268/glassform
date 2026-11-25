@@ -72,14 +72,18 @@ function percentile(values: number[], p: number) {
  * over visible pixels.
  */
 export function parseBackdropMetrics(buffer: GPUBuffer): BackdropMetrics | null {
-  const bytes = new Uint8Array(buffer.getMappedRange())
+  return parseBackdropMetricsBytes(new Uint8Array(buffer.getMappedRange()), BACKDROP_METRICS_BYTES_PER_ROW)
+}
+
+/** Summarizes a BACKDROP_METRICS_SIZE square RGBA8 readback with the given row stride. */
+export function parseBackdropMetricsBytes(bytes: Uint8Array, bytesPerRow: number): BackdropMetrics | null {
   const luminances: number[] = []
   let red = 0
   let green = 0
   let blue = 0
 
   for (let y = 0; y < BACKDROP_METRICS_SIZE; y += 1) {
-    const rowOffset = y * BACKDROP_METRICS_BYTES_PER_ROW
+    const rowOffset = y * bytesPerRow
 
     for (let x = 0; x < BACKDROP_METRICS_SIZE; x += 1) {
       const offset = rowOffset + x * 4

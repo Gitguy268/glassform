@@ -1,0 +1,16 @@
+{
+  "name": "@glassform/fidelity",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "scenes": "node make-scenes.mjs",
+    "native": "native/capture.sh",
+    "score": "node score.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "pngjs": "7.0.0",
+    "ssim.js": "3.5.0"
+  }
+}

@@ -25,6 +25,17 @@ export type GpuStructLayout<Definition extends StructDefinition> = {
   readonly byteSize: number
   createArray(count?: number): Float32Array
   wgsl(name: string): string
+  /** Number of vec4 lanes in one struct value. */
+  readonly laneCount: number
+  /** GLSL ES 3.00 struct declaration with the same lanes. */
+  glslStruct(name: string): string
+  /** GLSL uniform vec4 array plus a `load<Name>()` function returning the struct. */
+  glslUniform(name: string, uniformName: string): string
+  /**
+   * GLSL `fetch<Name>(int index)` reading one struct from an RGBA32F data
+   * texture laid out one struct per row, one lane per texel.
+   */
+  glslFetch(name: string, samplerName: string): string
   write(target: Float32Array, values: StructValues<Definition>): void
   writeAt(target: Float32Array, index: number, values: StructValues<Definition>): void
 }
@@ -83,6 +94,25 @@ export function structLayout<const Definition extends StructDefinition>(
     wgsl(name: string) {
       const members = lanes.map((lane) => `  ${lane}: vec4f,`).join('\n')
       return `struct ${name} {\n${members}\n};`
+    },
+
+    laneCount: lanes.length,
+
+    glslStruct(name: string) {
+      const members = lanes.map((lane) => `  vec4 ${lane};`).join('\n')
+      return `struct ${name} {\n${members}\n};`
+    },
+
+    glslUniform(name: string, uniformName: string) {
+      const assigns = lanes.map((lane, index) => `  s.${lane} = ${uniformName}[${index}];`).join('\n')
+      return `uniform vec4 ${uniformName}[${lanes.length}];\n${name} load${name}() {\n  ${name} s;\n${assigns}\n  return s;\n}`
+    },
+
+    glslFetch(name: string, samplerName: string) {
+      const assigns = lanes
+        .map((lane, index) => `  s.${lane} = texelFetch(${samplerName}, ivec2(${index}, index), 0);`)
+        .join('\n')
+      return `uniform highp sampler2D ${samplerName};\n${name} fetch${name}(int index) {\n  ${name} s;\n${assigns}\n  return s;\n}`
     },
 
     /** Writes one struct value at the beginning of a target array. */

@@ -29,13 +29,14 @@ const label = new Html({ x: 20, y: 14, width: 180, height: 40, element: button }
 glass.add(label)
 container.add(glass)
 scene.add(container)
-const renderer = new Renderer({ scene })
+const renderer = new Renderer({ scene, backend: params.get('backend') ?? 'auto' })
 document.body.append(renderer.canvas)
 let frames = 0
 function frame() {
   try { renderer.render() } catch (e) { window.__error = String(e) }
   frames++
   window.__frames = frames
+  window.__tier = renderer.backend
   window.__modes = { backdrop: renderer.getContentMode(bg), label: renderer.getContentMode(label) }
   requestAnimationFrame(frame)
 }
