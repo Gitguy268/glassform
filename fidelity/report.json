@@ -3,19 +3,300 @@
   "results": {
     "chromium-webgpu": {
       "backend": "webgpu",
-      "scenes": {}
-    },
-    "chromium-webgl2": {
-      "backend": "webgl2",
-      "scenes": {}
-    },
-    "firefox": {
-      "backend": "webgl2",
-      "scenes": {}
-    },
-    "webkit": {
-      "backend": "webgpu",
-      "scenes": {}
+      "scenes": {
+        "capsule-regular-light-stripes": {
+          "ssim": 0.603584079179103,
+          "meanDeltaE": 7.718931705812102,
+          "p95DeltaE": 20.416371127801305,
+          "under2": 0.3344618674269423,
+          "pixels": 89792
+        },
+        "capsule-regular-light-photo": {
+          "ssim": 0.8524739216119918,
+          "meanDeltaE": 4.550450326661784,
+          "p95DeltaE": 9.234347021361701,
+          "under2": 0.35778243050605846,
+          "pixels": 89792
+        },
+        "button-regular-light-stripes": {
+          "ssim": 0.6670387998898738,
+          "meanDeltaE": 6.5594384664968635,
+          "p95DeltaE": 21.10181867808238,
+          "under2": 0.4979779411764706,
+          "pixels": 32640
+        },
+        "button-regular-light-photo": {
+          "ssim": 0.8397489645665399,
+          "meanDeltaE": 3.75924332340442,
+          "p95DeltaE": 8.201212052594533,
+          "under2": 0.48244485294117645,
+          "pixels": 32640
+        },
+        "card-regular-light-stripes": {
+          "ssim": 0.4009466541231422,
+          "meanDeltaE": 10.139934033975335,
+          "p95DeltaE": 20.258304057563464,
+          "under2": 0.1786416618993135,
+          "pixels": 223744
+        },
+        "card-regular-light-photo": {
+          "ssim": 0.8586453685657252,
+          "meanDeltaE": 6.950048306812954,
+          "p95DeltaE": 19.171753398106947,
+          "under2": 0.2284351759153318,
+          "pixels": 223744
+        },
+        "circle-regular-light-stripes": {
+          "ssim": 0.7050632246131151,
+          "meanDeltaE": 4.990510764094327,
+          "p95DeltaE": 19.8482833078077,
+          "under2": 0.5524599690082644,
+          "pixels": 30976
+        },
+        "circle-regular-light-photo": {
+          "ssim": 0.8731839310232005,
+          "meanDeltaE": 2.9401132024260264,
+          "p95DeltaE": 7.08250209685531,
+          "under2": 0.5450348657024794,
+          "pixels": 30976
+        },
+        "capsule-clear-light-stripes": {
+          "ssim": 0.5676588228234054,
+          "meanDeltaE": 8.087051686747621,
+          "p95DeltaE": 19.747550884979454,
+          "under2": 0.37230488239486814,
+          "pixels": 89792
+        },
+        "capsule-clear-light-photo": {
+          "ssim": 0.8539181156193979,
+          "meanDeltaE": 3.7584094342564454,
+          "p95DeltaE": 8.327325407550084,
+          "under2": 0.3926741803278688,
+          "pixels": 89792
+        },
+        "button-clear-light-stripes": {
+          "ssim": 0.6603032950404247,
+          "meanDeltaE": 6.67468818775399,
+          "p95DeltaE": 19.695210946679524,
+          "under2": 0.518014705882353,
+          "pixels": 32640
+        },
+        "button-clear-light-photo": {
+          "ssim": 0.8461311790855178,
+          "meanDeltaE": 3.0495490688780538,
+          "p95DeltaE": 8.002147292795312,
+          "under2": 0.5227941176470589,
+          "pixels": 32640
+        },
+        "card-clear-light-stripes": {
+          "ssim": 0.39746389782796204,
+          "meanDeltaE": 11.831392102743802,
+          "p95DeltaE": 21.545692940377,
+          "under2": 0.1975784825514874,
+          "pixels": 223744
+        },
+        "card-clear-light-photo": {
+          "ssim": 0.8325994685482205,
+          "meanDeltaE": 7.244370723195612,
+          "p95DeltaE": 20.863440973282597,
+          "under2": 0.21236323655606407,
+          "pixels": 223744
+        },
+        "circle-clear-light-stripes": {
+          "ssim": 0.6773734173886246,
+          "meanDeltaE": 5.6313944520937005,
+          "p95DeltaE": 19.573894564477076,
+          "under2": 0.5702156508264463,
+          "pixels": 30976
+        },
+        "circle-clear-light-photo": {
+          "ssim": 0.861264968151773,
+          "meanDeltaE": 2.5675776908786214,
+          "p95DeltaE": 6.650405089541719,
+          "under2": 0.5809013429752066,
+          "pixels": 30976
+        },
+        "capsule-regular-dark-stripes": {
+          "ssim": 0.7193103895222356,
+          "meanDeltaE": 8.546763589755436,
+          "p95DeltaE": 18.92513735190515,
+          "under2": 0.3293166429080542,
+          "pixels": 89792
+        },
+        "capsule-regular-dark-photo": {
+          "ssim": 0.8115178883513644,
+          "meanDeltaE": 5.512443424325833,
+          "p95DeltaE": 11.994969522033482,
+          "under2": 0.3351412152530292,
+          "pixels": 89792
+        },
+        "button-regular-dark-stripes": {
+          "ssim": 0.7509798181209635,
+          "meanDeltaE": 6.990157246834193,
+          "p95DeltaE": 19.403875497729288,
+          "under2": 0.49675245098039217,
+          "pixels": 32640
+        },
+        "button-regular-dark-photo": {
+          "ssim": 0.7650269613825376,
+          "meanDeltaE": 4.874357507132039,
+          "p95DeltaE": 11.956077169098702,
+          "under2": 0.4825980392156863,
+          "pixels": 32640
+        },
+        "card-regular-dark-stripes": {
+          "ssim": 0.5315784823210284,
+          "meanDeltaE": 12.518044750761083,
+          "p95DeltaE": 21.132246593446165,
+          "under2": 0.1763175772311213,
+          "pixels": 223744
+        },
+        "card-regular-dark-photo": {
+          "ssim": 0.818890368237426,
+          "meanDeltaE": 9.487783538538944,
+          "p95DeltaE": 21.498811973291076,
+          "under2": 0.2155946081235698,
+          "pixels": 223744
+        },
+        "circle-regular-dark-stripes": {
+          "ssim": 0.7819270048228935,
+          "meanDeltaE": 5.749794894622154,
+          "p95DeltaE": 17.653291779999947,
+          "under2": 0.5518465909090909,
+          "pixels": 30976
+        },
+        "circle-regular-dark-photo": {
+          "ssim": 0.8119614369991216,
+          "meanDeltaE": 4.135415468864503,
+          "p95DeltaE": 10.461513266248714,
+          "under2": 0.5450348657024794,
+          "pixels": 30976
+        },
+        "capsule-clear-dark-stripes": {
+          "ssim": 0.5770500546274367,
+          "meanDeltaE": 8.524897227592426,
+          "p95DeltaE": 20.808904744399452,
+          "under2": 0.3708236813970064,
+          "pixels": 89792
+        },
+        "capsule-clear-dark-photo": {
+          "ssim": 0.8957254569735178,
+          "meanDeltaE": 3.180126559841924,
+          "p95DeltaE": 6.2605513614106805,
+          "under2": 0.39581477191732,
+          "pixels": 89792
+        },
+        "button-clear-dark-stripes": {
+          "ssim": 0.679886512520174,
+          "meanDeltaE": 7.195048941051565,
+          "p95DeltaE": 21.354462335568996,
+          "under2": 0.5196997549019607,
+          "pixels": 32640
+        },
+        "button-clear-dark-photo": {
+          "ssim": 0.8483067299432946,
+          "meanDeltaE": 2.8720016426824833,
+          "p95DeltaE": 6.783383221216366,
+          "under2": 0.5169424019607843,
+          "pixels": 32640
+        },
+        "card-clear-dark-stripes": {
+          "ssim": 0.4005466311996038,
+          "meanDeltaE": 12.340678807565657,
+          "p95DeltaE": 23.687672976683785,
+          "under2": 0.19611252145308924,
+          "pixels": 223744
+        },
+        "card-clear-dark-photo": {
+          "ssim": 0.8298946706663249,
+          "meanDeltaE": 6.347069973920947,
+          "p95DeltaE": 19.360073511990574,
+          "under2": 0.22046177774599543,
+          "pixels": 223744
+        },
+        "circle-clear-dark-stripes": {
+          "ssim": 0.694960866168075,
+          "meanDeltaE": 5.968165663530394,
+          "p95DeltaE": 20.619826168957434,
+          "under2": 0.5721203512396694,
+          "pixels": 30976
+        },
+        "circle-clear-dark-photo": {
+          "ssim": 0.8543000099006034,
+          "meanDeltaE": 2.5958379089138304,
+          "p95DeltaE": 6.900639629945828,
+          "under2": 0.5766722623966942,
+          "pixels": 30976
+        },
+        "capsule-regular-light-white": {
+          "ssim": 0.8548630750954589,
+          "meanDeltaE": 1.1265835497354222,
+          "p95DeltaE": 3.0470010775988636,
+          "under2": 0.8749109052031362,
+          "pixels": 89792
+        },
+        "capsule-regular-light-black": {
+          "ssim": 0.8770536639172949,
+          "meanDeltaE": 7.75461406472981,
+          "p95DeltaE": 12.329214888785067,
+          "under2": 0.38188257305773343,
+          "pixels": 89792
+        },
+        "capsule-regular-light-text": {
+          "ssim": 0.7074496257391892,
+          "meanDeltaE": 2.8172428671816183,
+          "p95DeltaE": 7.230325564415721,
+          "under2": 0.4474452066999287,
+          "pixels": 89792
+        },
+        "capsule-regular-light-checker": {
+          "ssim": 0.6842479502006115,
+          "meanDeltaE": 3.353929954420304,
+          "p95DeltaE": 10.267622221924007,
+          "under2": 0.5190662865288667,
+          "pixels": 89792
+        },
+        "capsule-regular-light-gradient": {
+          "ssim": 0.8512432557206998,
+          "meanDeltaE": 3.6701574277780757,
+          "p95DeltaE": 5.898338081947437,
+          "under2": 0.32996258018531716,
+          "pixels": 89792
+        },
+        "capsule-tint-blue-light-photo": {
+          "ssim": 0.8118868157259813,
+          "meanDeltaE": 16.047694457720468,
+          "p95DeltaE": 31.03768292713265,
+          "under2": 0.33211199215965787,
+          "pixels": 89792
+        },
+        "capsule-tint-red-light-photo": {
+          "ssim": 0.8165859628301987,
+          "meanDeltaE": 15.15642484623519,
+          "p95DeltaE": 39.54107851614086,
+          "under2": 0.3321008553100499,
+          "pixels": 89792
+        },
+        "capsule-tint-green-soft-light-photo": {
+          "ssim": 0.8380590827747895,
+          "meanDeltaE": 14.582577434001442,
+          "p95DeltaE": 30.381861685133355,
+          "under2": 0.3323124554526016,
+          "pixels": 89792
+        },
+        "merge-two-circles-light-stripes": {
+          "ssim": 0.6717174943901189,
+          "meanDeltaE": 5.721141944938209,
+          "p95DeltaE": 19.800939635955025,
+          "under2": 0.5021826496674058,
+          "pixels": 57728
+        }
+      },
+      "mean": {
+        "ssim": 0.7410333735660724,
+        "meanDeltaE": 6.671269687046477,
+        "under2": 0.4170075702765375
+      }
     }
   }
 }

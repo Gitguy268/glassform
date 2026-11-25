@@ -17,7 +17,7 @@ cp scenes.json "$STAGE/scenes.json"
 LOG="$STAGE/out/capture-log.txt"
 EXTRA=()
 if [[ $# -gt 0 ]]; then EXTRA=(--scene "$1"); fi
-open -n "$APP" --args --capture --scenes "$STAGE/scenes.json" --backgrounds "$STAGE/backgrounds" --out "$STAGE/out" --log "$LOG" "${EXTRA[@]}"
+open -n "$APP" --args --capture --scenes "$STAGE/scenes.json" --backgrounds "$STAGE/backgrounds" --out "$STAGE/out" --log "$LOG" ${EXTRA[@]+"${EXTRA[@]}"}
 for _ in $(seq 1 600); do
   if [[ -f "$LOG" ]] && grep -qE '^(done|error:|NEEDS_PERMISSION)' "$LOG"; then break; fi
   sleep 0.5

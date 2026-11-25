@@ -1235,6 +1235,26 @@ export class GlassContainer extends SingleChildUiNode<LayoutNode, SceneContainer
     }
   }
 
+  get faceMaxLuma(): number {
+    return this.sceneNode.faceMaxLuma
+  }
+
+  set faceMaxLuma(value: number) {
+    if (setProperty(this.sceneNode, 'faceMaxLuma', value)) {
+      this.invalidateFrame('faceMaxLuma')
+    }
+  }
+
+  get adaptiveBezel(): boolean {
+    return this.sceneNode.adaptiveBezel
+  }
+
+  set adaptiveBezel(value: boolean) {
+    if (setProperty(this.sceneNode, 'adaptiveBezel', value)) {
+      this.invalidateFrame('adaptiveBezel')
+    }
+  }
+
   get saturation(): number {
     return this.sceneNode.saturation
   }

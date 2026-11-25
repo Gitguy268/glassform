@@ -24,7 +24,7 @@ export const GlobalsLayout = structLayout({
   shadow: vec4('offsetX', 'offsetY', 'spread', 'blur'),
   shadowColor: vec4('r', 'g', 'b', 'a'),
   debug: vec4('displacement'),
-  face: vec4('saturation', 'whiteLevel', 'blackLevel'),
+  face: vec4('saturation', 'whiteLevel', 'blackLevel', 'maxLuma'),
   keyLight: vec4('x', 'y', 'cosHalfSpread', 'amount'),
   keyLight2: vec4('height', 'colorBias'),
 })

@@ -136,6 +136,13 @@ export type ContainerInit = Partial<Transform> & {
   keyLightHeight?: number
   /** Brightness bias of the key light (-1..1). */
   keyLightColorBias?: number
+  /** Caps the luminance of the glass face (1 = no cap; native dark glass uses 0.575). */
+  faceMaxLuma?: number
+  /**
+   * Size the bezel from the shapes like macOS does: a quarter of the smallest
+   * shape's short side, capped at `bezelWidth`. Thickness scales with it.
+   */
+  adaptiveBezel?: boolean
 }
 
 /**
@@ -857,6 +864,10 @@ export class Container implements Transform {
   keyLightHeight = 0.5
   /** Brightness bias of the key light (-1..1). */
   keyLightColorBias = 0
+  /** Caps the luminance of the glass face (1 = no cap). */
+  faceMaxLuma = 1
+  /** Size the bezel from the shapes like macOS (see ContainerInit.adaptiveBezel). */
+  adaptiveBezel = false
   /** RGBA color used by the container's drop shadow. Alpha `0` disables shadows. */
   shadowColor: RgbaColor = { r: 0, g: 0, b: 0, a: 0.12 }
   /** Horizontal drop shadow offset in CSS pixels. */
@@ -978,10 +989,14 @@ export class Container implements Transform {
       'keyLightSpread',
       'keyLightHeight',
       'keyLightColorBias',
+      'faceMaxLuma',
     ] as const) {
       if (options[key] !== undefined) {
         this[key] = options[key]
       }
+    }
+    if (options.adaptiveBezel !== undefined) {
+      this.adaptiveBezel = options.adaptiveBezel
     }
     if (options.zIndex !== undefined) {
       this.zIndex = options.zIndex

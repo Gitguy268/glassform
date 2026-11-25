@@ -6,6 +6,7 @@ import {
   resolveSpecularWidthPx,
   shapeDataValues,
   submersionCellValues,
+  type PackedShapeCpuData,
 } from './shape-packing'
 import { BackdropMetricsTracker, type BackdropMetricsState } from './backdrop-metrics-state'
 import type { SceneHtmlEntry, WebGpuGlassContentSource } from './content-source'
@@ -80,6 +81,7 @@ export type WebGpuGlassCoreRenderOptions = {
 type PackedShapesResult = {
   shapeCount: number
   bounds: BoundsRect | null
+  shapes: PackedShapeCpuData[]
 }
 
 type GlobalsBuffer = GpuStructBuffer<GpuStructDefinition<typeof GlobalsLayout>>
@@ -369,8 +371,8 @@ export class WebGpuGlassCore {
   }
 
   /** Writes per-container global shader parameters. */
-  private writeGlobals(container: Container, shapeCount: number) {
-    this.globalsBuffer.write(globalsValues(container, shapeCount, this.width, this.height, this.currentDpr))
+  private writeGlobals(container: Container, packed: PackedShapesResult) {
+    this.globalsBuffer.write(globalsValues(container, packed.shapeCount, this.width, this.height, this.currentDpr, packed.shapes))
   }
 
   /** Writes the device-pixel bounds sampled by the backdrop metrics pass. */
@@ -403,6 +405,7 @@ export class WebGpuGlassCore {
     return {
       shapeCount: packed.shapes.length,
       bounds: packed.bounds,
+      shapes: packed.shapes,
     }
   }
 
@@ -678,7 +681,7 @@ export class WebGpuGlassCore {
         continue
       }
       const packedShapes = this.packShapes(entry.child, entry.transform)
-      this.writeGlobals(entry.child, packedShapes.shapeCount)
+      this.writeGlobals(entry.child, packedShapes)
       const blurRadiusPx = entry.child.blur * this.currentDpr
       let blurredBackdrop = renderAdaptiveBlur({
         device: this.device,

@@ -258,7 +258,7 @@ export class WebGl2GlassCore {
     cells.forEach((cell, index) => SubmersionCellDataLayout.writeAt(this.cellData, index, cell))
     this.submersionCells.upload(this.cellData, packedCount)
 
-    return { shapeCount: count, bounds: packed.bounds }
+    return { shapeCount: count, bounds: packed.bounds, shapes: packed.shapes }
   }
 
   private sdfTextures() {
@@ -449,7 +449,7 @@ export class WebGl2GlassCore {
         continue
       }
       const packed = this.packShapes(container, entry.transform)
-      GlobalsLayout.write(this.globals, globalsValues(container, packed.shapeCount, this.width, this.height, this.currentDpr))
+      GlobalsLayout.write(this.globals, globalsValues(container, packed.shapeCount, this.width, this.height, this.currentDpr, packed.shapes))
       const blurRadiusPx = container.blur * this.currentDpr
       let blurredBackdrop = this.blur.render(current.texture, blurRadiusPx, targets.backdropBlur)
       if (blurRadiusPx <= 0 && this.shouldRenderShadow(container)) {

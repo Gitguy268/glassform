@@ -473,7 +473,9 @@ vec3 sampleBackgroundBlurred(vec2 uv) {
 vec3 faceColor(vec3 color) {
   float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
   vec3 saturated = mix(vec3(luma), color, globals.face.x);
-  return clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3(0.0), vec3(1.0));
+  vec3 leveled = clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3(0.0), vec3(1.0));
+  float leveledLuma = dot(leveled, vec3(0.2126, 0.7152, 0.0722));
+  return leveledLuma > globals.face.w ? leveled * (globals.face.w / max(leveledLuma, 0.0001)) : leveled;
 }
 
 vec3 keyLightColor(vec2 rimNormal, float inwardDistance, float bezelWidth) {

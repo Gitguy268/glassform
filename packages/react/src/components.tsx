@@ -228,6 +228,8 @@ export function GlassContainer({
   keyLightSpread,
   keyLightHeight,
   keyLightColorBias,
+  faceMaxLuma,
+  adaptiveBezel,
   material,
   transition,
 }: GlassContainerProps) {
@@ -272,6 +274,8 @@ export function GlassContainer({
     keyLightSpread,
     keyLightHeight,
     keyLightColorBias,
+    faceMaxLuma,
+    adaptiveBezel,
   }, base)))
   useExposeRef(ref, node)
   useAttachNode(node)
@@ -315,6 +319,8 @@ export function GlassContainer({
     keyLightSpread,
     keyLightHeight,
     keyLightColorBias,
+    faceMaxLuma,
+    adaptiveBezel,
   }, base), transition, { assignUndefined: false })
 
   return renderNodeChildren(useNodeParent(node), children)

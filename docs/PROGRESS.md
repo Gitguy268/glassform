@@ -46,7 +46,14 @@ Plan: `~/.claude/plans/create-the-best-liquid-recursive-engelbart-of-a9615da3-79
 - Three render targets are bottom-up: WebGl2GlassCore.render({ backdropFlipY: true }).
 - GlassformReference needs its own Removable Volumes access, so it stages in ~/Library/Caches/glassform-fidelity.
 
+## Status 2026-11-25 evening
+- Done: site (apps/site), e2e (25 pass), repo files, README, CI + Pages workflows, history purged of third-party demo images.
+- 41 native captures + per-scene filter dumps committed (fidelity/native/capture-all.sh, one launch per scene: the app segfaults after 2 scenes because windows are released on close; fix `win.isReleasedWhenClosed = false` in main.swift AFTER captures, since a rebuild loses the Screen Recording grant).
+- Native values differ by variant (see materials.ts table). Added faceMaxLuma + adaptiveBezel (both shader sets).
+- Baseline before tuning (chromium-webgpu): mean SSIM 0.741, ΔE 6.67. Native blur is much wider than CA radius 5 suggests; presets start at blur 14/16, no shadow.
+- tune.mjs was started in the background (log: session scratchpad tune.log); it writes packages/core/src/presets.generated.ts and fidelity/tuning.json when done. If it did not finish, rerun `node fidelity/tune.mjs --minutes 11`.
+
 ## Next
-1. Native captures (waiting for Screen Recording permission), then tune.mjs and presets.generated.ts.
-2. apps/site: showcase, playground, Three/R3F demos, fidelity report; Playwright e2e suite.
-3. Repo files, README, CI, publish.
+1. Check presets.generated.ts, rebuild core, `node fidelity/score.mjs`, `node fidelity/publish-report.mjs`; put the real scores in README (How close to native / Tested tables) and drop the "pending" text.
+2. Run `pnpm e2e`, rebuild site, recapture media (scripts/capture-media.mjs).
+3. Publish: gh repo create Gitguy268/glassform --public (topics, description, homepage), push (gh credential helper), enable Pages (workflow), Vercel deploy (--archive=tgz), rolling release via ~/rolling-release (kind web, pages ["Pages","pages.yml"]), portfolio card (check.mjs count +1).

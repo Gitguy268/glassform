@@ -265,10 +265,36 @@ export function submersionCellValues(values: number[]) {
   return { packedCount, cells }
 }
 
+/**
+ * Bezel and thickness in CSS pixels. With `adaptiveBezel`, macOS's rule: the
+ * bezel is a quarter of the smallest shape's short side, capped at
+ * `bezelWidth`, and thickness scales by the same factor.
+ */
+export function resolveBezel(container: Container, shapes?: PackedShapeCpuData[]) {
+  if (!container.adaptiveBezel || !shapes || shapes.length === 0) {
+    return { bezelWidth: container.bezelWidth, thickness: container.thickness }
+  }
+  let minSide = Number.POSITIVE_INFINITY
+  for (const shape of shapes) {
+    minSide = Math.min(minSide, Math.min(shape.halfWidth, shape.halfHeight) * 2)
+  }
+  const bezelWidth = Math.min(minSide / 4, container.bezelWidth)
+  const scale = container.bezelWidth > 0 ? bezelWidth / container.bezelWidth : 1
+  return { bezelWidth, thickness: container.thickness * scale }
+}
+
 /** GlobalsLayout values for one container. */
-export function globalsValues(container: Container, shapeCount: number, width: number, height: number, dpr: number) {
+export function globalsValues(
+  container: Container,
+  shapeCount: number,
+  width: number,
+  height: number,
+  dpr: number,
+  shapes?: PackedShapeCpuData[],
+) {
   const normalGating = resolveNormalGating(container.normalGating)
   const hasBlendCandidates = shapeCount > 1
+  const bezel = resolveBezel(container, shapes)
 
   return {
     canvas: {
@@ -280,7 +306,7 @@ export function globalsValues(container: Container, shapeCount: number, width: n
     },
     shape: {
       smoothing: container.spacing * dpr,
-      bezelWidth: container.bezelWidth * dpr,
+      bezelWidth: bezel.bezelWidth * dpr,
       shapeCount,
       surfaceProfile: getSurfaceProfileIndex(container.surfaceProfile),
     },
@@ -292,7 +318,7 @@ export function globalsValues(container: Container, shapeCount: number, width: n
       smoothUnionAcceleration: clamp(container.smoothUnion.acceleration, 0, 1),
     },
     glass: {
-      thickness: container.thickness * dpr,
+      thickness: bezel.thickness * dpr,
       displacementFactor: container.displacementFactor,
       ior: container.ior,
       dispersion: container.dispersion,
@@ -341,6 +367,7 @@ export function globalsValues(container: Container, shapeCount: number, width: n
       saturation: container.saturation,
       whiteLevel: container.whiteLevel,
       blackLevel: container.blackLevel,
+      maxLuma: container.faceMaxLuma,
     },
     keyLight: {
       x: Math.cos(container.keyLightAngle),

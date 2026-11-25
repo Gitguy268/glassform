@@ -621,7 +621,10 @@ fn sampleBackgroundBlurred(uv: vec2f) -> vec3f {
 fn faceColor(color: vec3f) -> vec3f {
   let luma = dot(color, vec3f(0.2126, 0.7152, 0.0722));
   let saturated = mix(vec3f(luma), color, globals.face.x);
-  return clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3f(0.0), vec3f(1.0));
+  let leveled = clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3f(0.0), vec3f(1.0));
+  // Native dark glass caps the face luminance (inputFaceColorMatrixMaxLuma).
+  let leveledLuma = dot(leveled, vec3f(0.2126, 0.7152, 0.0722));
+  return select(leveled, leveled * (globals.face.w / max(leveledLuma, 0.0001)), leveledLuma > globals.face.w);
 }
 
 // Broad key-light highlight inside the bezel, lobed around keyLight.xy.

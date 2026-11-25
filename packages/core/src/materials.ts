@@ -50,19 +50,32 @@ export type MaterialParameters = Required<
     | 'keyLightSpread'
     | 'keyLightHeight'
     | 'keyLightColorBias'
+    | 'faceMaxLuma'
+    | 'adaptiveBezel'
   >
 >
 
 /**
- * Starting points taken from the macOS 27 `glassBackground` Core Animation
- * filter (see fidelity/native/probe-macos-27.2.1.txt): blur radius 5, face
- * saturation 1.3, white level 1.125, black level 0.08, key-fill highlight at
- * π/2 with a 2π/3 spread, amount 0.5 and height 0.5, no chromatic aberration.
- * The fidelity tuner (fidelity/tune.mjs) refits these against native captures
- * and writes presets.generated.ts, which takes precedence when present.
+ * Starting points read from the `glassBackground` Core Animation filter that
+ * SwiftUI's `.glassEffect()` uses on macOS 27.2.1, per variant and appearance
+ * (fidelity/native-captures/native-filters.json):
+ *
+ * | preset        | blur | face white / black | saturation | max luma |
+ * | regular light | 5    | 0.96 / 0.40        | 1.2        | 1        |
+ * | regular dark  | 5    | 1.125 / 0.08       | 1.3        | 0.575    |
+ * | clear light   | 6.39 | 0.95 / 0.20        | 1.0        | 1        |
+ * | clear dark    | 6.39 | 0.80 / 0.05        | 1.0        | 1        |
+ *
+ * Refraction height follows the shape (a quarter of its short side, capped at
+ * 20 pt), which `adaptiveBezel` reproduces. No chromatic aberration is set.
+ * Values the filter does not expose directly (rim light, key light depth,
+ * thickness, shadow) are fitted by fidelity/tune.mjs into
+ * presets.generated.ts, which takes precedence when present.
  */
 const BASE: MaterialParameters = {
-  blur: 5,
+  // Core Animation's blur radius 5 is a much wider kernel than a 5 px
+  // Gaussian: 6 pt stripes vanish entirely under native glass.
+  blur: 14,
   bezelWidth: 20,
   thickness: 20,
   displacementFactor: 1,
@@ -79,14 +92,17 @@ const BASE: MaterialParameters = {
   specularOpacity: 0.5,
   reflectionOffset: 12,
   tint: { r: 1, g: 1, b: 1, a: 0 },
-  shadowColor: { r: 0, g: 0, b: 0, a: 0.1 },
+  // The native filter's shadow opacity is 0 for plain glass.
+  shadowColor: { r: 0, g: 0, b: 0, a: 0 },
   shadowOffsetX: 0,
   shadowOffsetY: 4,
   shadowBlur: 12,
   shadowSpread: 0,
-  saturation: 1.3,
-  whiteLevel: 1.125,
-  blackLevel: 0.08,
+  saturation: 1.2,
+  whiteLevel: 0.96,
+  blackLevel: 0.4,
+  faceMaxLuma: 1,
+  adaptiveBezel: true,
   keyLightAmount: 0.18,
   keyLightAngle: Math.PI / 2,
   keyLightSpread: (Math.PI * 2) / 3,
@@ -96,65 +112,52 @@ const BASE: MaterialParameters = {
 
 type PresetKey = `${GlassVariant}-${GlassAppearance}`
 
-/** Hand-set starting presets per variant and appearance. */
+const IDENTITY: Partial<MaterialParameters> = {
+  blur: 0,
+  thickness: 0,
+  displacementFactor: 0,
+  saturation: 1,
+  whiteLevel: 1,
+  blackLevel: 0,
+  faceMaxLuma: 1,
+  keyLightAmount: 0,
+  specularOpacity: 0,
+  specularStrength: 0,
+  oppositeSpecularStrength: 0,
+  shadowColor: { r: 0, g: 0, b: 0, a: 0 },
+}
+
+/** Presets per variant and appearance, before tuning. */
 export const DEFAULT_MATERIAL_PRESETS: Record<PresetKey, MaterialParameters> = {
   'regular-light': BASE,
   'regular-dark': {
     ...BASE,
-    whiteLevel: 0.9,
-    blackLevel: 0.02,
-    tint: { r: 0, g: 0, b: 0, a: 0.12 },
+    saturation: 1.3,
+    whiteLevel: 1.125,
+    blackLevel: 0.08,
+    faceMaxLuma: 0.575,
     specularOpacity: 0.35,
     keyLightAmount: 0.12,
   },
   'clear-light': {
     ...BASE,
-    blur: 0.5,
-    saturation: 1.1,
-    whiteLevel: 1.05,
-    blackLevel: 0.02,
+    blur: 16,
+    saturation: 1,
+    whiteLevel: 0.95,
+    blackLevel: 0.2,
     keyLightAmount: 0.14,
-    shadowColor: { r: 0, g: 0, b: 0, a: 0.06 },
   },
   'clear-dark': {
     ...BASE,
-    blur: 0.5,
-    saturation: 1.1,
-    whiteLevel: 0.92,
-    blackLevel: 0,
-    tint: { r: 0, g: 0, b: 0, a: 0.08 },
+    blur: 16,
+    saturation: 1,
+    whiteLevel: 0.8,
+    blackLevel: 0.05,
     specularOpacity: 0.3,
     keyLightAmount: 0.1,
-    shadowColor: { r: 0, g: 0, b: 0, a: 0.06 },
   },
-  'identity-light': {
-    ...BASE,
-    blur: 0,
-    thickness: 0,
-    displacementFactor: 0,
-    saturation: 1,
-    whiteLevel: 1,
-    blackLevel: 0,
-    keyLightAmount: 0,
-    specularOpacity: 0,
-    specularStrength: 0,
-    oppositeSpecularStrength: 0,
-    shadowColor: { r: 0, g: 0, b: 0, a: 0 },
-  },
-  'identity-dark': {
-    ...BASE,
-    blur: 0,
-    thickness: 0,
-    displacementFactor: 0,
-    saturation: 1,
-    whiteLevel: 1,
-    blackLevel: 0,
-    keyLightAmount: 0,
-    specularOpacity: 0,
-    specularStrength: 0,
-    oppositeSpecularStrength: 0,
-    shadowColor: { r: 0, g: 0, b: 0, a: 0 },
-  },
+  'identity-light': { ...BASE, ...IDENTITY } as MaterialParameters,
+  'identity-dark': { ...BASE, ...IDENTITY } as MaterialParameters,
 }
 
 function mergePresets(presets: Partial<Record<string, Partial<MaterialParameters>>>) {
