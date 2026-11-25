@@ -9,7 +9,7 @@ export type GlassSurfaceProps = CssGlassOptions & {
   style?: CSSProperties
   children?: ReactNode
   ref?: Ref<HTMLElement>
-} & Omit<React.HTMLAttributes<HTMLElement>, 'style' | 'className' | 'children'>
+} & Omit<React.AllHTMLAttributes<HTMLElement>, 'style' | 'className' | 'children' | 'as'>
 
 /**
  * Liquid glass over ordinary page content (the CSS tier). Works in every

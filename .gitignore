@@ -10,3 +10,5 @@ fidelity/out
 fidelity/native/build
 .env
 .env.*
+apps/site/dist
+demo/*/dist

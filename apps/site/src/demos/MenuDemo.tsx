@@ -22,7 +22,7 @@ import {
   Padding,
   AnimationConfigProvider,
 } from '@glassform/react'
-import abstractShapesUrl from '../assets/Abstract Shapes.jpg'
+import abstractShapesUrl from '../assets/ribbons.webp'
 import styles from './MenuDemo.module.css'
 
 const BUTTON_SIZE = 50

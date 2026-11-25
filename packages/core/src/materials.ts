@@ -1,5 +1,6 @@
 import type { ContainerInit } from './scene'
 import type { RgbaColor } from './types'
+import { GENERATED_PRESETS } from './presets.generated'
 
 /** Glass variants, named after SwiftUI's `Glass.regular`, `.clear` and `.identity`. */
 export type GlassVariant = 'regular' | 'clear' | 'identity'
@@ -156,15 +157,26 @@ export const DEFAULT_MATERIAL_PRESETS: Record<PresetKey, MaterialParameters> = {
   },
 }
 
-let activePresets: Record<PresetKey, MaterialParameters> = DEFAULT_MATERIAL_PRESETS
+function mergePresets(presets: Partial<Record<string, Partial<MaterialParameters>>>) {
+  const next = { ...DEFAULT_MATERIAL_PRESETS }
+  for (const [key, value] of Object.entries(presets)) {
+    if (key in next && value) {
+      next[key as PresetKey] = { ...DEFAULT_MATERIAL_PRESETS[key as PresetKey], ...value }
+    }
+  }
+  return next
+}
+
+let activePresets: Record<PresetKey, MaterialParameters> = mergePresets(GENERATED_PRESETS)
 
 /** Replaces the presets used by {@link resolveMaterial} (the tuner output uses this). */
 export function setMaterialPresets(presets: Partial<Record<PresetKey, Partial<MaterialParameters>>>) {
-  const next = { ...DEFAULT_MATERIAL_PRESETS }
-  for (const [key, value] of Object.entries(presets) as Array<[PresetKey, Partial<MaterialParameters>]>) {
-    next[key] = { ...DEFAULT_MATERIAL_PRESETS[key], ...value }
-  }
-  activePresets = next
+  activePresets = mergePresets({ ...GENERATED_PRESETS, ...presets })
+}
+
+/** The presets currently in use (hand presets merged with tuned ones). */
+export function getMaterialPresets() {
+  return activePresets
 }
 
 /** Parses `#rgb`, `#rrggbb` or `#rrggbbaa` into a 0..1 RGBA colour. */

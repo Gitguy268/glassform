@@ -30,8 +30,8 @@ import {
   RotateCw,
   Wifi,
 } from 'lucide-react'
-import albumArtUrl from '../assets/always-sunny.jpg'
-import backgroundUrl from '../assets/narrow-background.jpg'
+import albumArtUrl from '../assets/cover.webp'
+import backgroundUrl from '../assets/ribbons-tall.webp'
 import styles from './ControlCenterDemo.module.css'
 
 const CARD_SIZE = 248
@@ -243,8 +243,8 @@ function MediaCard() {
         <Podcast className={styles.antennaIcon} />
       </IconButton>
       <div className={styles.trackInfo}>
-        <div className={styles.trackTitle}>Dennis and Dee Go on Welfare</div>
-        <div className={styles.trackSubtitle}>The Always Sunny Podcast</div>
+        <div className={styles.trackTitle}>Light Through Water</div>
+        <div className={styles.trackSubtitle}>Refraction Sessions</div>
       </div>
       <div className={styles.transport}>
         <SkipButton direction="back" />

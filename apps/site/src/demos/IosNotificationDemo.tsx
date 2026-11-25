@@ -17,7 +17,7 @@ import {
   type GlassProps,
   type TransformRef,
 } from '@glassform/react'
-import abstractShapesUrl from '../assets/Abstract Shapes.jpg'
+import abstractShapesUrl from '../assets/ribbons.webp'
 import styles from './IosNotificationDemo.module.css'
 
 const NOTIFICATION_WIDTH = 616
@@ -328,16 +328,16 @@ function NotificationContent() {
   return (
     <div className={styles.content}>
       <div className={styles.avatar}>
-        JA
+        AL
       </div>
 
       <div className={styles.copy}>
         <div className={styles.heading}>
-          <strong>John Appleseed</strong>
+          <strong>Ada Lin</strong>
           <span>27m ago</span>
         </div>
         <p className={styles.message}>
-          My orchard just shipped a critical bug fix. The apples now fall closer to the tree.
+          The build is green on all three engines. Shipping the release tonight.
         </p>
       </div>
     </div>

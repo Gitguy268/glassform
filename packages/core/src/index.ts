@@ -23,11 +23,13 @@ export type { WebGl2DomContentSourceInit } from './renderer/webgl2/dom-content-s
 export { detectHtmlInCanvas } from './renderer/html-in-canvas'
 export {
   DEFAULT_MATERIAL_PRESETS,
+  getMaterialPresets,
   parseColor,
   resolveMaterial,
   setMaterialPresets,
 } from './materials'
 export type { GlassAppearance, GlassMaterial, GlassVariant, MaterialParameters } from './materials'
+export { GENERATED_PRESETS_INFO } from './presets.generated'
 export type { HtmlContentMode } from './renderer/pixel-sources'
 export const sdfUtils = sdfUtilsValues
 export namespace sdfUtils {

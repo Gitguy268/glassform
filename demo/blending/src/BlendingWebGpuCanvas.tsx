@@ -180,7 +180,7 @@ export function BlendingWebGpuCanvas({
     let cancelled = false
     const image = new Image()
     image.decoding = 'async'
-    image.src = '/assets/background.jpg'
+    image.src = '/assets/background.webp'
 
     async function decodeImage() {
       try {

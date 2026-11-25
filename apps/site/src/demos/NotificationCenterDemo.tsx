@@ -45,7 +45,7 @@ import {
   Workflow,
   type LucideIcon,
 } from 'lucide-react'
-import abstractShapesUrl from '../assets/narrow-background.jpg'
+import abstractShapesUrl from '../assets/ribbons-tall.webp'
 import styles from './NotificationCenterDemo.module.css'
 
 const PANEL_OPEN_Y = 0
