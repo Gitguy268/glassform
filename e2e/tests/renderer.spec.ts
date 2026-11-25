@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test'
-import { canvasPixels, hasWebGpuAdapter, trackErrors } from './helpers'
+import { canvasPixels, hasWebGpuAdapter, skipWithoutWebGl2, trackErrors } from './helpers'
 
 const expectedBackend: Record<string, string[]> = {
   chromium: ['webgl2'],
@@ -9,6 +9,7 @@ const expectedBackend: Record<string, string[]> = {
 }
 
 test('picks a backend by feature detection and renders without errors', async ({ page }, info) => {
+  await skipWithoutWebGl2(page, test.skip)
   const errors = trackErrors(page)
   await page.goto('/e2e/pages/dom-backdrop.html?backdrop=img')
   await page.waitForFunction(() => (window as unknown as { __tier?: string }).__tier)
@@ -20,12 +21,14 @@ test('picks a backend by feature detection and renders without errors', async ({
 })
 
 test('forced WebGL2 works in every engine', async ({ page }) => {
+  await skipWithoutWebGl2(page, test.skip)
   await page.goto('/e2e/pages/dom-backdrop.html?backdrop=img&backend=webgl2')
   await page.waitForFunction(() => (window as unknown as { __frames?: number }).__frames! > 3)
   expect(await page.evaluate(() => (window as unknown as { __tier: string }).__tier)).toBe('webgl2')
 })
 
 test('glass refracts the backdrop (pixels inside the glass differ from the image)', async ({ page }) => {
+  await skipWithoutWebGl2(page, test.skip)
   await page.goto('/e2e/pages/fidelity.html?scene=capsule-regular-light-stripes')
   await page.waitForFunction(() => (window as unknown as { __ready?: unknown }).__ready)
   const rendered = await canvasPixels(page)
@@ -46,6 +49,7 @@ test('glass refracts the backdrop (pixels inside the glass differ from the image
 })
 
 test('content modes follow browser support and glass content stays clickable', async ({ page }, info) => {
+  await skipWithoutWebGl2(page, test.skip)
   await page.goto('/e2e/pages/dom-backdrop.html')
   await page.waitForFunction(() => (window as unknown as { __modes?: { label?: string } }).__modes?.label)
   const modes = await page.evaluate(() => (window as unknown as { __modes: { backdrop: string; label: string } }).__modes)

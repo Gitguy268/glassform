@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test'
-import { canvasPixels, trackErrors } from './helpers'
+import { canvasPixels, skipWithoutWebGl2, trackErrors } from './helpers'
 
 test('Three.js WebGLRenderer: glass composites over the 3D scene', async ({ page }) => {
+  await skipWithoutWebGl2(page, test.skip)
   const errors = trackErrors(page)
   await page.goto('/e2e/pages/three.html')
   await page.waitForFunction(() => (window as unknown as { __frames?: number }).__frames! > 5)

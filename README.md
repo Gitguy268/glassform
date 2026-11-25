@@ -142,6 +142,7 @@ The WebGL2 and WebGPU backends match each other: on the same scene in Chromium t
 | Real Safari and Firefox `backdrop-filter` rendering | Playwright's WebKit and Firefox screenshots leave it out; the CSS tier is checked by computed style there |
 | iOS and Android browsers | no devices in the test setup |
 | Windows and Linux GPUs | tests ran on an Apple M4 Mac |
+| WebGPU and Firefox WebGL2 in CI | GitHub's runners have no GPU, so CI skips those tests (with a stated reason); they run locally |
 
 <details>
 <summary>How it works</summary>

@@ -34,3 +34,10 @@ export async function hasWebGpuAdapter(page: Page) {
     return Boolean(gpu && (await gpu.requestAdapter()))
   })
 }
+
+/** Skips GPU tests where the browser has no WebGL2 (e.g. Firefox on GPU-less CI runners). */
+export async function skipWithoutWebGl2(page: Page, skip: (condition: boolean, reason: string) => void) {
+  await page.goto('/e2e/probe.html')
+  const webgl2 = await page.evaluate(() => Boolean(document.createElement('canvas').getContext('webgl2')))
+  skip(!webgl2, 'this browser has no WebGL2 here (no GPU); the renderer correctly reports no backend')
+}
