@@ -1,3 +1,4 @@
+import { prepareDrawableCanvas } from './html-in-canvas'
 import { Scene } from '../scene'
 import { DomContentSync } from './dom-content-sync'
 import {
@@ -36,7 +37,7 @@ export class WebGpuDomContentSource implements WebGpuGlassContentSource {
     this.targetCanvas = targetCanvas
     this.scene = scene ?? null
     this.domContent = new DomContentSync({ targetCanvas, getCurrentDpr })
-    this.targetCanvas.setAttribute('layoutsubtree', 'true')
+    prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.addEventListener('paint', this.handlePaintEvent as EventListener)
   }
 

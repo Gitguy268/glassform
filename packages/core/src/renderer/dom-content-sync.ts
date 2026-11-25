@@ -2,7 +2,9 @@ import {
   invertMatrix,
   multiplyMatrices,
   scaleOutputMatrix,
+  type Matrix2D,
 } from '../matrix'
+import { drawElementToGpuTexture, prepareDrawableChild, updateDrawableGeometry } from './html-in-canvas'
 import { Glass, Html, type TraversedSceneLayer } from '../scene'
 import {
   CONTENT_ATLAS_PADDING,
@@ -35,18 +37,6 @@ export type { FlattenedContainer } from './interaction'
 
 /** Typed GPU buffer used for glass content atlas entries. */
 type ContentDataBuffer = GpuStructArrayBuffer<GpuStructDefinition<typeof ContentDataLayout>>
-
-/** Chrome's experimental queue extension for copying DOM elements to textures. */
-type GPUQueueWithElementCopy = GPUQueue & {
-  copyElementImageToTexture: (
-    source: { source: Element },
-    destination: {
-      destination: GPUImageCopyTextureTagged
-      width: number
-      height: number
-    },
-  ) => void
-}
 
 /** Paint event payload emitted by canvas layout subtree updates. */
 type CanvasPaintEvent = Event & {
@@ -81,10 +71,19 @@ function changedElementsIncludeHost(changedElements: readonly Element[], hosts: 
 }
 
 /** Mounts and updates a managed HTML host's transform and z-index. */
-function syncHtmlHost(host: HTMLDivElement, canvas: HTMLCanvasElement, transform: string, zIndex: string) {
+function syncHtmlHost(
+  host: HTMLDivElement,
+  canvas: HTMLCanvasElement,
+  matrix: Matrix2D,
+  zIndex: string,
+  dpr: number,
+) {
+  const transform = matrixToCssTransform(matrix)
   if (host.parentElement !== canvas) {
+    prepareDrawableChild(host)
     canvas.append(host)
   }
+  updateDrawableGeometry(canvas, host, matrix, dpr)
   if (host.style.transform !== transform) {
     host.style.transform = transform
   }
@@ -142,14 +141,7 @@ export function copyElementToTexture(
   height: number,
   texture: GPUTexture,
 ) {
-  ;(queue as GPUQueueWithElementCopy).copyElementImageToTexture(
-    { source },
-    {
-      destination: { texture },
-      width,
-      height,
-    },
-  )
+  drawElementToGpuTexture(queue, source, width, height, texture)
 }
 
 /** Synchronizes DOM-backed HTML hosts, textures, atlases, and content buffers. */
@@ -492,8 +484,9 @@ export class DomContentSync {
         syncHtmlHost(
           html.host,
           this.options.targetCanvas,
-          matrixToCssTransform(layer.transform),
+          layer.transform,
           String(hostOrder.get(html) ?? 0),
+          currentDpr,
         )
       }
     }
@@ -562,8 +555,9 @@ export class DomContentSync {
           syncHtmlHost(
             html.host,
             this.options.targetCanvas,
-            matrixToCssTransform(multiplyMatrices(glassTransform, htmlLayer.transform)),
+            multiplyMatrices(glassTransform, htmlLayer.transform),
             String(hostOrder.get(html) ?? 0),
+            currentDpr,
           )
 
           if (!inverseTransform) {

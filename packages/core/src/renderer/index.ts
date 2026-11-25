@@ -1,3 +1,4 @@
+import { prepareDrawableCanvas } from './html-in-canvas'
 import { Container, Scene } from '../scene'
 import { DomContentSync } from './dom-content-sync'
 import { GPU_TEXTURE_USAGE } from './gpu-constants'
@@ -94,7 +95,7 @@ export class Renderer {
     this.scene = options.scene ?? new Scene()
     this.maxDpr = options.maxDpr ?? 2
     this.targetCanvas = document.createElement('canvas')
-    this.targetCanvas.setAttribute('layoutsubtree', 'true')
+    prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.style.display = 'block'
     this.domContent = new DomContentSync({
       targetCanvas: this.targetCanvas,

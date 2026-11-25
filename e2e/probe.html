@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>probe</title>
+<script type="module">
+const gl = document.createElement('canvas').getContext('webgl2')
+const caps = { userAgent: navigator.userAgent, webgl2: !!gl }
+if (gl) {
+  for (const e of ['EXT_color_buffer_float', 'EXT_color_buffer_half_float', 'OES_texture_float_linear', 'EXT_float_blend']) caps[e] = !!gl.getExtension(e)
+  caps.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE)
+  const dbg = gl.getExtension('WEBGL_debug_renderer_info')
+  caps.renderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER)
+}
+caps.navigatorGpu = !!navigator.gpu
+if (navigator.gpu) {
+  try { const a = await navigator.gpu.requestAdapter(); caps.adapter = !!a; if (a) caps.adapterInfo = a.info?.vendor + ' ' + a.info?.architecture } catch (e) { caps.adapterError = String(e) }
+}
+const t = CanvasRenderingContext2D.prototype
+caps.htmlInCanvas = typeof HTMLCanvasElement.prototype.requestPaint === 'function' || 'layoutSubtree' in HTMLCanvasElement.prototype || typeof GPUQueue !== 'undefined' && 'copyElementImageToTexture' in GPUQueue.prototype
+const probe = document.createElement('div'); probe.style.backdropFilter = 'url(#x)'; caps.backdropFilterUrl = probe.style.backdropFilter !== ''
+probe.style.backdropFilter = 'blur(2px)'; caps.backdropFilterBlur = probe.style.backdropFilter !== '' || CSS.supports('-webkit-backdrop-filter', 'blur(2px)')
+window.__caps = caps
+</script>

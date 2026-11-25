@@ -1,0 +1,21 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>DOM backdrop</title>
+<style>html,body{margin:0;background:#888} canvas{width:360px;height:240px}</style>
+<script src="./importmap.js"></script>
+<script type="module">
+import { Container, Glass, Html, Renderer, Scene } from '@glassform/core'
+const params = new URLSearchParams(location.search)
+const scene = new Scene()
+const bg = document.createElement('div')
+bg.style.cssText = `width:360px;height:240px;background:url(/fidelity/backgrounds/${params.get('bg') ?? 'stripes'}.png) 0 0/360px 240px`
+scene.add(new Html({ width: 360, height: 240, zIndex: -1, element: bg }))
+const container = new Container({ x: 70, y: 86, blur: 2, thickness: 20 })
+container.add(new Glass({ width: 220, height: 68, cornerRadius: 34 }))
+scene.add(container)
+const renderer = new Renderer({ scene })
+document.body.append(renderer.canvas)
+let frames = 0
+function frame() { try { renderer.render() } catch (e) { window.__error = String(e) } frames++; window.__frames = frames; requestAnimationFrame(frame) }
+frame()
+</script>

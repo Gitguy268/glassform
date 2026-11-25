@@ -1,0 +1,845 @@
+{
+  "version": 1,
+  "scale": 2,
+  "scenes": [
+    {
+      "id": "capsule-regular-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "button-regular-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "button-regular-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "card-regular-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "card-regular-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "circle-regular-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "circle-regular-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-clear-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "capsule-clear-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "button-clear-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "button-clear-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "card-clear-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "card-clear-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "circle-clear-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "circle-clear-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "button-regular-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "button-regular-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "card-regular-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "card-regular-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "circle-regular-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "circle-regular-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-clear-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "capsule-clear-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "button-clear-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "button-clear-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 132,
+          "y": 98,
+          "w": 96,
+          "h": 44,
+          "shape": "capsule",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "card-clear-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "card-clear-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 40,
+          "y": 40,
+          "w": 280,
+          "h": 160,
+          "shape": "rect",
+          "radius": 28,
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "circle-clear-dark-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "circle-clear-dark-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "dark",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 148,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "clear"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-white",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "white",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-black",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "black",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-text",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "text",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-checker",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "checker",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-regular-light-gradient",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "gradient",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular"
+        }
+      ]
+    },
+    {
+      "id": "capsule-tint-blue-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular",
+          "tint": "#0a84ff"
+        }
+      ]
+    },
+    {
+      "id": "capsule-tint-red-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular",
+          "tint": "#ff3b30"
+        }
+      ]
+    },
+    {
+      "id": "capsule-tint-green-soft-light-photo",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": null,
+      "background": "photo",
+      "shapes": [
+        {
+          "x": 70,
+          "y": 86,
+          "w": 220,
+          "h": 68,
+          "shape": "capsule",
+          "variant": "regular",
+          "tint": "#34c75980"
+        }
+      ]
+    },
+    {
+      "id": "merge-two-circles-light-stripes",
+      "size": [
+        360,
+        240
+      ],
+      "appearance": "light",
+      "spacing": 24,
+      "background": "stripes",
+      "shapes": [
+        {
+          "x": 110,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        },
+        {
+          "x": 186,
+          "y": 88,
+          "w": 64,
+          "h": 64,
+          "shape": "circle",
+          "variant": "regular"
+        }
+      ]
+    }
+  ]
+}

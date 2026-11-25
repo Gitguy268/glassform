@@ -1,0 +1,312 @@
+== Runtime selector matches ==
+[instance] NSAppearance compositingFilterForStyleName:styleConfiguration:tintColor:
+[instance] NSAppearance glassCompositingFilterWithTintColor:
+[instance] NSWindow _coordinateScrollPocketAppearance:luma:glassFrost:glassMaterialProviderPocket:windowRelativeFrame:forPocket:
+[instance] NSWindow _coordinateScrollPocketAppearance:luma:glassFrost:windowRelativeFrame:forPocket:
+[instance] NSView _updateLayerCompositingFilterFromView
+[instance] NSView computed_effectiveMaterialBackdropContext
+[instance] NSComboButton preferredGlassBehavior
+[class] NSComboButton keyPathsForValuesAffectingPreferredGlassBehavior
+[instance] NSSegmentedControl preferredGlassBehavior
+[class] NSSegmentedControl keyPathsForValuesAffectingPreferredGlassBehavior
+[instance] NSButton preferredGlassBehavior
+[class] NSButton keyPathsForValuesAffectingPreferredGlassBehavior
+[instance] NSPopUpButton preferredGlassBehavior
+[class] NSPopUpButton keyPathsForValuesAffectingPreferredGlassBehavior
+[instance] _TtC6AppKitP33_05EA0EB8E781FFE22747790FC22932B124FontPanelBIUSPopUpButton preferredGlassBehavior
+[instance] NSTextField preferredGlassBehavior
+[class] NSTextField keyPathsForValuesAffectingPreferredGlassBehavior
+
+== View tree ==
+View <NSView 0x790551e080> frame={{0, 0}, {480, 320}} wantsLayer=1
+  View <NSKVONotifying_NSGlassEffectView 0x100eb83d0> frame={{40, 40}, {320, 180}} wantsLayer=1
+    adaptiveAppearance = 2
+    View <_TtCE6AppKitCSo17NSGlassEffectViewP33_92F0BB6107B916AA04C9A991F505A16417ContentHolderView 0x790551de00> frame={{0, 0}, {320, 180}} wantsLayer=0
+    View <_TtGC6AppKit18_NSCoreHostingViewVES_CSo17NSGlassEffectViewP10$195d89b508RootView_ 0x7904000c00> frame={{0, 0}, {320, 180}} wantsLayer=1
+
+== Layer tree ==
+Layer <NSViewBackingLayer 0x7904bf28e0> frame={{0, 0}, {480, 320}}
+  Layer <_TtCE6AppKitCSo17NSGlassEffectViewP33_92F0BB6107B916AA04C9A991F505A16412BackingLayer 0x7904bf2d60> frame={{40, 40}, {320, 180}}
+    Layer <CALayer 0x79056ad120> frame={{0, 0}, {320, 180}}
+    Layer <NSViewBackingLayer 0x7904bf29d0> frame={{0, 0}, {320, 180}}
+      Layer <CALayer 0x79056af020> frame={{0, 0}, {320, 180}}
+        Layer <SwiftUI.SDFLayer 0x7904bfc780> frame={{0, 0}, {320, 180}}
+          Layer <CALayer 0x79056af040> frame={{0, 0}, {0, 0}}
+            Layer <CALayer 0x79056af1a0> frame={{0, 0}, {320, 180}}
+              Layer <CALayer 0x79056af1c0> frame={{0, 0}, {320, 180}}
+                filters count=1
+filter: <CAFilter 0x7904bec120> vibrantColorMatrix
+  name = vibrantColorMatrix
+  type = vibrantColorMatrix
+  inputKeys = (
+    inputColorMatrix,
+    inputBackdropAware,
+    inputClamp,
+    inputClampPreserveHue
+)
+    inputColorMatrix = {length = 80, bytes = 0x0000a03e 00000000 00000000 00000000 ... 00000000 00000000 } (NSConcreteValue)
+      as 4x5 matrix:
+        [  0.3125,   0.0000,   0.0000,   0.0000,   0.9375]
+        [  0.0000,   0.3125,   0.0000,   0.0000,   0.9375]
+        [  0.0000,   0.0000,   0.3125,   0.0000,   0.9375]
+        [  0.0000,   0.0000,   0.0000,   0.0000,   0.0000]
+    inputBackdropAware = 1 (__NSCFBoolean)
+    inputClamp = (null)
+    inputClampPreserveHue = (null)
+  selectors containing 'input' or 'name':
+    setCachesInputImage:
+    initWithName:
+    inputKeys
+    setName:
+    cachesInputImage
+    name
+              Layer <CALayer 0x79056af1e0> frame={{0, 0}, {320, 180}}
+                Layer <CAPortalLayer 0x79056af200> frame={{0, 0}, {320, 180}}
+          Layer <CALayer 0x79056af060> frame={{0, 0}, {320, 180}}
+            Layer <CABackdropLayer 0x79056af080> frame={{0, 0}, {320, 180}}
+              filters count=1
+filter: <DLCAFilter 0x79055f4ec0> glassBackground
+  name = glassBackground
+  type = glassBackground
+  inputKeys = (
+    inputSourceSublayerName,
+    inputInnerRefractionAmount,
+    inputInnerRefractionHeight,
+    inputOuterRefractionAmount,
+    inputOuterRefractionHeight,
+    inputRefractionDistance0,
+    inputRefractionDistance1,
+    inputRefractionOpacity,
+    inputBlurRadius,
+    inputBlurOpacity0,
+    inputBlurOpacity1,
+    inputBlurOpacity2,
+    inputBlurOpacity3,
+    inputBlurOpacity4,
+    inputBlurDistance0,
+    inputBlurDistance1,
+    inputBlurDistance2,
+    inputBlurDistance3,
+    inputBlurDistance4,
+    inputFaceOpacity,
+    inputFaceColorMatrixWhite,
+    inputFaceColorMatrixBlack,
+    inputFaceColorMatrixSaturation,
+    inputFaceColorMatrixFillColor,
+    inputFaceColorMatrixMaxLuma,
+    inputFaceColorMatrixMaxLumaSDR,
+    inputBleedAmount,
+    inputBleedHeight,
+    inputBleedBlurRadius,
+    inputBleedDistance0,
+    inputBleedDistance1,
+    inputBleedOpacity,
+    inputBleedDarkenBlend,
+    inputBleedColorMatrixWhite,
+    inputBleedColorMatrixBlack,
+    inputBleedColorMatrixSaturation,
+    inputBleedColorMatrixFillColor,
+    inputShadowOffset,
+    inputShadowAmount,
+    inputShadowHeight,
+    inputShadowOpacity,
+    inputShadowColorMatrixWhite,
+    inputShadowColorMatrixBlack,
+    inputShadowColorMatrixSaturation,
+    inputShadowColorMatrixFillColor,
+    inputShadowDistanceOffset,
+    inputShadowBlurRadius,
+    inputShadowRadius,
+    inputRingShadowOffset,
+    inputRingShadowStrokeWidth,
+    inputRingShadowBlurRadius,
+    inputRingShadowOpacity,
+    inputRingShadowMask,
+    inputKeyFillHighlightHeight,
+    inputKeyFillHighlightAngle,
+    inputKeyFillHighlightSpread,
+    inputKeyFillHighlightSpreadSDR,
+    inputKeyFillHighlightAmount,
+    inputKeyFillHighlightEffectOffset,
+    inputKeyFillHighlightColorBias,
+    inputBlurFillBlurRadius,
+    inputBlurFillLightenOpacity,
+    inputBlurFillDarkenOpacity,
+    inputBlurFillNormalOpacity,
+    inputSDRHoldingToneEnabled,
+    inputSDRHoldingToneWhite,
+    inputSDRGradientDistance0,
+    inputSDRGradientDistance1,
+    inputSDRShadowOpacity,
+    inputMaxHeadroom,
+    inputShadowVibrancyContribution,
+    inputClamp,
+    inputClampPreserveHue,
+    inputAberrationAmount,
+    inputAberrationHeight,
+    inputAberrationOffset,
+    inputAberrationAngle
+)
+    inputSourceSublayerName = @0 (NSTaggedPointerString)
+    inputInnerRefractionAmount = -60 (__NSCFNumber)
+    inputInnerRefractionHeight = 20 (__NSCFNumber)
+    inputOuterRefractionAmount = 0 (__NSCFNumber)
+    inputOuterRefractionHeight = 0 (__NSCFNumber)
+    inputRefractionDistance0 = -1 (__NSCFNumber)
+    inputRefractionDistance1 = 0 (__NSCFNumber)
+    inputRefractionOpacity = 0 (__NSCFNumber)
+    inputBlurRadius = 5 (__NSCFNumber)
+    inputBlurOpacity0 = 0.8 (__NSCFNumber)
+    inputBlurOpacity1 = 0.8 (__NSCFNumber)
+    inputBlurOpacity2 = 1 (__NSCFNumber)
+    inputBlurOpacity3 = 1 (__NSCFNumber)
+    inputBlurOpacity4 = (null)
+    inputBlurDistance0 = 0 (__NSCFNumber)
+    inputBlurDistance1 = 0 (__NSCFNumber)
+    inputBlurDistance2 = 0 (__NSCFNumber)
+    inputBlurDistance3 = 0 (__NSCFNumber)
+    inputBlurDistance4 = (null)
+    inputFaceOpacity = 1 (__NSCFNumber)
+    inputFaceColorMatrixWhite = 1.125 (__NSCFNumber)
+    inputFaceColorMatrixBlack = 0.08 (__NSCFNumber)
+    inputFaceColorMatrixSaturation = 1.3 (__NSCFNumber)
+    inputFaceColorMatrixFillColor = <CGColor 0x79054c1500> [<CGColorSpace 0x79048304d0> (kCGColorSpaceICCBased; kCGColorSpaceModelRGB; sRGB IEC61966-2.1; extended range)] headroom unknown ( 0 0 0 0 ) (__NSCFType)
+    inputFaceColorMatrixMaxLuma = 0.35 (__NSCFNumber)
+    inputFaceColorMatrixMaxLumaSDR = 0.35 (__NSCFNumber)
+    inputBleedAmount = 62.99999999999999 (__NSCFNumber)
+    inputBleedHeight = 62.99999999999999 (__NSCFNumber)
+    inputBleedBlurRadius = 0 (__NSCFNumber)
+    inputBleedDistance0 = 1 (__NSCFNumber)
+    inputBleedDistance1 = 0 (__NSCFNumber)
+    inputBleedOpacity = 0 (__NSCFNumber)
+    inputBleedDarkenBlend = 0 (__NSCFBoolean)
+    inputBleedColorMatrixWhite = 0.5 (__NSCFNumber)
+    inputBleedColorMatrixBlack = 0.125 (__NSCFNumber)
+    inputBleedColorMatrixSaturation = 1 (__NSCFNumber)
+    inputBleedColorMatrixFillColor = (null)
+    inputShadowOffset = NSSize: {0, 8} (NSConcreteValue)
+    inputShadowAmount = 0 (__NSCFNumber)
+    inputShadowHeight = 0 (__NSCFNumber)
+    inputShadowOpacity = 0 (__NSCFNumber)
+    inputShadowColorMatrixWhite = 1 (__NSCFNumber)
+    inputShadowColorMatrixBlack = 0 (__NSCFNumber)
+    inputShadowColorMatrixSaturation = 1 (__NSCFNumber)
+    inputShadowColorMatrixFillColor = <CGColor 0x79054c1570> [<CGColorSpace 0x79048304d0> (kCGColorSpaceICCBased; kCGColorSpaceModelRGB; sRGB IEC61966-2.1; extended range)] headroom unknown ( 0 0 0 0.3 ) (__NSCFType)
+    inputShadowDistanceOffset = 0 (__NSCFNumber)
+    inputShadowBlurRadius = 0 (__NSCFNumber)
+    inputShadowRadius = 0 (__NSCFNumber)
+    inputRingShadowOffset = 8 (__NSCFNumber)
+    inputRingShadowStrokeWidth = 4 (__NSCFNumber)
+    inputRingShadowBlurRadius = 5 (__NSCFNumber)
+    inputRingShadowOpacity = 0 (__NSCFNumber)
+    inputRingShadowMask = 1 (__NSCFNumber)
+    inputKeyFillHighlightHeight = 0.5 (__NSCFNumber)
+    inputKeyFillHighlightAngle = 1.570796326794897 (__NSCFNumber)
+    inputKeyFillHighlightSpread = 2.094395102393195 (__NSCFNumber)
+    inputKeyFillHighlightSpreadSDR = 2.094395102393195 (__NSCFNumber)
+    inputKeyFillHighlightAmount = 0.5 (__NSCFNumber)
+    inputKeyFillHighlightEffectOffset = -0.5 (__NSCFNumber)
+    inputKeyFillHighlightColorBias = -0.1875 (__NSCFNumber)
+    inputBlurFillBlurRadius = 8 (__NSCFNumber)
+    inputBlurFillLightenOpacity = 0 (__NSCFNumber)
+    inputBlurFillDarkenOpacity = 0.9 (__NSCFNumber)
+    inputBlurFillNormalOpacity = 0.5 (__NSCFNumber)
+    inputSDRHoldingToneEnabled = 0 (__NSCFBoolean)
+    inputSDRHoldingToneWhite = 1 (__NSCFNumber)
+    inputSDRGradientDistance0 = 1 (__NSCFNumber)
+    inputSDRGradientDistance1 = 1 (__NSCFNumber)
+    inputSDRShadowOpacity = 0 (__NSCFNumber)
+    inputMaxHeadroom = 9999 (__NSCFNumber)
+    inputShadowVibrancyContribution = 0 (__NSCFNumber)
+    inputClamp = 1.308311 (__NSCFNumber)
+    inputClampPreserveHue = 0 (__NSCFBoolean)
+    inputAberrationAmount = (null)
+    inputAberrationHeight = (null)
+    inputAberrationOffset = (null)
+    inputAberrationAngle = (null)
+  selectors containing 'input' or 'name':
+              Layer <CASDFLayer 0x79056af0a0> frame={{0, 0}, {320, 180}}
+                Layer <CALayer 0x79056af0e0> frame={{0, 0}, {0, 0}}
+                  Layer <CASDFElementLayer 0x79056af180> frame={{0, 0}, {320, 180}}
+            Layer <_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer 0x79056af100> frame={{0, 0}, {320, 180}}
+            Layer <CASDFLayer 0x79056af120> frame={{0, 0}, {320, 180}}
+              filters count=1
+filter: <CAFilter 0x7904bec090> vibrantColorMatrix
+  name = vibrantColorMatrix
+  type = vibrantColorMatrix
+  inputKeys = (
+    inputColorMatrix,
+    inputBackdropAware,
+    inputClamp,
+    inputClampPreserveHue
+)
+    inputColorMatrix = {length = 80, bytes = 0xb6628f3f 13f241be e3a59bbc 00000000 ... 0000803f 00000000 } (NSConcreteValue)
+      as 4x5 matrix:
+        [  1.1202,  -0.1894,  -0.0190,   0.0000,   0.1471]
+        [ -0.0563,   0.9871,  -0.0191,   0.0000,   0.1471]
+        [ -0.0563,  -0.1893,   1.1574,   0.0000,   0.1471]
+        [  0.0000,   0.0000,   0.0000,   1.0000,   0.0000]
+    inputBackdropAware = (null)
+    inputClamp = 1 (__NSCFNumber)
+    inputClampPreserveHue = (null)
+  selectors containing 'input' or 'name':
+    setCachesInputImage:
+    initWithName:
+    inputKeys
+    setName:
+    cachesInputImage
+    name
+              Layer <_TtC7SwiftUIP33_05C1F5BE6EE7940FED05100EA822F7B314SDFPortalLayer 0x79056af160> frame={{0, 0}, {0, 0}}
+
+== Direct filter helpers ==
+NSAppearance glassCompositingFilterWithTintColor(systemBlue): <CAFilter 0x7904172a60> vibrantColorMatrixSourceOver
+  name = vibrantColorMatrixSourceOver
+  type = vibrantColorMatrixSourceOver
+  inputKeys = (
+    inputColorMatrix,
+    inputBackdropAware,
+    inputClamp,
+    inputClampPreserveHue
+)
+    inputColorMatrix = {length = 80, bytes = 0x00000000 99005c3e 4873c13e 00000000 ... 0000803f 00000000 } (NSConcreteValue)
+      as 4x5 matrix:
+        [  0.0000,   0.2148,   0.3778,   0.0000,   0.0000]
+        [  0.0000,   0.2148,   0.3778,   0.0000,   0.5686]
+        [  0.0000,   0.2148,   0.3778,   0.0000,   1.0000]
+        [  0.0000,   0.0000,   0.0000,   1.0000,   0.0000]
+    inputBackdropAware = 1 (__NSCFBoolean)
+    inputClamp = (null)
+    inputClampPreserveHue = (null)
+  selectors containing 'input' or 'name':
+    setCachesInputImage:
+    initWithName:
+    inputKeys
+    setName:
+    cachesInputImage
+    name
+NSAppearance glassCompositingFilterWithTintColor(nil): <CAFilter 0x7904172ac0> vibrantColorMatrixSourceOver
+  name = vibrantColorMatrixSourceOver
+  type = vibrantColorMatrixSourceOver
+  inputKeys = (
+    inputColorMatrix,
+    inputBackdropAware,
+    inputClamp,
+    inputClampPreserveHue
+)
+    inputColorMatrix = {length = 80, bytes = 0x00000000 ac54473e 2451d03e 00000000 ... 0000803f 00000000 } (NSConcreteValue)
+      as 4x5 matrix:
+        [  0.0000,   0.1947,   0.4069,   0.0000,   0.0000]
+        [  0.0000,   0.1947,   0.4069,   0.0000,   0.4784]
+        [  0.0000,   0.1947,   0.4069,   0.0000,   1.0000]
+        [  0.0000,   0.0000,   0.0000,   1.0000,   0.0000]
+    inputBackdropAware = 1 (__NSCFBoolean)
+    inputClamp = (null)
+    inputClampPreserveHue = (null)
+  selectors containing 'input' or 'name':
+    setCachesInputImage:
+    initWithName:
+    inputKeys
+    setName:
+    cachesInputImage
+    name
+NSAppearance compositingFilterForStyleName: (null)
