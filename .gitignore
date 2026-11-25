@@ -1,0 +1,12 @@
+node_modules
+dist
+.DS_Store
+._*
+*.log
+.vercel
+test-results
+playwright-report
+fidelity/out
+fidelity/native/build
+.env
+.env.*

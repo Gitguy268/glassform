@@ -1,0 +1,16 @@
+{
+  "name": "glassform",
+  "private": true,
+  "license": "MIT",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "build": "pnpm --filter './packages/*' build",
+    "test": "pnpm --filter './packages/*' --if-present test",
+    "typecheck": "pnpm --filter './packages/*' --if-present typecheck",
+    "changeset": "changeset",
+    "release:version": "changeset version"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.31.0"
+  }
+}
