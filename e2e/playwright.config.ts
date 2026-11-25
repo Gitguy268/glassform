@@ -13,9 +13,11 @@ export default defineConfig({
     url: 'http://127.0.0.1:5199/e2e/probe.html',
     reuseExistingServer: !process.env.CI,
   },
+  // The WebGPU project needs a real GPU; GitHub's runners only have a software
+  // adapter that cannot render, so CI runs it only when GLASSFORM_GPU=1.
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'], viewport: { width: 400, height: 280 }, deviceScaleFactor: 2 } },
-    {
+    ...(process.env.CI && !process.env.GLASSFORM_GPU ? [] : [{
       name: 'chromium-webgpu',
       use: {
         ...devices['Desktop Chrome'],
@@ -23,8 +25,17 @@ export default defineConfig({
         deviceScaleFactor: 2,
         launchOptions: { args: ['--enable-unsafe-webgpu', '--use-angle=metal', '--enable-features=Vulkan'] },
       },
+    }]),
+    {
+      name: 'firefox',
+      use: {
+        ...devices['Desktop Firefox'],
+        viewport: { width: 400, height: 280 },
+        deviceScaleFactor: 2,
+        // GPU-less Linux runners only get WebGL from Firefox's software path when forced.
+        launchOptions: { firefoxUserPrefs: { 'webgl.force-enabled': true, 'webgl.disabled': false } },
+      },
     },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'], viewport: { width: 400, height: 280 }, deviceScaleFactor: 2 } },
     { name: 'webkit', use: { ...devices['Desktop Safari'], viewport: { width: 400, height: 280 }, deviceScaleFactor: 2 } },
   ],
 })

@@ -4,7 +4,7 @@
 
 Liquid glass for the web, in every browser.
 
-[Live site](https://gitguy268.github.io/glassform/) · [Playground](https://gitguy268.github.io/glassform/#/playground) · [Docs](https://gitguy268.github.io/glassform/#/docs) · [Fidelity](#how-close-to-native) · [Install](#install)
+[Live site](https://gitguy268.github.io/glassform/) · [Vercel mirror](https://glassform-ten.vercel.app) · [Playground](https://gitguy268.github.io/glassform/#/playground) · [Docs](https://gitguy268.github.io/glassform/#/docs) · [Fidelity](#how-close-to-native) · [Install](#install)
 
 [![CI](https://github.com/Gitguy268/glassform/actions/workflows/ci.yml/badge.svg)](https://github.com/Gitguy268/glassform/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)

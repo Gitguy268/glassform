@@ -72,6 +72,7 @@ type ContentSync = {
 }
 
 const EMPTY_HOSTS = new Set<HTMLDivElement>()
+const ADAPTER_TIMEOUT_MS = 4000
 
 /**
  * Renderer for a liquid-glass scene graph. It draws with WebGPU where an
@@ -285,7 +286,12 @@ export class Renderer {
       return false
     }
 
-    const adapter = await gpuNavigator.gpu.requestAdapter()
+    // Some browsers (Firefox on some Linux setups) never settle requestAdapter;
+    // give up after a few seconds and fall back to WebGL2.
+    const adapter = await Promise.race([
+      gpuNavigator.gpu.requestAdapter(),
+      new Promise<null>((resolve) => setTimeout(() => resolve(null), ADAPTER_TIMEOUT_MS)),
+    ])
     if (!adapter) {
       return false
     }
