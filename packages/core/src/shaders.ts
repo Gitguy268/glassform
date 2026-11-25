@@ -617,6 +617,23 @@ fn sampleBackgroundBlurred(uv: vec2f) -> vec3f {
   return textureSampleLevel(backgroundTextureBlurred, backgroundSampler, uv, 0.0).rgb;
 }
 
+// Native-style face colour: saturation, then a black/white level remap.
+fn faceColor(color: vec3f) -> vec3f {
+  let luma = dot(color, vec3f(0.2126, 0.7152, 0.0722));
+  let saturated = mix(vec3f(luma), color, globals.face.x);
+  return clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3f(0.0), vec3f(1.0));
+}
+
+// Broad key-light highlight inside the bezel, lobed around keyLight.xy.
+fn keyLightColor(rimNormal: vec2f, inwardDistance: f32, bezelWidth: f32) -> vec3f {
+  if (globals.keyLight.w <= 0.0) {
+    return vec3f(0.0);
+  }
+  let lobe = smoothstep(globals.keyLight.z, 1.0, dot(rimNormal, globals.keyLight.xy));
+  let band = 1.0 - smoothstep(0.0, max(globals.keyLight2.x * bezelWidth, 1.0), inwardDistance);
+  return vec3f(1.0 + globals.keyLight2.y) * globals.keyLight.w * lobe * band;
+}
+
 fn sampleSurfaceSlope(uv: vec2f) -> vec2f {
   let field = textureSampleLevel(displacementFieldTexture, backgroundSampler, uv, 0.0);
   return select(vec2f(0.0), field.xy / max(field.a, SDF_EPSILON), field.a > SDF_EPSILON);
@@ -783,11 +800,11 @@ fn fragmentMain(in: VertexOutput) -> @location(0) vec4f {
   let refractedUvRed = in.uv + displacementPxRed / globals.canvas.xy;
   let refractedUvGreen = in.uv + displacementPxGreen / globals.canvas.xy;
   let refractedUvBlue = in.uv + displacementPxBlue / globals.canvas.xy;
-  let refractedColor = vec3f(
+  let refractedColor = faceColor(vec3f(
     sampleBackgroundBlurred(refractedUvRed).r,
     sampleBackgroundBlurred(refractedUvGreen).g,
     sampleBackgroundBlurred(refractedUvBlue).b,
-  );
+  ));
   let reflectedUv = in.uv + rimNormal * globals.specularSecondary.z / globals.canvas.xy;
   let reflectedColor = sampleBackgroundBlurred(reflectedUv);
   let glass = mix(refractedColor, globals.tint.rgb, globals.tint.a);
@@ -859,6 +876,7 @@ fn fragmentMain(in: VertexOutput) -> @location(0) vec4f {
     color = mix(color, glassInterior, fillMask);
     color = mix(color, edgeSpecularColor, coloredEdgeOpacity);
     color = color + whiteSpecular;
+    color = color + keyLightColor(rimNormal, inwardDistance, bezelWidth) * fillMask;
   }
 
   return vec4f(mix(background, color, containerOpacity), 1.0);

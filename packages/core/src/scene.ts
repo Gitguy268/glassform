@@ -120,6 +120,22 @@ export type ContainerInit = Partial<Transform> & {
   shadowSpread?: number
   debugDisplacement?: boolean
   zIndex?: number
+  /** Saturation of the glass face (1 = unchanged). */
+  saturation?: number
+  /** Output level that white maps to on the glass face (1 = unchanged). */
+  whiteLevel?: number
+  /** Output level that black maps to on the glass face (0 = unchanged). */
+  blackLevel?: number
+  /** Strength of the broad key-light highlight inside the bezel (0 = off). */
+  keyLightAmount?: number
+  /** Key-light direction in radians; `Math.PI / 2` lights the top edge. */
+  keyLightAngle?: number
+  /** Angular width of the key-light lobe in radians. */
+  keyLightSpread?: number
+  /** Depth of the key light as a fraction of the bezel width. */
+  keyLightHeight?: number
+  /** Brightness bias of the key light (-1..1). */
+  keyLightColorBias?: number
 }
 
 /**
@@ -825,6 +841,22 @@ export class Container implements Transform {
   reflectionOffset = 18
   /** RGBA tint color layered over the refracted glass interior. */
   tint: RgbaColor = { r: 1, g: 1, b: 1, a: 0.15 }
+  /** Saturation of the glass face (1 = unchanged). */
+  saturation = 1
+  /** Output level that white maps to on the glass face (1 = unchanged). */
+  whiteLevel = 1
+  /** Output level that black maps to on the glass face (0 = unchanged). */
+  blackLevel = 0
+  /** Strength of the broad key-light highlight inside the bezel (0 = off). */
+  keyLightAmount = 0
+  /** Key-light direction in radians; `Math.PI / 2` lights the top edge. */
+  keyLightAngle = Math.PI / 2
+  /** Angular width of the key-light lobe in radians. */
+  keyLightSpread = (Math.PI * 2) / 3
+  /** Depth of the key light as a fraction of the bezel width. */
+  keyLightHeight = 0.5
+  /** Brightness bias of the key light (-1..1). */
+  keyLightColorBias = 0
   /** RGBA color used by the container's drop shadow. Alpha `0` disables shadows. */
   shadowColor: RgbaColor = { r: 0, g: 0, b: 0, a: 0.12 }
   /** Horizontal drop shadow offset in CSS pixels. */
@@ -936,6 +968,20 @@ export class Container implements Transform {
     }
     if (options.debugDisplacement !== undefined) {
       this.debugDisplacement = options.debugDisplacement
+    }
+    for (const key of [
+      'saturation',
+      'whiteLevel',
+      'blackLevel',
+      'keyLightAmount',
+      'keyLightAngle',
+      'keyLightSpread',
+      'keyLightHeight',
+      'keyLightColorBias',
+    ] as const) {
+      if (options[key] !== undefined) {
+        this[key] = options[key]
+      }
     }
     if (options.zIndex !== undefined) {
       this.zIndex = options.zIndex

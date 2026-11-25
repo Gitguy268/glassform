@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-25",
+  "results": {
+    "chromium-webgpu": {
+      "backend": "webgpu",
+      "scenes": {}
+    },
+    "chromium-webgl2": {
+      "backend": "webgl2",
+      "scenes": {}
+    },
+    "firefox": {
+      "backend": "webgl2",
+      "scenes": {}
+    },
+    "webkit": {
+      "backend": "webgpu",
+      "scenes": {}
+    }
+  }
+}

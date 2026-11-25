@@ -470,6 +470,21 @@ vec3 sampleBackgroundBlurred(vec2 uv) {
   return textureLod(backgroundTextureBlurred, uv, 0.0).rgb;
 }
 
+vec3 faceColor(vec3 color) {
+  float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
+  vec3 saturated = mix(vec3(luma), color, globals.face.x);
+  return clamp(globals.face.z + saturated * (globals.face.y - globals.face.z), vec3(0.0), vec3(1.0));
+}
+
+vec3 keyLightColor(vec2 rimNormal, float inwardDistance, float bezelWidth) {
+  if (globals.keyLight.w <= 0.0) {
+    return vec3(0.0);
+  }
+  float lobe = smoothstep(globals.keyLight.z, 1.0, dot(rimNormal, globals.keyLight.xy));
+  float band = 1.0 - smoothstep(0.0, max(globals.keyLight2.x * bezelWidth, 1.0), inwardDistance);
+  return vec3(1.0 + globals.keyLight2.y) * globals.keyLight.w * lobe * band;
+}
+
 vec2 sampleSurfaceSlope(vec2 uv) {
   vec4 field = textureLod(displacementFieldTexture, uv, 0.0);
   return field.a > SDF_EPSILON ? field.xy / max(field.a, SDF_EPSILON) : vec2(0.0);
@@ -564,11 +579,11 @@ void main() {
   vec2 refractedUvRed = v_uv + displacementPxRed / globals.canvas.xy;
   vec2 refractedUvGreen = v_uv + displacementPxGreen / globals.canvas.xy;
   vec2 refractedUvBlue = v_uv + displacementPxBlue / globals.canvas.xy;
-  vec3 refractedColor = vec3(
+  vec3 refractedColor = faceColor(vec3(
     sampleBackgroundBlurred(refractedUvRed).r,
     sampleBackgroundBlurred(refractedUvGreen).g,
     sampleBackgroundBlurred(refractedUvBlue).b
-  );
+  ));
   vec2 reflectedUv = v_uv + rimNormal * globals.specularSecondary.z / globals.canvas.xy;
   vec3 reflectedColor = sampleBackgroundBlurred(reflectedUv);
   vec3 glass = mix(refractedColor, globals.tint.rgb, globals.tint.a);
@@ -626,6 +641,7 @@ void main() {
     color = mix(color, glassInterior, fillMask);
     color = mix(color, edgeSpecularColor, coloredEdgeOpacity);
     color = color + whiteSpecular;
+    color = color + keyLightColor(rimNormal, inwardDistance, bezelWidth) * fillMask;
   }
   fragColor = vec4(mix(background, color, containerOpacity), 1.0);
 }

@@ -337,6 +337,21 @@ export function globalsValues(container: Container, shapeCount: number, width: n
     debug: {
       displacement: container.debugDisplacement ? 1 : 0,
     },
+    face: {
+      saturation: container.saturation,
+      whiteLevel: container.whiteLevel,
+      blackLevel: container.blackLevel,
+    },
+    keyLight: {
+      x: Math.cos(container.keyLightAngle),
+      y: -Math.sin(container.keyLightAngle),
+      cosHalfSpread: Math.cos(Math.min(Math.max(container.keyLightSpread, 0.0001), Math.PI * 2) / 2),
+      amount: container.keyLightAmount,
+    },
+    keyLight2: {
+      height: container.keyLightHeight,
+      colorBias: container.keyLightColorBias,
+    },
   }
 }
 

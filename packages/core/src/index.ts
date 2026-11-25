@@ -19,6 +19,13 @@ export { WebGl2GlassCore } from './renderer/webgl2/core'
 export type { GlSceneHtmlEntry, WebGl2GlassContentSource, WebGl2GlassCoreRenderOptions } from './renderer/webgl2/core'
 export { WebGl2ContentSync } from './renderer/webgl2/content-sync'
 export { detectHtmlInCanvas } from './renderer/html-in-canvas'
+export {
+  DEFAULT_MATERIAL_PRESETS,
+  parseColor,
+  resolveMaterial,
+  setMaterialPresets,
+} from './materials'
+export type { GlassAppearance, GlassMaterial, GlassVariant, MaterialParameters } from './materials'
 export type { HtmlContentMode } from './renderer/pixel-sources'
 export const sdfUtils = sdfUtilsValues
 export namespace sdfUtils {
@@ -33,7 +40,7 @@ export namespace sdfUtils {
   export type TransformedShapeBounds = SdfUtilsTransformedShapeBounds
 }
 export type { GlassPointerEventInit, GlassPointerEventType } from './events'
-export type { HtmlFallback, HtmlFit, HtmlInit, HtmlPixelSource } from './scene'
+export type { ContainerInit, GlassInit, HtmlFallback, HtmlFit, HtmlInit, HtmlPixelSource } from './scene'
 export type {
   WebGpuDomContentSourceInit,
   WebGpuGlassContentSource,

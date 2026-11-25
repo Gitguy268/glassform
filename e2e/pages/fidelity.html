@@ -1,0 +1,68 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Fidelity scene</title>
+<style>html,body{margin:0;background:#000} canvas{width:360px;height:240px}</style>
+<script src="./importmap.js"></script>
+<script type="module">
+// Renders scenes from fidelity/scenes.json with glassform for comparison
+// against native SwiftUI captures. window.__show(id, params, presets) swaps
+// the scene without reloading and resolves once a few frames have rendered.
+import { Container, Glass, Html, Renderer, Scene, resolveMaterial, setMaterialPresets } from '@glassform/core'
+const query = new URLSearchParams(location.search)
+const { scenes } = await (await fetch('/fidelity/scenes.json')).json()
+const images = new Map()
+async function background(name) {
+  if (!images.has(name)) {
+    const image = new Image()
+    image.src = `/fidelity/backgrounds/${name}.png`
+    await image.decode()
+    images.set(name, image)
+  }
+  return images.get(name)
+}
+
+const scene = new Scene()
+const renderer = new Renderer({ scene, backend: query.get('backend') ?? 'auto', maxDpr: 2 })
+document.body.append(renderer.canvas)
+await renderer.ready
+let current = []
+let pending = null
+let frames = 0
+function frame() {
+  renderer.render()
+  frames += 1
+  if (pending && frames >= pending.until) {
+    const done = pending.resolve
+    pending = null
+    done({ backend: renderer.backend })
+  }
+  requestAnimationFrame(frame)
+}
+
+window.__scenes = scenes.map((s) => s.id)
+window.__show = async (id, params = {}, presets = null) => {
+  const spec = scenes.find((s) => s.id === id)
+  if (!spec) throw new Error(`unknown scene ${id}`)
+  if (presets) setMaterialPresets(presets)
+  for (const node of current) node.remove()
+  const image = await background(spec.background)
+  const bg = new Html({ width: spec.size[0], height: spec.size[1], zIndex: -1, source: image, fit: 'fill' })
+  const first = spec.shapes[0]
+  const material = resolveMaterial({ variant: first.variant, tint: first.tint, appearance: spec.appearance })
+  const container = new Container({ ...material, ...params, spacing: spec.spacing ?? 0 })
+  for (const shape of spec.shapes) {
+    const radius = shape.shape === 'rect' ? shape.radius : Math.min(shape.w, shape.h) / 2
+    container.add(new Glass({
+      x: shape.x, y: shape.y, width: shape.w, height: shape.h,
+      cornerRadius: radius,
+      cornerSmoothing: shape.shape === 'rect' ? 0.6 : 0,
+    }))
+  }
+  scene.add(bg)
+  scene.add(container)
+  current = [bg, container]
+  return new Promise((resolve) => { pending = { until: frames + 4, resolve } })
+}
+frame()
+window.__ready = await window.__show(query.get('scene') ?? scenes[0].id)
+</script>
