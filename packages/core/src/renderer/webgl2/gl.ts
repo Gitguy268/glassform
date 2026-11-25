@@ -211,9 +211,15 @@ export function drawFullscreen(
   } else {
     gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight)
   }
+  // Host renderers (Three.js) leave state behind; reset everything a
+  // fullscreen pass depends on.
   gl.disable(gl.BLEND)
   gl.disable(gl.DEPTH_TEST)
   gl.disable(gl.SCISSOR_TEST)
+  gl.disable(gl.CULL_FACE)
+  gl.disable(gl.STENCIL_TEST)
+  gl.disable(gl.RASTERIZER_DISCARD)
+  gl.colorMask(true, true, true, true)
   if (inputs.clear) {
     gl.clearColor(...inputs.clear)
     gl.clear(gl.COLOR_BUFFER_BIT)

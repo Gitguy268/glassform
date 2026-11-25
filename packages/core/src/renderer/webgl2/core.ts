@@ -69,6 +69,8 @@ export type WebGl2GlassCoreRenderOptions = {
   output: GlTarget | null
   /** Optional texture composited first (e.g. a Three.js scene). Top-down orientation. */
   backdropTexture?: WebGLTexture | null
+  /** Set when the backdrop's first row is the bottom of the image (Three.js render targets). */
+  backdropFlipY?: boolean
   contentSource?: WebGl2GlassContentSource | null
 }
 
@@ -178,7 +180,7 @@ export class WebGl2GlassCore {
     this.pollMetrics()
     const layers = options.layers ?? (options.scene ? getSortedSceneLayers(options.scene) : [])
     try {
-      this.drawFrame(layers, options.output, options.backdropTexture ?? null)
+      this.drawFrame(layers, options.output, options.backdropTexture ?? null, options.backdropFlipY ?? false)
     } finally {
       this.contentSource = null
     }
@@ -398,7 +400,12 @@ export class WebGl2GlassCore {
     state.metrics = null
   }
 
-  private drawFrame(layers: TraversedSceneLayer[], output: GlTarget | null, backdropTexture: WebGLTexture | null) {
+  private drawFrame(
+    layers: TraversedSceneLayer[],
+    output: GlTarget | null,
+    backdropTexture: WebGLTexture | null,
+    backdropFlipY: boolean,
+  ) {
     const gl = this.gl
     const targets = this.targets
     if (this.destroyed || !targets) {
@@ -418,7 +425,7 @@ export class WebGl2GlassCore {
     gl.clearColor(...OPAQUE_BLACK)
     gl.clear(gl.COLOR_BUFFER_BIT)
     if (backdropTexture) {
-      drawFullscreen(gl, this.programs.blit, current, { textures: { inputTexture: backdropTexture } })
+      drawFullscreen(gl, this.programs.blit, current, { textures: { inputTexture: backdropTexture }, flipY: backdropFlipY })
     }
 
     const seen = new Set<Container>()

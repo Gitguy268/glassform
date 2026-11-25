@@ -18,6 +18,8 @@ export type { GlassBackend, GlassBackendPreference } from './renderer'
 export { WebGl2GlassCore } from './renderer/webgl2/core'
 export type { GlSceneHtmlEntry, WebGl2GlassContentSource, WebGl2GlassCoreRenderOptions } from './renderer/webgl2/core'
 export { WebGl2ContentSync } from './renderer/webgl2/content-sync'
+export { WebGl2DomContentSource } from './renderer/webgl2/dom-content-source'
+export type { WebGl2DomContentSourceInit } from './renderer/webgl2/dom-content-source'
 export { detectHtmlInCanvas } from './renderer/html-in-canvas'
 export {
   DEFAULT_MATERIAL_PRESETS,

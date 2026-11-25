@@ -1,4 +1,5 @@
 import { prepareDrawableCanvas } from './html-in-canvas'
+import { createOverlay, placeOverlay } from './overlay'
 import { Container, Html, Scene, type TraversedSceneLayer } from '../scene'
 import { DomContentSync } from './dom-content-sync'
 import { GPU_TEXTURE_USAGE } from './gpu-constants'
@@ -150,9 +151,7 @@ export class Renderer {
     this.targetCanvas = document.createElement('canvas')
     prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.style.display = 'block'
-    this.overlay = document.createElement('div')
-    this.overlay.dataset.glassformOverlay = ''
-    this.overlay.style.cssText = 'position:absolute;pointer-events:none;overflow:hidden;contain:layout'
+    this.overlay = createOverlay()
     this.pointerController = new PointerController({
       targetCanvas: this.targetCanvas,
       renderer: this,
@@ -470,31 +469,7 @@ export class Renderer {
 
   /** Keeps the live-DOM overlay next to the canvas and over its box. */
   private syncOverlayPlacement() {
-    const canvas = this.targetCanvas
-    const overlay = this.overlay
-    if (overlay.childElementCount === 0) {
-      if (overlay.isConnected) {
-        overlay.remove()
-      }
-      return
-    }
-    const parent = canvas.parentNode
-    if (!parent) {
-      return
-    }
-    if (overlay.previousSibling !== canvas || overlay.parentNode !== parent) {
-      parent.insertBefore(overlay, canvas.nextSibling)
-    }
-    const left = `${canvas.offsetLeft + canvas.clientLeft}px`
-    const top = `${canvas.offsetTop + canvas.clientTop}px`
-    const width = `${canvas.clientWidth}px`
-    const height = `${canvas.clientHeight}px`
-    if (overlay.style.left !== left) overlay.style.left = left
-    if (overlay.style.top !== top) overlay.style.top = top
-    if (overlay.style.width !== width) overlay.style.width = width
-    if (overlay.style.height !== height) overlay.style.height = height
-    const zIndex = getComputedStyle(canvas).zIndex
-    if (zIndex !== 'auto' && overlay.style.zIndex !== zIndex) overlay.style.zIndex = zIndex
+    placeOverlay(this.targetCanvas, this.overlay)
   }
 
   /** Flushes any queued scene content synchronization before pointer work. */

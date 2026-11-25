@@ -1,0 +1,47 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Three WebGL</title>
+<style>html,body{margin:0;background:#222} canvas{display:block;width:360px;height:240px}</style>
+<script src="./importmap.js"></script>
+<script type="module">
+import * as THREE from 'three'
+import { Container, Glass, Scene, resolveMaterial } from '@glassform/core'
+import { ThreeGlassRenderer } from '@glassform/three'
+
+const renderer = new THREE.WebGLRenderer({ antialias: true })
+renderer.setPixelRatio(2)
+renderer.setSize(360, 240)
+document.body.append(renderer.domElement)
+const scene = new THREE.Scene()
+scene.background = new THREE.Color('#1d3557')
+const camera = new THREE.PerspectiveCamera(45, 360 / 240, 0.1, 100)
+camera.position.z = 5
+const knot = new THREE.Mesh(new THREE.TorusKnotGeometry(1, 0.32, 160, 24), new THREE.MeshStandardMaterial({ color: '#ff8c42', roughness: 0.3 }))
+scene.add(knot)
+scene.add(new THREE.HemisphereLight('#ffffff', '#335', 2.4))
+for (let i = 0; i < 6; i++) {
+  const bar = new THREE.Mesh(new THREE.BoxGeometry(0.25, 6, 0.1), new THREE.MeshBasicMaterial({ color: new THREE.Color().setHSL(i / 6, 0.8, 0.6) }))
+  bar.position.set(-3 + i * 1.2, 0, -2)
+  scene.add(bar)
+}
+
+const glassScene = new Scene()
+const container = new Container(resolveMaterial({ variant: 'regular' }))
+container.add(new Glass({ x: 70, y: 86, width: 220, height: 68, cornerRadius: 34 }))
+glassScene.add(container)
+const glass = new ThreeGlassRenderer({ renderer, scene: glassScene })
+const target = new THREE.WebGLRenderTarget(720, 480)
+
+let frames = 0
+function frame(time) {
+  knot.rotation.set(time / 1400, time / 1100, 0)
+  renderer.setRenderTarget(target)
+  renderer.render(scene, camera)
+  renderer.setRenderTarget(null)
+  try { glass.render({ backdrop: target }) } catch (e) { window.__error = String(e) }
+  window.__frames = ++frames
+  window.__tier = glass.backend
+  requestAnimationFrame(frame)
+}
+requestAnimationFrame(frame)
+</script>

@@ -1,4 +1,5 @@
 import { prepareDrawableCanvas } from './html-in-canvas'
+import { createOverlay, placeOverlay } from './overlay'
 import { Scene } from '../scene'
 import { DomContentSync } from './dom-content-sync'
 import {
@@ -14,6 +15,8 @@ export type WebGpuDomContentSourceInit = {
   targetCanvas: HTMLCanvasElement
   getCurrentDpr: () => number
   scene?: Scene
+  /** Called when snapshots or media finish loading, so hosts can schedule a frame. */
+  onPixelsChanged?: () => void
 }
 
 /**
@@ -33,10 +36,14 @@ export class WebGpuDomContentSource implements WebGpuGlassContentSource {
     }
   }
 
-  constructor({ targetCanvas, getCurrentDpr, scene }: WebGpuDomContentSourceInit) {
+  /** Live-DOM layer placed over the canvas for content the browser cannot draw into it. */
+  readonly overlay: HTMLDivElement
+
+  constructor({ targetCanvas, getCurrentDpr, scene, onPixelsChanged }: WebGpuDomContentSourceInit) {
     this.targetCanvas = targetCanvas
     this.scene = scene ?? null
-    this.domContent = new DomContentSync({ targetCanvas, getCurrentDpr })
+    this.overlay = createOverlay()
+    this.domContent = new DomContentSync({ targetCanvas, getCurrentDpr, overlayRoot: this.overlay, onPixelsChanged })
     prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.addEventListener('paint', this.handlePaintEvent as EventListener)
   }
@@ -65,6 +72,7 @@ export class WebGpuDomContentSource implements WebGpuGlassContentSource {
     const layers = getSortedSceneLayers(scene)
     this.domContent.sync(layers, getLayerContainers(layers), getHtmlHostOrder(layers))
     this.domContent.copyPending()
+    placeOverlay(this.targetCanvas, this.overlay)
     return layers
   }
 
@@ -87,5 +95,6 @@ export class WebGpuDomContentSource implements WebGpuGlassContentSource {
     this.destroyed = true
     this.targetCanvas.removeEventListener('paint', this.handlePaintEvent as EventListener)
     this.domContent.destroy()
+    this.overlay.remove()
   }
 }

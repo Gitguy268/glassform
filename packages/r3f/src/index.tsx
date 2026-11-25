@@ -10,15 +10,19 @@ import {
   type RefObject,
 } from 'react'
 import { useFrame, useThree, type RootState } from '@react-three/fiber'
-import { WebGpuDomContentSource } from '@glassform/core'
+import { WebGl2DomContentSource, WebGpuDomContentSource } from '@glassform/core'
 import { LiquidScene, type LiquidSceneRef } from '@glassform/react'
 import {
   ThreeGlassRenderer,
+  detectThreeGlassBackend,
+  requireThreeWebGl2Context,
   requireThreeWebGpuRenderTargetRenderer,
+  type ThreeGlassBackendKind,
   type ThreeWebGpuRenderTargetRenderer,
 } from '@glassform/three'
 import {
   RenderTarget,
+  WebGLRenderTarget,
   RGBAFormat,
   SRGBColorSpace,
   UnsignedByteType,
@@ -87,7 +91,7 @@ type LiquidGlassR3FContextValue = {
 
 type BridgeResources = {
   backgroundTarget: RenderTarget
-  contentSource: WebGpuDomContentSource
+  contentSource: WebGpuDomContentSource | WebGl2DomContentSource
   glass: ThreeGlassRenderer
 }
 
@@ -116,11 +120,33 @@ function useRequiredLiquidGlassR3FContext(componentName: string) {
   return context
 }
 
-function requireR3FWebGpuRenderer(renderer: unknown) {
-  return requireThreeWebGpuRenderTargetRenderer(renderer, {
-    owner: 'LiquidGlassR3F.Render',
-    help: 'Pass an async WebGPU renderer to <Canvas gl={...}> and await renderer.init().',
-  })
+/**
+ * Accepts R3F's default WebGLRenderer, a WebGPURenderer, or a WebGPURenderer
+ * running on its WebGL fallback.
+ */
+function requireR3FRenderer(renderer: unknown): { renderer: ThreeWebGpuRenderTargetRenderer; kind: ThreeGlassBackendKind } {
+  const kind = detectThreeGlassBackend(renderer)
+  if (kind === 'webgl2') {
+    const candidate = renderer as Partial<ThreeWebGpuRenderTargetRenderer>
+    if (
+      !candidate.domElement ||
+      typeof candidate.render !== 'function' ||
+      typeof candidate.setRenderTarget !== 'function' ||
+      typeof candidate.getDrawingBufferSize !== 'function' ||
+      typeof candidate.getPixelRatio !== 'function'
+    ) {
+      throw createIntegrationError('received a WebGL renderer without the required Three renderer methods.')
+    }
+    requireThreeWebGl2Context(renderer)
+    return { renderer: candidate as ThreeWebGpuRenderTargetRenderer, kind }
+  }
+  return {
+    renderer: requireThreeWebGpuRenderTargetRenderer(renderer, {
+      owner: 'LiquidGlassR3F.Render',
+      help: 'Use R3F\'s default WebGLRenderer, or pass an async WebGPU renderer to <Canvas gl={...}> and await renderer.init().',
+    }),
+    kind: 'webgpu',
+  }
 }
 
 function resolveDpr(
@@ -140,8 +166,12 @@ function resolveOutputTexture(outputTexture: LiquidGlassR3FOutputTexture, state:
   return typeof outputTexture === 'function' ? outputTexture(state) : outputTexture
 }
 
-function createBackgroundTarget(options: LiquidGlassR3FRenderTargetOptions | undefined) {
-  const backgroundTarget = new RenderTarget(1, 1, {
+function createBackgroundTarget(
+  options: LiquidGlassR3FRenderTargetOptions | undefined,
+  classicWebGl: boolean,
+) {
+  const Target = (classicWebGl ? WebGLRenderTarget : RenderTarget) as typeof RenderTarget
+  const backgroundTarget = new Target(1, 1, {
     format: options?.format ?? RGBAFormat,
     type: options?.type ?? UnsignedByteType,
     colorSpace: options?.colorSpace ?? SRGBColorSpace,
@@ -212,13 +242,30 @@ export function useLiquidGlassR3F({
       return undefined
     }
 
-    const renderer = requireR3FWebGpuRenderer(gl)
-    const backgroundTarget = createBackgroundTarget(renderTarget)
-    const contentSource = new WebGpuDomContentSource({
-      targetCanvas: renderer.domElement,
-      getCurrentDpr: () => renderer.getPixelRatio(),
-      scene: sceneRoot.scene,
-    })
+    let resolved: ReturnType<typeof requireR3FRenderer>
+    try {
+      resolved = requireR3FRenderer(gl)
+    } catch (error) {
+      reportError(error, onErrorRef.current)
+      return undefined
+    }
+    const { renderer, kind } = resolved
+    const classicWebGl = Boolean((renderer as { isWebGLRenderer?: boolean }).isWebGLRenderer)
+    const backgroundTarget = createBackgroundTarget(renderTarget, classicWebGl)
+    const contentSource = kind === 'webgl2'
+      ? new WebGl2DomContentSource({
+          gl: requireThreeWebGl2Context(renderer),
+          targetCanvas: renderer.domElement,
+          getCurrentDpr: () => renderer.getPixelRatio(),
+          scene: sceneRoot.scene,
+          onPixelsChanged: () => invalidate(),
+        })
+      : new WebGpuDomContentSource({
+          targetCanvas: renderer.domElement,
+          getCurrentDpr: () => renderer.getPixelRatio(),
+          scene: sceneRoot.scene,
+          onPixelsChanged: () => invalidate(),
+        })
     const glass = new ThreeGlassRenderer({
       renderer,
       scene: sceneRoot.scene,
@@ -226,7 +273,9 @@ export function useLiquidGlassR3F({
     })
 
     try {
-      contentSource.setDevice(glass.device, glass.format)
+      if (contentSource instanceof WebGpuDomContentSource) {
+        contentSource.setDevice(glass.device, glass.format)
+      }
       resourcesRef.current = { backgroundTarget, contentSource, glass }
       invalidate()
     } catch (error) {
@@ -283,7 +332,7 @@ export function useLiquidGlassR3F({
     }
 
     try {
-      const renderer = requireR3FWebGpuRenderer(state.gl)
+      const { renderer } = requireR3FRenderer(state.gl)
       const drawingSize = renderer.getDrawingBufferSize(drawingSizeRef.current)
       const drawingWidth = Math.max(1, Math.floor(drawingSize.x))
       const drawingHeight = Math.max(1, Math.floor(drawingSize.y))

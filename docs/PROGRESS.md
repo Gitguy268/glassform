@@ -30,8 +30,23 @@ Plan: `~/.claude/plans/create-the-best-liquid-recursive-engelbart-of-a9615da3-79
 - [x] Import liquid-dom packages as @glassform/* (96 upstream tests green)
 - [x] Fidelity scenes, backgrounds, native capture app (captures pending permission)
 - [x] Engine probe
+- [x] HTML-in-Canvas compat (new names; drawable hosts carry no CSS transform under the geometry API)
+- [x] Content modes: element / media / snapshot (modern-screenshot) / overlay; Renderer.overlay sibling
+- [x] WebGL2 backend (shaders-glsl.ts, webgl2/*), shared CPU packing; Chromium WebGL2 vs WebGPU SSIM 0.99999999
+- [x] Face colour matrix + key light in both shader sets; materials.ts presets (seeded from probe, untuned)
+- [x] fidelity/score.mjs (SSIM + CIEDE2000, mask = shapes + 24px halo)
+- [x] @glassform/css (backdrop-filter tier + Chromium SVG refraction) and React GlassSurface
+- [x] React: material prop, backend prop, Html source/fit/fallback
+- [x] Three/R3F: WebGL2 path (classic WebGLRenderer + WebGPURenderer WebGL fallback), verified in 3 engines
+
+## Gotchas
+- Playwright WebKit/Firefox screenshots (headless and headed) do not include backdrop-filter; CSS tier is checked visually in Chromium and by computed style elsewhere.
+- isolation:isolate is a backdrop root in WebKit/Firefox; the CSS tier uses z-index:0 instead.
+- Three leaves CULL_FACE on; the attribute-less fullscreen triangle is clockwise, so GL passes disable culling.
+- Three render targets are bottom-up: WebGl2GlassCore.render({ backdropFlipY: true }).
+- GlassformReference needs its own Removable Volumes access, so it stages in ~/Library/Caches/glassform-fidelity.
 
 ## Next
-1. Content sources: media (img/video/canvas) via copyExternalImageToTexture, and the new HTML-in-Canvas names.
-2. WebGL2 port of the current WGSL, verbatim, with a webgpu-vs-webgl2 parity test.
-3. Native-derived optics in both shader sets, then tuning against captures.
+1. Native captures (waiting for Screen Recording permission), then tune.mjs and presets.generated.ts.
+2. apps/site: showcase, playground, Three/R3F demos, fidelity report; Playwright e2e suite.
+3. Repo files, README, CI, publish.
