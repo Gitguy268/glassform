@@ -1,0 +1,28 @@
+name: Bug report
+description: Something renders wrong or breaks
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead. Screenshots help a lot.
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and OS
+      placeholder: Firefox 159 on Windows 11
+    validations:
+      required: true
+  - type: input
+    id: backend
+    attributes:
+      label: Backend in use
+      description: The canvas has a data-glassform-backend attribute (webgpu or webgl2), or say CSS tier.
+  - type: textarea
+    id: repro
+    attributes:
+      label: Code or steps to reproduce
+      render: tsx

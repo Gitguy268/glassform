@@ -1,0 +1,16 @@
+# glassform
+
+> Liquid glass for the web in every browser: WebGPU and WebGL2 renderers, a CSS tier for ordinary pages, React, Three.js and React Three Fiber bindings, and a SwiftUI-inspired layout engine. MIT licensed.
+
+## Docs
+- [Docs](https://gitguy268.github.io/glassform/#/docs): packages, backends per browser, React, plain JS, Three.js, R3F and CSS usage, limits
+- [Fidelity](https://gitguy268.github.io/glassform/#/fidelity): how glassform is measured against native SwiftUI glass
+- [Source](https://github.com/Gitguy268/glassform)
+
+## Packages
+- @glassform/react: LiquidCanvas, GlassContainer (material prop), Glass, Html (source, fit, fallback), GlassSurface
+- @glassform/css: glass(element, options), <glass-surface>
+- @glassform/core: Renderer (backend 'auto' | 'webgpu' | 'webgl2'), Scene, Container, Glass, Html, resolveMaterial
+- @glassform/three: ThreeGlassRenderer
+- @glassform/r3f: LiquidGlassR3F.Root / Render / Scene
+- @glassform/layout: layout engine

@@ -1,0 +1,4 @@
+{
+  "status": "pending",
+  "note": "No native captures published yet. Run fidelity/native/capture.sh, fidelity/tune.mjs and fidelity/publish-report.mjs."
+}

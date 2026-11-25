@@ -2,7 +2,7 @@
 
 ## Description
 
-`@glassform/three` hosts the reusable liquid-glass WebGPU core inside Three's WebGPU renderer. It lets you render a Three scene into a backdrop texture, then composite liquid glass over that backdrop into the canvas or another output texture.
+`@glassform/three` hosts the liquid-glass core inside a Three renderer: the WebGPU core for `WebGPURenderer`, the WebGL2 core for `WebGLRenderer` or WebGPURenderer's WebGL fallback. It lets you render a Three scene into a backdrop texture, then composite liquid glass over that backdrop into the canvas or another output texture.
 
 ## Install
 
@@ -156,11 +156,11 @@ Call `destroy()` when the adapter is no longer needed so GPU resources owned by 
 
 ## Integration Notes
 
-- This package only supports Three's WebGPU renderer.
-- `WebGLRenderer` is not supported.
+- `ThreeGlassRenderer.backend` reports `'webgpu'` or `'webgl2'`. On WebGL2 the adapter draws to the default framebuffer, flips Three's bottom-up render targets and resets Three's GL state cache afterwards.
+- On WebGL2, use `WebGl2DomContentSource` instead of `WebGpuDomContentSource`.
 - A Three `Texture` or `RenderTarget` must have an initialized backend GPU texture before it can be used as `backdrop`; render to it first if needed.
 - Use `WebGpuDomContentSource` from `@glassform/core` when the liquid-glass scene includes DOM-backed `Html` content.
-- DOM-backed `Html` content requires the experimental HTML-in-Canvas API, currently available only behind Chrome's Canvas Draw Element flag: `chrome://flags/#canvas-draw-element`.
+- `Html` content is drawn live with HTML-in-Canvas where the browser ships it (Chromium 159+, no flag). Elsewhere, set `source` to an image, video or canvas (refracts in every browser), or let `fallback: 'auto'` snapshot backdrop DOM and show DOM on glass as a live overlay above the canvas.
 - Reference: [WICG HTML-in-Canvas](https://wicg.github.io/html-in-canvas/).
 
 ## Local Development

@@ -2,7 +2,7 @@
 
 ## Description
 
-`@glassform/core` provides the core DOM-backed liquid-glass renderer. It includes an imperative scene graph, a WebGPU renderer that owns a canvas, a reusable WebGPU core for adapters, and a layout API under `@glassform/core/layout`.
+`@glassform/core` provides the liquid-glass renderer. It includes an imperative scene graph, a `Renderer` that owns a canvas and draws with WebGPU or WebGL2, reusable WebGPU and WebGL2 cores for adapters, SwiftUI-style materials (`resolveMaterial`), and a layout API under `@glassform/core/layout`.
 
 ## Install
 
@@ -232,7 +232,7 @@ renderer.render()
 renderer.destroy()
 ```
 
-`Renderer` creates a `<canvas layoutsubtree="true">`. Append `renderer.canvas` to the page, size it with CSS, and call `render()` from your own frame loop. Use `destroy()` to release GPU and DOM resources. Constructor options are `scene?: Scene` and `maxDpr?: number`; `maxDpr` defaults to `2` and is also mutable.
+`Renderer` creates a `<canvas content="drawable">`. Append `renderer.canvas` to the page, size it with CSS, and call `render()` from your own frame loop. Use `destroy()` to release GPU and DOM resources. Constructor options are `scene?: Scene`, `maxDpr?: number` (default `2`, mutable), `backend?: 'auto' | 'webgpu' | 'webgl2'` (default `'auto'`: WebGPU, else WebGL2) and `onNeedsFrame?: () => void`. `await renderer.ready` resolves with the backend in use; `renderer.backend` reports it afterwards. `renderer.overlay` is the live-DOM layer the renderer inserts next to the canvas when it needs one.
 
 Backdrop metrics can be enabled per container:
 
@@ -312,10 +312,9 @@ The root package exports `GlassPointerEvent`, `GlassPointerEventType`, `GlassPoi
 
 ## Integration Notes
 
-- Rendering requires WebGPU.
-- DOM-backed `Html` content requires the experimental HTML-in-Canvas API, currently available only behind Chrome's Canvas Draw Element flag: `chrome://flags/#canvas-draw-element`.
-- The renderer uses `<canvas layoutsubtree>` and canvas paint events from HTML-in-Canvas to copy live DOM content into GPU textures. Without that flag, glass rendering can initialize, but DOM-backed content will not be captured correctly.
-- `Renderer` owns its canvas; adapter packages should use `WebGpuGlassCore` instead.
+- Rendering uses WebGPU where an adapter exists and WebGL2 otherwise. Both backends run the same passes.
+- `Html` content is drawn live with HTML-in-Canvas where the browser ships it (Chromium 159+, no flag). Elsewhere, set `source` to an image, video or canvas (refracts in every browser), or let `fallback: 'auto'` snapshot backdrop DOM and show DOM on glass as a live overlay above the canvas.
+- `Renderer` owns its canvas; adapter packages should use `WebGpuGlassCore` or `WebGl2GlassCore` with `WebGpuDomContentSource` or `WebGl2DomContentSource`.
 - DOM content is copied into GPU textures before glass rendering, so call the content source sync path before rendering when writing an adapter.
 - A container's glass nodes share one fused SDF field. Use separate containers for independently composited glass layers.
 - Reference: [WICG HTML-in-Canvas](https://wicg.github.io/html-in-canvas/).

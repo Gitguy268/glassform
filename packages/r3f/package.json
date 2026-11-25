@@ -1,6 +1,26 @@
 {
   "name": "@glassform/r3f",
-  "version": "0.1.1",
+  "version": "0.1.0",
+  "description": "React Three Fiber bridge for glassform liquid glass (WebGLRenderer or WebGPURenderer).",
+  "keywords": [
+    "react-three-fiber",
+    "r3f",
+    "three",
+    "liquid-glass"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/r3f"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,7 +35,8 @@
   },
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"

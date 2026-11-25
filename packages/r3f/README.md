@@ -2,7 +2,7 @@
 
 ## Description
 
-`@glassform/r3f` bridges React Three Fiber, Three's WebGPU renderer, and the React liquid-glass scene. It renders your R3F scene into an intermediate backdrop target, then composites liquid glass over it.
+`@glassform/r3f` bridges React Three Fiber, Three's renderer (R3F's default WebGLRenderer or WebGPURenderer), and the React liquid-glass scene. It renders your R3F scene into an intermediate backdrop target, then composites liquid glass over it.
 
 ## Install
 
@@ -155,8 +155,9 @@ Exported types are `LiquidGlassR3FDpr`, `LiquidGlassR3FOutputTexture`, `LiquidGl
 
 ## Integration Notes
 
-- This package requires R3F with an initialized Three WebGPU renderer.
-- DOM-backed `Html` content from `@glassform/react` requires the experimental HTML-in-Canvas API, currently available only behind Chrome's Canvas Draw Element flag: `chrome://flags/#canvas-draw-element`.
+- Works with R3F's default `WebGLRenderer` (glass on WebGL2) and with an initialized `WebGPURenderer` (glass on WebGPU, or WebGL2 when it falls back).
+- `outputTexture` applies to the WebGPU path only.
+- `Html` content is drawn live with HTML-in-Canvas where the browser ships it (Chromium 159+, no flag). Elsewhere, set `source` to an image, video or canvas (refracts in every browser), or let `fallback: 'auto'` snapshot backdrop DOM and show DOM on glass as a live overlay above the canvas.
 - `renderPriority` must be positive so the bridge can take over final rendering.
 - The component API wires liquid-scene invalidations into R3F invalidation, including demand-driven frame loops.
 - The hook API is lower-level. If you use it directly, make sure the supplied `LiquidScene` invalidates R3F when layout or frame state changes.

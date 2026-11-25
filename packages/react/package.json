@@ -1,6 +1,27 @@
 {
   "name": "@glassform/react",
-  "version": "0.1.1",
+  "version": "0.1.0",
+  "description": "React bindings for glassform: LiquidCanvas, SwiftUI-style layout, GlassContainer materials and GlassSurface for plain pages.",
+  "keywords": [
+    "react",
+    "webgpu",
+    "webgl2",
+    "liquid-glass",
+    "glassmorphism"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,7 +36,8 @@
   },
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"

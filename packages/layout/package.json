@@ -1,7 +1,26 @@
 {
   "name": "@glassform/layout",
-  "version": "0.2.0",
-  "description": "A renderer-agnostic JavaScript layout engine inspired by SwiftUI layout.",
+  "version": "0.1.0",
+  "description": "Renderer-agnostic, SwiftUI-inspired layout engine used by glassform.",
+  "keywords": [
+    "layout",
+    "swiftui",
+    "stack",
+    "animation"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/layout"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
   "sideEffects": false,

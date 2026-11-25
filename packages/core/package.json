@@ -1,6 +1,29 @@
 {
   "name": "@glassform/core",
-  "version": "0.1.1",
+  "version": "0.1.0",
+  "description": "Liquid glass renderer for the web: WebGPU and WebGL2 backends, scene graph, SwiftUI-style materials, DOM/media/snapshot content.",
+  "keywords": [
+    "webgpu",
+    "webgl2",
+    "glass",
+    "liquid-glass",
+    "glassmorphism",
+    "refraction",
+    "shader"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -20,7 +43,8 @@
   },
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"

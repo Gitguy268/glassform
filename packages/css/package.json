@@ -1,10 +1,33 @@
 {
   "name": "@glassform/css",
   "version": "0.1.0",
-  "description": "Liquid glass for ordinary page content: backdrop-filter, SVG refraction on Chromium, optional snapshot refraction everywhere.",
+  "description": "Liquid glass over ordinary page content: backdrop-filter, SVG refraction on Chromium, <glass-surface> element.",
+  "keywords": [
+    "css",
+    "backdrop-filter",
+    "liquid-glass",
+    "glassmorphism",
+    "web-component"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/css"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
-  "sideEffects": ["**/element.js", "**/element.cjs"],
+  "sideEffects": [
+    "**/element.js",
+    "**/element.cjs"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

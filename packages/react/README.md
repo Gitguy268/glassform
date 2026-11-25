@@ -50,7 +50,7 @@ export function App() {
 
 | Prop | Description |
 | --- | --- |
-| `children` | Liquid DOM React children. |
+| `children` | glassform React children. |
 | `ref` | Receives `LiquidCanvasRef`. |
 | `className`, `style` | Applied to the host element. |
 | `canvasClassName`, `canvasStyle` | Applied to the generated canvas. |
@@ -286,8 +286,10 @@ Interaction handler types are `GlassPointerHandler` and `GlassStateHandler`. Roo
 ## Integration Notes
 
 - React 19 is required.
-- Rendering requires WebGPU through `@glassform/core`.
-- DOM-backed `Html` content requires the experimental HTML-in-Canvas API, currently available only behind Chrome's Canvas Draw Element flag: `chrome://flags/#canvas-draw-element`.
+- Rendering uses WebGPU or WebGL2 through `@glassform/core`; pass `backend` to `LiquidCanvas` to force one.
+- `Html` content is drawn live with HTML-in-Canvas where the browser ships it (Chromium 159+, no flag). Elsewhere, set `source` to an image, video or canvas (refracts in every browser), or let `fallback="auto"` snapshot backdrop DOM and show DOM on glass as a live overlay above the canvas.
+- `GlassContainer` takes `material={{ variant, tint, appearance }}` for SwiftUI-style defaults; explicit props win.
+- `GlassSurface` is glass over ordinary page content (the `@glassform/css` tier) and needs no canvas.
 - `LiquidCanvas` is the only root that exposes `useRenderer()`. Calling `useRenderer()` under `LiquidScene` throws.
 - `LiquidScene` exposes `onInvalidateFrame` and `onInvalidateLayout` so external renderers can support demand-driven rendering.
 - React children inside `Html` are portaled into layout-owned DOM hosts.

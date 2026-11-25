@@ -20,7 +20,7 @@ export default function Fidelity() {
   useEffect(() => {
     fetch('./fidelity/report.json')
       .then((r) => (r.ok ? r.json() : 'missing'))
-      .then(setReport)
+      .then((data) => setReport(data === 'missing' || data.status === 'pending' ? 'missing' : data))
       .catch(() => setReport('missing'))
   }, [])
 

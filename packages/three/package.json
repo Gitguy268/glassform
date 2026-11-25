@@ -1,6 +1,27 @@
 {
   "name": "@glassform/three",
-  "version": "0.1.1",
+  "version": "0.1.0",
+  "description": "Composite glassform liquid glass over Three.js scenes (WebGPURenderer or WebGLRenderer).",
+  "keywords": [
+    "three",
+    "threejs",
+    "webgpu",
+    "webgl2",
+    "liquid-glass"
+  ],
+  "homepage": "https://gitguy268.github.io/glassform/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gitguy268/glassform.git",
+    "directory": "packages/three"
+  },
+  "bugs": {
+    "url": "https://github.com/Gitguy268/glassform/issues"
+  },
+  "author": "Lucas Van De Weerd",
+  "contributors": [
+    "Andras Prifer (liquid-dom)"
+  ],
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,7 +36,8 @@
   },
   "files": [
     "dist",
-    "LICENSE"
+    "LICENSE",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"

@@ -1,0 +1,11 @@
+name: Feature request
+description: Suggest an effect, API or integration
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like
+      description: If it is about matching native glass, a native screenshot next to the current result is ideal.
+    validations:
+      required: true
