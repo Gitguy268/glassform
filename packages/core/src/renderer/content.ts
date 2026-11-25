@@ -25,6 +25,8 @@ export type GlassContentEntry = {
   atlasX: number
   atlasY: number
   inverseTransform: Matrix2D
+  /** Serial of the last media/snapshot frame uploaded; -1 forces an upload. */
+  pixelSerial?: number
 }
 
 /** Pixel-space rectangle assigned to one content entry inside the atlas. */

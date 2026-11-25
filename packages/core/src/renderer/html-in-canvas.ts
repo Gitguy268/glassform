@@ -70,6 +70,15 @@ export function resetHtmlInCanvasDetection() {
   cachedSupport = null
 }
 
+/**
+ * Whether drawable children are positioned with `updateElementGeometry`
+ * (current spec). In that API the element is drawn with its CSS transform
+ * applied, so hosts must not carry one; older builds used CSS transforms.
+ */
+export function usesElementGeometry() {
+  return typeof HTMLCanvasElement !== 'undefined' && 'updateElementGeometry' in HTMLCanvasElement.prototype
+}
+
 /** Opts a canvas into laying out (but not painting) its children. */
 export function prepareDrawableCanvas(canvas: HTMLCanvasElement) {
   canvas.setAttribute('layoutsubtree', 'true')

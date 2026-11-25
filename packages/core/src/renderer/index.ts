@@ -1,5 +1,5 @@
 import { prepareDrawableCanvas } from './html-in-canvas'
-import { Container, Scene } from '../scene'
+import { Container, Html, Scene } from '../scene'
 import { DomContentSync } from './dom-content-sync'
 import { GPU_TEXTURE_USAGE } from './gpu-constants'
 import { clearRenderTarget } from './gpu-pass'
@@ -49,8 +49,13 @@ type RendererInit = {
 export class Renderer {
   /** Scene currently rendered by this renderer. */
   readonly scene: Scene
-  /** Canvas element that presents the rendered output. */
+  /** Canvas element that presents the rendered output. Mount this element. */
   readonly canvas: HTMLCanvasElement
+  /**
+   * Layer the renderer places over the canvas (as its next sibling) for Html
+   * shown as live DOM, used where the browser cannot draw HTML into a canvas.
+   */
+  readonly overlay: HTMLDivElement
   /** Maximum device pixel ratio used for internal render targets. */
   maxDpr: number
 
@@ -97,9 +102,14 @@ export class Renderer {
     this.targetCanvas = document.createElement('canvas')
     prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.style.display = 'block'
+    this.overlay = document.createElement('div')
+    this.overlay.dataset.glassformOverlay = ''
+    this.overlay.style.cssText = 'position:absolute;pointer-events:none;overflow:hidden;contain:layout'
     this.domContent = new DomContentSync({
       targetCanvas: this.targetCanvas,
       getCurrentDpr: () => this.currentDpr,
+      overlayRoot: this.overlay,
+      onPixelsChanged: () => this.queueSceneContentSync(),
     })
     this.pointerController = new PointerController({
       targetCanvas: this.targetCanvas,
@@ -107,7 +117,7 @@ export class Renderer {
       isDestroyed: () => this.destroyed,
       flushSceneContentSync: () => this.flushSceneContentSync(),
       getSceneHtmlHosts: () => this.domContent.sceneHtmlHosts,
-      getGlassContentHosts: () => this.domContent.glassContentHosts,
+      getGlassContentHosts: () => new Set([...this.domContent.glassContentHosts, ...this.domContent.overlayHostElements]),
     })
 
     this.targetCanvas.addEventListener('paint', this.handlePaintEvent as EventListener)
@@ -116,6 +126,10 @@ export class Renderer {
     this.targetCanvas.addEventListener('pointerup', this.pointerController.handlePointerUp, true)
     this.targetCanvas.addEventListener('pointercancel', this.pointerController.handlePointerCancel, true)
     this.targetCanvas.addEventListener('pointerleave', this.pointerController.handlePointerLeave, true)
+    this.overlay.addEventListener('pointermove', this.pointerController.handlePointerMove, true)
+    this.overlay.addEventListener('pointerdown', this.pointerController.handlePointerDown, true)
+    this.overlay.addEventListener('pointerup', this.pointerController.handlePointerUp, true)
+    this.overlay.addEventListener('pointercancel', this.pointerController.handlePointerCancel, true)
     this.unsubscribeSceneMutations = this.scene._subscribe(this.handleSceneMutation)
 
     this.canvas = this.targetCanvas
@@ -133,6 +147,11 @@ export class Renderer {
   /** Returns the latest completed cached backdrop metrics for a tracked container. */
   getBackdropMetrics(container: Container) {
     return this.core?.getBackdropMetrics(container) ?? null
+  }
+
+  /** How an Html node's pixels are produced: live DOM, media, snapshot or overlay. */
+  getContentMode(html: Html) {
+    return this.domContent.getContentMode(html)
   }
 
   /** Renders one frame if the renderer is initialized. */
@@ -169,6 +188,7 @@ export class Renderer {
     this.unsubscribeSceneMutations?.()
     this.unsubscribeSceneMutations = null
     this.resizeObserver?.disconnect()
+    this.overlay.remove()
     this.core?.destroy()
     this.core = null
     this.lastFrameTexture?.destroy()
@@ -311,9 +331,39 @@ export class Renderer {
     this.pointerController.syncInteractions(containers)
     this.domContent.sync(layers, containers, hostOrder)
     this.domContent.copyPending()
+    this.syncOverlayPlacement()
 
     this.pendingSceneContentSync = false
     return layers
+  }
+
+  /** Keeps the live-DOM overlay next to the canvas and over its box. */
+  private syncOverlayPlacement() {
+    const canvas = this.targetCanvas
+    const overlay = this.overlay
+    if (overlay.childElementCount === 0) {
+      if (overlay.isConnected) {
+        overlay.remove()
+      }
+      return
+    }
+    const parent = canvas.parentNode
+    if (!parent) {
+      return
+    }
+    if (overlay.previousSibling !== canvas || overlay.parentNode !== parent) {
+      parent.insertBefore(overlay, canvas.nextSibling)
+    }
+    const left = `${canvas.offsetLeft + canvas.clientLeft}px`
+    const top = `${canvas.offsetTop + canvas.clientTop}px`
+    const width = `${canvas.clientWidth}px`
+    const height = `${canvas.clientHeight}px`
+    if (overlay.style.left !== left) overlay.style.left = left
+    if (overlay.style.top !== top) overlay.style.top = top
+    if (overlay.style.width !== width) overlay.style.width = width
+    if (overlay.style.height !== height) overlay.style.height = height
+    const zIndex = getComputedStyle(canvas).zIndex
+    if (zIndex !== 'auto' && overlay.style.zIndex !== zIndex) overlay.style.zIndex = zIndex
   }
 
   /** Flushes any queued scene content synchronization before pointer work. */

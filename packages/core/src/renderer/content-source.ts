@@ -20,6 +20,8 @@ export type SceneHtmlEntry = {
   blurTargetChain: AdaptiveBlurTargetChain | null
   transform: Matrix2D
   inverseTransform: Matrix2D | null
+  /** Serial of the last media/snapshot frame uploaded; -1 forces an upload. */
+  pixelSerial?: number
 }
 
 /** Storage-buffer range for the HTML content entries attached to one glass. */

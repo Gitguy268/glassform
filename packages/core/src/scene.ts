@@ -37,7 +37,31 @@ export type HtmlInit = Partial<Transform> & {
   blur?: number
   zIndex?: number
   element?: HTMLElement | null
+  /**
+   * Pixels to use instead of the DOM element: an image, video, canvas or
+   * bitmap. Media sources refract in every browser and every backend.
+   * When omitted, an `img`, `video` or `canvas` passed as `element` is used.
+   */
+  source?: HtmlPixelSource | null
+  /** How a media source fills the node box. Defaults to `'cover'`. */
+  fit?: HtmlFit
+  /**
+   * What to do with ordinary DOM when the browser cannot draw live HTML into
+   * a canvas (Firefox, Safari): `'auto'` snapshots scene-level nodes and shows
+   * glass-attached nodes as a live overlay; `'snapshot'` always snapshots;
+   * `'overlay'` never snapshots. Defaults to `'auto'`.
+   */
+  fallback?: HtmlFallback
 }
+
+/** Pixel sources an {@link Html} node can display instead of its DOM element. */
+export type HtmlPixelSource = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas
+
+/** How a media source is fitted into an {@link Html} node's box. */
+export type HtmlFit = 'cover' | 'contain' | 'fill'
+
+/** Fallback for ordinary DOM in browsers without HTML-in-Canvas. */
+export type HtmlFallback = 'auto' | 'snapshot' | 'overlay'
 
 /**
  * Constructor options for a {@link Glass} node.
@@ -303,6 +327,9 @@ export class Html implements Transform {
   private _blur = 0
   private _zIndex = 0
   private _element: HTMLElement | null = null
+  private _source: HtmlPixelSource | null = null
+  private _fit: HtmlFit = 'cover'
+  private _fallback: HtmlFallback = 'auto'
   _elementVersion = 0
   _parent: Scene | Glass | Group | null = null
 
@@ -341,6 +368,69 @@ export class Html implements Transform {
     if (options.element !== undefined) {
       this.setElement(options.element)
     }
+    if (options.source !== undefined) {
+      this.source = options.source
+    }
+    if (options.fit !== undefined) {
+      this.fit = options.fit
+    }
+    if (options.fallback !== undefined) {
+      this.fallback = options.fallback
+    }
+  }
+
+  /** Media pixels shown instead of the DOM element, if set. */
+  get source() {
+    return this._source
+  }
+
+  set source(value: HtmlPixelSource | null) {
+    if (this._source === value) {
+      return
+    }
+
+    this._source = value
+    this._elementVersion += 1
+    notifySceneMutation(this)
+  }
+
+  /** How a media source fills the node box. */
+  get fit() {
+    return this._fit
+  }
+
+  set fit(value: HtmlFit) {
+    if (this._fit === value) {
+      return
+    }
+
+    this._fit = value
+    this._elementVersion += 1
+    notifySceneMutation(this)
+  }
+
+  /** Fallback for ordinary DOM when live HTML cannot be drawn into a canvas. */
+  get fallback() {
+    return this._fallback
+  }
+
+  set fallback(value: HtmlFallback) {
+    if (this._fallback === value) {
+      return
+    }
+
+    this._fallback = value
+    this._elementVersion += 1
+    notifySceneMutation(this)
+  }
+
+  /**
+   * Marks the node's pixels as changed. Call it after drawing into a canvas
+   * source or changing DOM that is shown as a snapshot.
+   */
+  refresh() {
+    this._elementVersion += 1
+    notifySceneMutation(this)
   }
 
   /** Node width in CSS pixels. */

@@ -1,21 +1,43 @@
 <!doctype html>
 <meta charset="utf-8">
-<title>DOM backdrop</title>
-<style>html,body{margin:0;background:#888} canvas{width:360px;height:240px}</style>
+<title>Content modes</title>
+<style>
+  html,body{margin:0;background:#888}
+  canvas{width:360px;height:240px}
+  .chip{display:flex;align-items:center;justify-content:center;width:180px;height:40px;font:600 17px -apple-system,system-ui,sans-serif;color:#111;border:0;background:transparent}
+</style>
 <script src="./importmap.js"></script>
 <script type="module">
 import { Container, Glass, Html, Renderer, Scene } from '@glassform/core'
 const params = new URLSearchParams(location.search)
+const bgName = params.get('bg') ?? 'stripes'
 const scene = new Scene()
-const bg = document.createElement('div')
-bg.style.cssText = `width:360px;height:240px;background:url(/fidelity/backgrounds/${params.get('bg') ?? 'stripes'}.png) 0 0/360px 240px`
-scene.add(new Html({ width: 360, height: 240, zIndex: -1, element: bg }))
+let bgElement
+if (params.get('backdrop') === 'img') {
+  bgElement = new Image(); bgElement.src = `/fidelity/backgrounds/${bgName}.png`
+} else {
+  bgElement = document.createElement('div')
+  bgElement.style.cssText = `width:360px;height:240px;background:url(/fidelity/backgrounds/${bgName}.png) 0 0/360px 240px`
+}
+const bg = new Html({ width: 360, height: 240, zIndex: -1, element: bgElement })
+scene.add(bg)
 const container = new Container({ x: 70, y: 86, blur: 2, thickness: 20 })
-container.add(new Glass({ width: 220, height: 68, cornerRadius: 34 }))
+const glass = new Glass({ width: 220, height: 68, cornerRadius: 34, pointerEvents: true })
+const button = document.createElement('button'); button.className = 'chip'; button.textContent = 'Glass button'
+button.addEventListener('click', () => { window.__clicks = (window.__clicks ?? 0) + 1 })
+const label = new Html({ x: 20, y: 14, width: 180, height: 40, element: button })
+glass.add(label)
+container.add(glass)
 scene.add(container)
 const renderer = new Renderer({ scene })
 document.body.append(renderer.canvas)
 let frames = 0
-function frame() { try { renderer.render() } catch (e) { window.__error = String(e) } frames++; window.__frames = frames; requestAnimationFrame(frame) }
+function frame() {
+  try { renderer.render() } catch (e) { window.__error = String(e) }
+  frames++
+  window.__frames = frames
+  window.__modes = { backdrop: renderer.getContentMode(bg), label: renderer.getContentMode(label) }
+  requestAnimationFrame(frame)
+}
 frame()
 </script>

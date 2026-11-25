@@ -27,6 +27,7 @@ export namespace sdfUtils {
   export type TransformedShapeBounds = SdfUtilsTransformedShapeBounds
 }
 export type { GlassPointerEventInit, GlassPointerEventType } from './events'
+export type { HtmlFallback, HtmlFit, HtmlInit, HtmlPixelSource } from './scene'
 export type {
   WebGpuDomContentSourceInit,
   WebGpuGlassContentSource,

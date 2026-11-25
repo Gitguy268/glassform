@@ -4,7 +4,14 @@ import {
   scaleOutputMatrix,
   type Matrix2D,
 } from '../matrix'
-import { drawElementToGpuTexture, prepareDrawableChild, updateDrawableGeometry } from './html-in-canvas'
+import {
+  detectHtmlInCanvas,
+  drawElementToGpuTexture,
+  prepareDrawableChild,
+  updateDrawableGeometry,
+  usesElementGeometry,
+} from './html-in-canvas'
+import { PixelSourceCache, resolveHtmlContentMode, type HtmlContentMode } from './pixel-sources'
 import { Glass, Html, type TraversedSceneLayer } from '../scene'
 import {
   CONTENT_ATLAS_PADDING,
@@ -55,6 +62,28 @@ type PreviousGlassContentAtlasEntry = {
 type DomContentSyncOptions = {
   targetCanvas: HTMLCanvasElement
   getCurrentDpr: () => number
+  /** Element above the canvas that holds `overlay` mode hosts. */
+  overlayRoot?: HTMLElement | null
+  /** Called when async pixels (snapshots, image loads) become ready. */
+  onPixelsChanged?: () => void
+}
+
+/** Mounts an overlay host above the canvas at its scene transform. */
+function syncOverlayHost(host: HTMLDivElement, overlayRoot: HTMLElement, matrix: Matrix2D, zIndex: string) {
+  if (host.parentElement !== overlayRoot) {
+    host.removeAttribute('drawable')
+    overlayRoot.append(host)
+  }
+  const transform = matrixToCssTransform(matrix)
+  if (host.style.transform !== transform) {
+    host.style.transform = transform
+  }
+  if (host.style.zIndex !== zIndex) {
+    host.style.zIndex = zIndex
+  }
+  if (host.style.pointerEvents !== 'auto') {
+    host.style.pointerEvents = 'auto'
+  }
 }
 
 /** Returns whether a paint event changed any managed HTML host or descendant. */
@@ -77,13 +106,24 @@ function syncHtmlHost(
   matrix: Matrix2D,
   zIndex: string,
   dpr: number,
+  drawable = true,
 ) {
-  const transform = matrixToCssTransform(matrix)
   if (host.parentElement !== canvas) {
-    prepareDrawableChild(host)
     canvas.append(host)
   }
-  updateDrawableGeometry(canvas, host, matrix, dpr)
+  // Current HTML-in-Canvas draws an element with its CSS transform applied and
+  // takes placement from updateElementGeometry, so drawable hosts stay
+  // untransformed there. Older builds (layoutsubtree) hit-test through CSS.
+  const geometryApi = drawable && usesElementGeometry()
+  const transform = geometryApi ? '' : matrixToCssTransform(matrix)
+  if (drawable) {
+    if (!host.hasAttribute('drawable')) {
+      prepareDrawableChild(host)
+    }
+    updateDrawableGeometry(canvas, host, matrix, dpr)
+  } else if (host.hasAttribute('drawable')) {
+    host.removeAttribute('drawable')
+  }
   if (host.style.transform !== transform) {
     host.style.transform = transform
   }
@@ -167,9 +207,50 @@ export class DomContentSync {
   private glassContentAtlasHeight = 0
   private sampler: GPUSampler | null = null
   private htmlBlurResources: AdaptiveBlurResources | null = null
+  private readonly contentModes = new Map<Html, HtmlContentMode>()
+  private readonly overlayHosts = new Set<Html>()
+  private readonly pixels: PixelSourceCache
+  private hasPixelSceneEntries = false
+  private hasPixelContentEntries = false
 
   /** Creates a DOM content sync helper for one renderer canvas. */
-  constructor(private readonly options: DomContentSyncOptions) {}
+  constructor(private readonly options: DomContentSyncOptions) {
+    this.pixels = new PixelSourceCache(() => {
+      this.needsSceneHtmlCopy = this.needsSceneHtmlCopy || this.hasPixelSceneEntries
+      this.needsContentCopy = this.needsContentCopy || this.hasPixelContentEntries
+      this.options.onPixelsChanged?.()
+    })
+  }
+
+  /** Hosts currently shown as live DOM above the canvas. */
+  get overlayHostElements() {
+    return new Set([...this.overlayHosts].map((html) => html.host))
+  }
+
+  /** Content mode chosen for an Html node in the latest sync. */
+  getContentMode(html: Html) {
+    return this.contentModes.get(html) ?? null
+  }
+
+  private resolveMode(html: Html, glassContent: boolean) {
+    const mode = resolveHtmlContentMode(html, {
+      elementDraw: detectHtmlInCanvas().webgpu,
+      glassContent,
+    })
+    this.contentModes.set(html, mode)
+    return mode
+  }
+
+  private releaseOverlayHosts(active: Set<Html>) {
+    for (const html of [...this.overlayHosts]) {
+      if (!active.has(html)) {
+        this.overlayHosts.delete(html)
+        if (html.host.parentElement === this.options.overlayRoot) {
+          html.host.remove()
+        }
+      }
+    }
+  }
 
   /** Current atlas texture for glass-attached HTML content, if any exists. */
   get atlasTexture() {
@@ -230,6 +311,12 @@ export class DomContentSync {
     destroyAdaptiveBlurResources(this.htmlBlurResources)
     this.htmlBlurResources = null
     this.sampler = null
+    this.pixels.destroy()
+    for (const html of this.overlayHosts) {
+      html.host.remove()
+    }
+    this.overlayHosts.clear()
+    this.contentModes.clear()
   }
 
   /** Handles canvas paint events by copying changed DOM hosts into textures. */
@@ -268,6 +355,11 @@ export class DomContentSync {
 
   /** Attempts any pending DOM-to-texture copies immediately. */
   copyPending() {
+    if (this.pixels.hasLiveSources) {
+      this.needsSceneHtmlCopy = this.needsSceneHtmlCopy || this.hasPixelSceneEntries
+      this.needsContentCopy = this.needsContentCopy || this.hasPixelContentEntries
+    }
+
     if (this.needsSceneHtmlCopy) {
       this.copySceneHtmlTextures()
     }
@@ -291,8 +383,10 @@ export class DomContentSync {
     containers: FlattenedContainer[],
     hostOrder: Map<Html, number>,
   ) {
-    this.syncSceneHtml(layers, hostOrder)
-    this.syncGlassContent(containers, hostOrder)
+    const activeOverlay = new Set<Html>()
+    this.syncSceneHtml(layers, hostOrder, activeOverlay)
+    this.syncGlassContent(containers, hostOrder, activeOverlay)
+    this.releaseOverlayHosts(activeOverlay)
     syncHtmlHostDomOrder(this.options.targetCanvas, hostOrder)
   }
 
@@ -315,6 +409,7 @@ export class DomContentSync {
 
     entry.texture?.destroy()
     destroyAdaptiveBlurTargetChain(entry.blurTargetChain)
+    this.pixels.release(html)
     this.sceneHtmlHosts.delete(html.host)
     this.sceneHtmlEntries.delete(html)
     if (!keepHostMounted) {
@@ -331,6 +426,7 @@ export class DomContentSync {
 
     entry.sourceTexture?.destroy()
     destroyAdaptiveBlurTargetChain(entry.blurTargetChain)
+    this.pixels.release(html)
     this.glassContentHosts.delete(html.host)
     this.glassContentEntries.delete(html)
     if (!keepHostMounted) {
@@ -339,10 +435,11 @@ export class DomContentSync {
   }
 
   /** Synchronizes textures and transforms for scene-attached HTML layers. */
-  private syncSceneHtml(layers: TraversedSceneLayer[], hostOrder: Map<Html, number>) {
+  private syncSceneHtml(layers: TraversedSceneLayer[], hostOrder: Map<Html, number>, activeOverlay: Set<Html>) {
     const activeHtml = new Set<Html>()
     let layoutChanged = false
     let contentChanged = false
+    let hasPixelEntries = false
     const currentDpr = this.options.getCurrentDpr()
 
     for (const layer of layers) {
@@ -351,6 +448,16 @@ export class DomContentSync {
       }
 
       const html = layer.child
+      const mode = this.resolveMode(html, false)
+      if (mode === 'overlay' && this.options.overlayRoot) {
+        activeOverlay.add(html)
+        this.overlayHosts.add(html)
+        syncOverlayHost(html.host, this.options.overlayRoot, layer.transform, String(hostOrder.get(html) ?? 0))
+        continue
+      }
+      if (mode !== 'element') {
+        hasPixelEntries = true
+      }
       activeHtml.add(html)
 
       let entry = this.sceneHtmlEntries.get(html)
@@ -470,6 +577,7 @@ export class DomContentSync {
           previousTexture?.destroy()
           destroyAdaptiveBlurTargetChain(entry.blurTargetChain)
           entry.texture = nextTexture
+          entry.pixelSerial = -1
           entry.filteredTexture = null
           entry.blurTargetChain = null
           entry.textureWidth = nextTextureWidth
@@ -487,8 +595,13 @@ export class DomContentSync {
           layer.transform,
           String(hostOrder.get(html) ?? 0),
           currentDpr,
+          mode === 'element',
         )
       }
+    }
+    this.hasPixelSceneEntries = hasPixelEntries
+    if (hasPixelEntries) {
+      this.needsSceneHtmlCopy = true
     }
 
     for (const html of [...this.sceneHtmlEntries.keys()]) {
@@ -511,7 +624,12 @@ export class DomContentSync {
   }
 
   /** Synchronizes glass-attached HTML entries and atlas packing. */
-  private syncGlassContent(containers: FlattenedContainer[], hostOrder: Map<Html, number>) {
+  private syncGlassContent(
+    containers: FlattenedContainer[],
+    hostOrder: Map<Html, number>,
+    activeOverlay: Set<Html>,
+  ) {
+    let hasPixelEntries = false
     const activeContentHtml = new Set<Html>()
     const activeEntries: GlassContentEntry[] = []
     const nextRanges = new Map<Glass, GlassContentRange>()
@@ -551,13 +669,25 @@ export class DomContentSync {
           }
 
           const inverseTransform = invertMatrix(htmlLayer.transform)
+          const mode = this.resolveMode(html, true)
+          const worldTransform = multiplyMatrices(glassTransform, htmlLayer.transform)
+          if (mode === 'overlay' && this.options.overlayRoot) {
+            activeOverlay.add(html)
+            this.overlayHosts.add(html)
+            syncOverlayHost(html.host, this.options.overlayRoot, worldTransform, String(hostOrder.get(html) ?? 0))
+            continue
+          }
+          if (mode !== 'element') {
+            hasPixelEntries = true
+          }
           this.glassContentHosts.add(html.host)
           syncHtmlHost(
             html.host,
             this.options.targetCanvas,
-            multiplyMatrices(glassTransform, htmlLayer.transform),
+            worldTransform,
             String(hostOrder.get(html) ?? 0),
             currentDpr,
+            mode === 'element',
           )
 
           if (!inverseTransform) {
@@ -653,6 +783,7 @@ export class DomContentSync {
               )
               contentEntry.sourceTextureWidth = nextSourceTextureWidth
               contentEntry.sourceTextureHeight = nextSourceTextureHeight
+              contentEntry.pixelSerial = -1
               contentEntry.filteredTexture = null
               contentEntry.blurTargetChain = null
               contentEntry.copiedDeviceWidth = 0
@@ -683,6 +814,10 @@ export class DomContentSync {
     }
 
     this.glassContentOrder = activeEntries
+    this.hasPixelContentEntries = hasPixelEntries
+    if (hasPixelEntries) {
+      this.needsContentCopy = true
+    }
     this.glassContentRanges.clear()
     for (const [glass, range] of nextRanges) {
       this.glassContentRanges.set(glass, range)
@@ -846,6 +981,39 @@ export class DomContentSync {
     this.contentEntriesBuffer.upload(entries.length)
   }
 
+  /** Copies one node's pixels (live DOM, media or snapshot) into a texture. */
+  private copyEntryPixels(
+    html: Html,
+    entry: { deviceWidth: number; deviceHeight: number; pixelSerial?: number },
+    texture: GPUTexture,
+  ): 'copied' | 'unchanged' | 'pending' {
+    if (!this.device) {
+      return 'pending'
+    }
+    const mode = this.contentModes.get(html) ?? 'element'
+    if (mode === 'element') {
+      copyElementToTexture(this.device.queue, html.host, entry.deviceWidth, entry.deviceHeight, texture)
+      return 'copied'
+    }
+    if (mode === 'overlay') {
+      return 'unchanged'
+    }
+    const frame = this.pixels.frame(html, mode, entry.deviceWidth, entry.deviceHeight)
+    if (!frame) {
+      return 'pending'
+    }
+    if (frame.serial === entry.pixelSerial) {
+      return 'unchanged'
+    }
+    this.device.queue.copyExternalImageToTexture(
+      { source: frame.image },
+      { texture },
+      { width: Math.min(frame.width, texture.width), height: Math.min(frame.height, texture.height) },
+    )
+    entry.pixelSerial = frame.serial
+    return 'copied'
+  }
+
   /** Copies scene-attached HTML hosts into their individual textures. */
   private copySceneHtmlTextures() {
     if (!this.device || this.sceneHtmlEntries.size === 0) {
@@ -862,13 +1030,14 @@ export class DomContentSync {
       }
 
       try {
-        copyElementToTexture(
-          this.device.queue,
-          entry.html.host,
-          entry.deviceWidth,
-          entry.deviceHeight,
-          entry.texture,
-        )
+        const result = this.copyEntryPixels(entry.html, entry, entry.texture)
+        if (result === 'pending') {
+          copiedAll = false
+          continue
+        }
+        if (result === 'unchanged') {
+          continue
+        }
         entry.copiedDeviceWidth = entry.deviceWidth
         entry.copiedDeviceHeight = entry.deviceHeight
         copiedAny = true
@@ -960,13 +1129,14 @@ export class DomContentSync {
       }
 
       try {
-        copyElementToTexture(
-          this.device.queue,
-          entry.html.host,
-          entry.deviceWidth,
-          entry.deviceHeight,
-          entry.sourceTexture,
-        )
+        const result = this.copyEntryPixels(entry.html, entry, entry.sourceTexture)
+        if (result === 'pending') {
+          copiedAll = false
+          continue
+        }
+        if (result === 'unchanged') {
+          continue
+        }
         entry.copiedDeviceWidth = entry.deviceWidth
         entry.copiedDeviceHeight = entry.deviceHeight
         copiedAny = true
