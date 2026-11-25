@@ -1,0 +1,24 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>CSS tier</title>
+<style>
+  html,body{margin:0}
+  body{width:400px;height:280px;overflow:hidden;font:15px -apple-system,system-ui,sans-serif;background:url(/fidelity/backgrounds/stripes.png) 0 0/400px 280px}
+  .page{position:absolute;inset:0;padding:10px;color:#111;line-height:1.3}
+  .page h1{margin:0 0 6px;font-size:22px}
+  glass-surface{position:absolute;color:#111;font-weight:600;display:flex!important;align-items:center;justify-content:center}
+  #pill{left:70px;top:96px;width:220px;height:68px}
+  #chip{left:40px;top:200px;width:120px;height:44px}
+  #tinted{left:200px;top:200px;width:150px;height:44px;color:#fff}
+</style>
+<script src="./importmap.js"></script>
+<div class="page"><h1>Live page text</h1>This paragraph is ordinary DOM. Select it, scroll it, change it: the glass above stays live.</div>
+<glass-surface id="pill" corner-radius="capsule" interactive>Regular</glass-surface>
+<glass-surface id="chip" variant="clear" corner-radius="capsule">Clear</glass-surface>
+<glass-surface id="tinted" corner-radius="capsule" tint="#0a84ff">Tinted</glass-surface>
+<script type="module">
+import '@glassform/css/element'
+await new Promise((r) => setTimeout(r, 300))
+window.__frames = 1
+window.__modes = { refracting: document.querySelector('#pill').refracting }
+</script>

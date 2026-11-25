@@ -347,6 +347,28 @@ importers:
         specifier: ^4.0.15
         version: 4.1.12(@types/node@25.9.12)(jsdom@27.4.0)(vite@8.3.8(@types/node@25.9.12)(esbuild@0.27.7)(jiti@2.7.0))
 
+  packages/css:
+    dependencies:
+      '@glassform/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@webgpu/types':
+        specifier: ^0.1.74
+        version: 0.1.74
+      jsdom:
+        specifier: ^27.2.0
+        version: 27.4.0
+      tsup:
+        specifier: ^8.5.0
+        version: 8.5.1(jiti@2.7.0)(postcss@8.5.33)(typescript@6.0.3)
+      typescript:
+        specifier: ~6.0.2
+        version: 6.0.3
+      vitest:
+        specifier: ^4.0.15
+        version: 4.1.12(@types/node@25.9.12)(jsdom@27.4.0)(vite@8.3.8(@types/node@25.9.12)(esbuild@0.27.7)(jiti@2.7.0))
+
   packages/layout:
     devDependencies:
       '@types/node':

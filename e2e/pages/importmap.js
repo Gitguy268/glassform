@@ -6,6 +6,8 @@ const map = {
     '@glassform/layout/dom': '/packages/layout/dist/dom.js',
     '@glassform/core': '/packages/core/dist/index.js',
     '@glassform/core/layout': '/packages/core/dist/layout.js',
+    '@glassform/css': '/packages/css/dist/index.js',
+    '@glassform/css/element': '/packages/css/dist/element.js',
     'modern-screenshot': '/node_modules/.pnpm/modern-screenshot@4.7.0/node_modules/modern-screenshot/dist/index.mjs',
   },
 }
