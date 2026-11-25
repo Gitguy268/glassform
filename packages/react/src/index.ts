@@ -12,6 +12,8 @@ export {
 export {
   AnimationConfigProvider,
 } from './animationConfig'
+export { GlassSurface } from './surface'
+export type { GlassSurfaceProps } from './surface'
 export type {
   AnimationConfigProviderProps,
 } from './animationConfig'
@@ -82,6 +84,13 @@ export type {
   ZStackRef,
 } from './types'
 export type {
+  GlassAppearance,
+  GlassBackendPreference,
+  GlassMaterial,
+  GlassVariant,
+  HtmlFallback,
+  HtmlFit,
+  HtmlPixelSource,
   NormalGating,
   NormalGatingOptions,
   ResolvedSmoothUnionOptions,

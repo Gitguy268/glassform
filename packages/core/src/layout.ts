@@ -24,6 +24,9 @@ import {
   StackingContext as SceneStackingContext,
   type ContainerInit,
   type GlassInit,
+  type HtmlFallback,
+  type HtmlFit,
+  type HtmlPixelSource,
 } from './scene'
 import {
   resolveBlendSupportGating,
@@ -127,6 +130,12 @@ export type HtmlOptions = {
   element?: HTMLElement | null
   /** DOM measurement mode used by the default DOM measurement path. */
   sizing?: DomLeafSizing
+  /** Media pixels (img, video, canvas, bitmap) shown instead of the DOM. */
+  source?: HtmlPixelSource | null
+  /** How a media source fills the node box. */
+  fit?: HtmlFit
+  /** Fallback for ordinary DOM where HTML-in-Canvas is unavailable. */
+  fallback?: HtmlFallback
 }
 
 /** Unit-space origin for a layout transform. `{ x: 0, y: 0 }` is top-left and `{ x: 0.5, y: 0.5 }` is center. */
@@ -1226,6 +1235,86 @@ export class GlassContainer extends SingleChildUiNode<LayoutNode, SceneContainer
     }
   }
 
+  get saturation(): number {
+    return this.sceneNode.saturation
+  }
+
+  set saturation(value: number) {
+    if (setProperty(this.sceneNode, 'saturation', value)) {
+      this.invalidateFrame('saturation')
+    }
+  }
+
+  get whiteLevel(): number {
+    return this.sceneNode.whiteLevel
+  }
+
+  set whiteLevel(value: number) {
+    if (setProperty(this.sceneNode, 'whiteLevel', value)) {
+      this.invalidateFrame('whiteLevel')
+    }
+  }
+
+  get blackLevel(): number {
+    return this.sceneNode.blackLevel
+  }
+
+  set blackLevel(value: number) {
+    if (setProperty(this.sceneNode, 'blackLevel', value)) {
+      this.invalidateFrame('blackLevel')
+    }
+  }
+
+  get keyLightAmount(): number {
+    return this.sceneNode.keyLightAmount
+  }
+
+  set keyLightAmount(value: number) {
+    if (setProperty(this.sceneNode, 'keyLightAmount', value)) {
+      this.invalidateFrame('keyLightAmount')
+    }
+  }
+
+  get keyLightAngle(): number {
+    return this.sceneNode.keyLightAngle
+  }
+
+  set keyLightAngle(value: number) {
+    if (setProperty(this.sceneNode, 'keyLightAngle', value)) {
+      this.invalidateFrame('keyLightAngle')
+    }
+  }
+
+  get keyLightSpread(): number {
+    return this.sceneNode.keyLightSpread
+  }
+
+  set keyLightSpread(value: number) {
+    if (setProperty(this.sceneNode, 'keyLightSpread', value)) {
+      this.invalidateFrame('keyLightSpread')
+    }
+  }
+
+  get keyLightHeight(): number {
+    return this.sceneNode.keyLightHeight
+  }
+
+  set keyLightHeight(value: number) {
+    if (setProperty(this.sceneNode, 'keyLightHeight', value)) {
+      this.invalidateFrame('keyLightHeight')
+    }
+  }
+
+  get keyLightColorBias(): number {
+    return this.sceneNode.keyLightColorBias
+  }
+
+  set keyLightColorBias(value: number) {
+    if (setProperty(this.sceneNode, 'keyLightColorBias', value)) {
+      this.invalidateFrame('keyLightColorBias')
+    }
+  }
+
   get zIndex(): number {
     return this.sceneNode.zIndex
   }
@@ -1308,6 +1397,9 @@ export class Html extends UiNode<DomLeaf, SceneHtml> {
       blur: options.blur,
       zIndex: options.zIndex,
       element: contentElement,
+      source: options.source,
+      fit: options.fit,
+      fallback: options.fallback,
     })
     const defaultMeasureOptions: DomLeafOptions = {
       element: contentElement,
@@ -1370,6 +1462,42 @@ export class Html extends UiNode<DomLeaf, SceneHtml> {
 
   get element(): HTMLElement | null {
     return this.sceneNode.element
+  }
+
+  get source(): HtmlPixelSource | null {
+    return this.sceneNode.source
+  }
+
+  set source(value: HtmlPixelSource | null | undefined) {
+    if (setProperty(this.sceneNode, 'source', value ?? null)) {
+      this.invalidateFrame('source')
+    }
+  }
+
+  get fit(): HtmlFit {
+    return this.sceneNode.fit
+  }
+
+  set fit(value: HtmlFit | undefined) {
+    if (setProperty(this.sceneNode, 'fit', value ?? 'cover')) {
+      this.invalidateFrame('fit')
+    }
+  }
+
+  get fallback(): HtmlFallback {
+    return this.sceneNode.fallback
+  }
+
+  set fallback(value: HtmlFallback | undefined) {
+    if (setProperty(this.sceneNode, 'fallback', value ?? 'auto')) {
+      this.invalidateFrame('fallback')
+    }
+  }
+
+  /** Re-snapshots or re-uploads this node's pixels. */
+  refresh() {
+    this.sceneNode.refresh()
+    this.invalidateFrame('element')
   }
 
   set element(value: HTMLElement | null) {

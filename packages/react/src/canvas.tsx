@@ -145,6 +145,7 @@ export function LiquidCanvas({
   proposal,
   frameloop = 'always',
   onError,
+  backend = 'auto',
 }: LiquidCanvasProps) {
   const hostRef = useRef<HTMLDivElement | null>(null)
   const rendererRef = useRef<Renderer | null>(null)
@@ -296,7 +297,12 @@ export function LiquidCanvas({
       return
     }
 
-    const renderer = new Renderer({ scene: layoutScene.scene, maxDpr })
+    const renderer = new Renderer({
+      scene: layoutScene.scene,
+      maxDpr,
+      backend,
+      onNeedsFrame: () => invalidateFrame(),
+    })
     rendererRef.current = renderer
     renderer.canvas.className = canvasClassName ?? ''
     applyStyle(renderer.canvas, canvasStyleRef.current)

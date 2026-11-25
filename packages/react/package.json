@@ -27,8 +27,9 @@
     "watch": "tsup --watch"
   },
   "dependencies": {
-    "@glassform/layout": "workspace:*",
-    "@glassform/core": "workspace:*"
+    "@glassform/core": "workspace:*",
+    "@glassform/css": "workspace:*",
+    "@glassform/layout": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=19",

@@ -50,6 +50,12 @@ type RendererInit = {
   maxDpr?: number
   /** Which GPU backend to use. Defaults to `'auto'` (WebGPU, else WebGL2). */
   backend?: GlassBackendPreference
+  /**
+   * Called when pixels change without a scene mutation (a snapshot finished,
+   * an image loaded). Render loops that only draw on demand should schedule a
+   * frame here.
+   */
+  onNeedsFrame?: () => void
 }
 
 /** Content synchronizer interface shared by the WebGPU and WebGL2 paths. */
@@ -93,6 +99,7 @@ export class Renderer {
   private readonly targetCanvas: HTMLCanvasElement
   private readonly pointerController: PointerController
   private readonly backendPreference: GlassBackendPreference
+  private readonly onNeedsFrame: (() => void) | undefined
   private content: ContentSync | null = null
   private activeBackend: GlassBackend | null = null
 
@@ -139,6 +146,7 @@ export class Renderer {
     this.scene = options.scene ?? new Scene()
     this.maxDpr = options.maxDpr ?? 2
     this.backendPreference = options.backend ?? 'auto'
+    this.onNeedsFrame = options.onNeedsFrame
     this.targetCanvas = document.createElement('canvas')
     prepareDrawableCanvas(this.targetCanvas)
     this.targetCanvas.style.display = 'block'
@@ -298,7 +306,10 @@ export class Renderer {
       targetCanvas: this.targetCanvas,
       getCurrentDpr: () => this.currentDpr,
       overlayRoot: this.overlay,
-      onPixelsChanged: () => this.queueSceneContentSync(),
+      onPixelsChanged: () => {
+        this.queueSceneContentSync()
+        this.onNeedsFrame?.()
+      },
     })
     domContent.setDevice(device, presentationFormat)
     this.content = domContent
@@ -318,7 +329,10 @@ export class Renderer {
       targetCanvas: this.targetCanvas,
       overlayRoot: this.overlay,
       getCurrentDpr: () => this.currentDpr,
-      onPixelsChanged: () => this.queueSceneContentSync(),
+      onPixelsChanged: () => {
+        this.queueSceneContentSync()
+        this.onNeedsFrame?.()
+      },
     })
     this.content = this.glContent
   }

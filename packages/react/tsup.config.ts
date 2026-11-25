@@ -13,6 +13,7 @@ export default defineConfig({
     '@glassform/layout',
     '@glassform/core',
     '@glassform/core/layout',
+    '@glassform/css',
     'react',
     'react-dom',
   ],

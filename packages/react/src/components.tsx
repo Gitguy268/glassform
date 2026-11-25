@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
+import { resolveMaterial, type GlassMaterial, type MaterialParameters } from '@glassform/core'
 import { createPortal } from 'react-dom'
 import {
   Background as LayoutBackground,
@@ -219,9 +220,19 @@ export function GlassContainer({
   shadowSpread,
   debugDisplacement,
   zIndex,
+  saturation,
+  whiteLevel,
+  blackLevel,
+  keyLightAmount,
+  keyLightAngle,
+  keyLightSpread,
+  keyLightHeight,
+  keyLightColorBias,
+  material,
   transition,
 }: GlassContainerProps) {
-  const node = useStableNode(() => new LayoutGlassContainer({
+  const base = useMaterialDefaults(material)
+  const node = useStableNode(() => new LayoutGlassContainer(withDefaults({
     spacing,
     opacity,
     blur,
@@ -253,10 +264,18 @@ export function GlassContainer({
     shadowSpread,
     debugDisplacement,
     zIndex,
-  }))
+    saturation,
+    whiteLevel,
+    blackLevel,
+    keyLightAmount,
+    keyLightAngle,
+    keyLightSpread,
+    keyLightHeight,
+    keyLightColorBias,
+  }, base)))
   useExposeRef(ref, node)
   useAttachNode(node)
-  useAnimatedProps(node, {
+  useAnimatedProps(node, withDefaults({
     spacing,
     opacity,
     blur,
@@ -288,9 +307,42 @@ export function GlassContainer({
     shadowSpread,
     debugDisplacement,
     zIndex,
-  }, transition, { assignUndefined: false })
+    saturation,
+    whiteLevel,
+    blackLevel,
+    keyLightAmount,
+    keyLightAngle,
+    keyLightSpread,
+    keyLightHeight,
+    keyLightColorBias,
+  }, base), transition, { assignUndefined: false })
 
   return renderNodeChildren(useNodeParent(node), children)
+}
+
+/** Resolves a SwiftUI-style material once per variant/tint/appearance. */
+function useMaterialDefaults(material: GlassMaterial | undefined): Partial<MaterialParameters> {
+  const tintKey = material?.tint === undefined || material.tint === null
+    ? ''
+    : typeof material.tint === 'string'
+      ? material.tint
+      : `${material.tint.r},${material.tint.g},${material.tint.b},${material.tint.a}`
+  return useMemo(
+    () => (material ? resolveMaterial(material) : {}),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [material?.variant, material?.appearance, tintKey],
+  )
+}
+
+/** Fills props left undefined with the material's values. */
+function withDefaults<T extends Record<string, unknown>>(props: T, base: Partial<MaterialParameters>): T {
+  const merged: Record<string, unknown> = { ...props }
+  for (const [key, value] of Object.entries(base)) {
+    if (merged[key] === undefined) {
+      merged[key] = value
+    }
+  }
+  return merged as T
 }
 
 /** Liquid-glass shape component. */
@@ -423,6 +475,9 @@ export function Html({
   blur,
   zIndex,
   sizing,
+  source,
+  fit,
+  fallback,
   transition,
 }: HtmlProps) {
   const node = useStableNode(() => new LayoutHtml({
@@ -430,11 +485,14 @@ export function Html({
     blur,
     zIndex,
     sizing,
+    source,
+    fit,
+    fallback,
   }))
   useExposeRef(ref, node)
   useAttachNode(node)
 
-  useAnimatedProps(node, { sizing }, transition)
+  useAnimatedProps(node, { sizing, source, fit, fallback }, transition)
   useAnimatedProps(node, { opacity, blur, zIndex }, transition, { assignUndefined: false })
 
   return node.element ? createPortal(children, node.element) : null

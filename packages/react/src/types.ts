@@ -1,5 +1,5 @@
 import type { CSSProperties, MutableRefObject, ReactNode, Ref } from 'react'
-import type { GlassPointerEvent, Renderer } from '@glassform/core'
+import type { GlassBackendPreference, GlassMaterial, GlassPointerEvent, Renderer } from '@glassform/core'
 import type {
   AnimateFunction,
   AnimationConfig,
@@ -124,6 +124,8 @@ export type TransitionProp<T extends object = Record<string, unknown>> = {
 }
 
 export type LiquidCanvasProps = ChildrenProp & RefProp<LiquidCanvasRef> & {
+  /** GPU backend: `'auto'` (WebGPU, else WebGL2), `'webgpu'` or `'webgl2'`. */
+  backend?: GlassBackendPreference
   className?: string
   style?: CSSProperties
   canvasClassName?: string
@@ -153,7 +155,13 @@ export type BackgroundProps = ChildrenProp & RefProp<BackgroundRef> & Decoration
   background?: ReactNode
 }
 export type TransformProps = ChildrenProp & RefProp<TransformRef> & TransformOptions & TransitionProp<TransformOptions>
-export type GlassContainerProps = ChildrenProp & RefProp<GlassContainerRef> & GlassContainerOptions & TransitionProp<GlassContainerOptions>
+export type GlassContainerProps = ChildrenProp & RefProp<GlassContainerRef> & GlassContainerOptions & TransitionProp<GlassContainerOptions> & {
+  /**
+   * SwiftUI-style material (`{ variant: 'regular' | 'clear', tint, appearance }`).
+   * Its parameters are defaults: any prop you pass explicitly wins.
+   */
+  material?: GlassMaterial
+}
 export type GlassStateHandler = (active: boolean) => void
 export type GlassPointerHandler = (event: GlassPointerEvent) => void
 export type GlassProps = ChildrenProp & RefProp<GlassRef> & GlassOptions & TransitionProp<GlassOptions> & {

@@ -444,6 +444,9 @@ importers:
       '@glassform/core':
         specifier: workspace:*
         version: link:../core
+      '@glassform/css':
+        specifier: workspace:*
+        version: link:../css
       '@glassform/layout':
         specifier: workspace:*
         version: link:../layout
